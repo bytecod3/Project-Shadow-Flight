@@ -1,0 +1,12 @@
+../FreeRTOS-Kernel/event_groups.c:145:28:xEventGroupCreate	16	static
+../FreeRTOS-Kernel/event_groups.c:185:17:xEventGroupSync	56	static,ignoring_inline_asm
+../FreeRTOS-Kernel/event_groups.c:312:17:xEventGroupWaitBits	72	static,ignoring_inline_asm
+../FreeRTOS-Kernel/event_groups.c:472:17:xEventGroupClearBits	32	static,ignoring_inline_asm
+../FreeRTOS-Kernel/event_groups.c:524:17:xEventGroupGetBitsFromISR	40	static,ignoring_inline_asm
+../FreeRTOS-Kernel/event_groups.c:547:17:xEventGroupSetBits	64	static,ignoring_inline_asm
+../FreeRTOS-Kernel/event_groups.c:650:10:vEventGroupDelete	32	static,ignoring_inline_asm
+../FreeRTOS-Kernel/event_groups.c:748:10:vEventGroupSetBitsCallback	16	static
+../FreeRTOS-Kernel/event_groups.c:764:10:vEventGroupClearBitsCallback	16	static
+../FreeRTOS-Kernel/event_groups.c:778:23:prvTestWaitCondition	32	static
+../FreeRTOS-Kernel/event_groups.c:838:21:uxEventGroupGetNumber	24	static
+../FreeRTOS-Kernel/event_groups.c:868:14:vEventGroupSetNumber	16	static
