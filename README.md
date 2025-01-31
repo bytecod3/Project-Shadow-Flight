@@ -1,14 +1,36 @@
 # Project-Shadow-Flight
-Oh yee space fairer!
-I will write your name on the moon with my fingertips.
+"Oh yee space fairer!
+I will write your name on the moon with my fingertips"
 ~ ESA, EIRSAT-mission
 
+https://img.shields.io/badge/size-1U-blue  
+https://img.shields.io/badge/status-development-green  
+https://img.shields.io/badge/software-FreeRTOS-orange
+
+
 ## Introduction
-*Project-Shadow Flight* is a homemade 1U cubesat using FreeRTOS on STM32F104CCU6 OBC and COTS components. None of these components are rad-hard. All are locally available components. This project was motivated by the curiosity to learn about space systems, mission softwares and space hardware in general, and try to replicate, within a defined time-frame,  a simple yet fully functional cubesat that can be used for demo purposes or even better, through the available channels, be improved for launch!  
+*Project-Shadow Flight* is a homemade 1U cubesat using FreeRTOS on STM32F104CCU6 OBC 
+and COTS components. None of these components are rad-hard. All are locally available 
+components. This project was motivated by the curiosity to learn about space systems, 
+mission softwares and space hardware in general, and try to replicate, within 
+a defined time-frame,  a simple yet fully functional cubesat that can be used 
+for demo purposes or even better, through the available channels, be improved for launch! 
+
+This cubesat is designed to operate in the Low Earth Orbit(LEO). 
+
+### Mission statement
+The primary mission for this cubesat is Earth Observation (EO). It will capture images over
+a given area, depending on the received mission from ground station. These images are then
+compressed, stored and transmitted back to ground when in the TRANSMIT_TO_GROUND state. No image processing is 
+done on board the Cubesate so as to save battery power and processing power for other critical 
+tasks. 
 
 # System components 
 ## 1. On-Board Computer 
 The onboard computer is designed around STM32F104CCU6 Chip. 
+The OBC is made up of the following components: 
+
+### Requirements 
 
 ## 2. Sensor Board 
 ### Requirements 
@@ -57,5 +79,14 @@ A list of related documents realated to this pject are provided below. They incl
 design source files, datasheets, 2D diagrams, 3D assembly diagrams, test information and logs etc.
 
 ## Contribution and support
-This project is not funded by any organization or entity and is solely reliant on out-of-pocket funding. We therefore heed to anyone desiring to contribute, in monetary form, technical advise, links and connections, electronic components etc., you can reach out to us via this email (emwiti658@gmail.com) and we will get back to you soonest. Thank you again for your consideration! Ad Astra!
+This project is not funded by any organization or entity and 
+is solely reliant on out-of-pocket funding. 
+We therefore heed to anyone desiring to contribute, 
+in monetary form, technical advise, links and connections, 
+electronic components etc., or even if you are interested in knowing more 
+about the project details,
+ you can reach out to us via this email (emwiti658@gmail.com) 
+ and we will get back to you soonest.  
+
+ Thank you again for your consideration! Ad Astra!
 
