@@ -3,9 +3,12 @@
 I will write your name on the moon with my fingertips"
 ~ ESA, EIRSAT-mission
 
-https://img.shields.io/badge/size-1U-blue  
-https://img.shields.io/badge/status-development-green  
-https://img.shields.io/badge/software-FreeRTOS-orange
+![Static Badge](https://img.shields.io/badge/size-1U-blue)
+![Static Badge](https://img.shields.io/badge/status-development-green)
+![Static Badge](https://img.shields.io/badge/software-FreeRTOS-orange)
+![Static Badge](https://img.shields.io/badge/MCU-STM32-purple)
+
+
 
 
 ## Introduction
