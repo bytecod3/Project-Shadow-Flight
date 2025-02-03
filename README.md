@@ -9,8 +9,6 @@ I will write your name on the moon with my fingertips"
 ![Static Badge](https://img.shields.io/badge/MCU-STM32-purple)
 
 
-
-
 ## Introduction
 *Project-Shadow Flight* is a homemade 1U cubesat using FreeRTOS on STM32F104CCU6 OBC 
 and COTS components. None of these components are rad-hard. All are locally available 
@@ -67,6 +65,27 @@ Listed below are the sensors used on the sensor board of the cubesat:
 | 4 | GPS                | UART     |
 | 5 | Magnetometer       | I2C      |
 | 6 | Sun sensor         | ADC      |
+
+### PC-104 BUS
+This project used the PC 104 standard for communication bus implementation. 
+
+Bigest advantages of this standard:
+- Stackable
+- Interoperable- you can remove boards and use in another design
+- Functionality extension - easy to add functionality
+- Compact 
+- Rugged - can handle shock and vibration 
+
+An ISA connector looks like below: 
+![](./user-docs/images/pc104-pcb.jpeg)
+
+The images below explain the stacking of the PCB boards *(credit: Diamond Systems)*
+![](./user-docs/images/pc104-dwg-500.gif)
+
+![](./user-docs/images/pc104stack.gif)
+
+Further reference: [PC-104 standard reference](https://www.diamondsystems.com/pc104)
+
 
 ## 3. Attitude Determination and Control
 This system is responsible for receiving attitude data from sensors and acting on it in realtime 
