@@ -86,6 +86,7 @@ The images below explain the stacking of the PCB boards *(credit: Diamond System
 
 Further reference: [PC-104 standard reference](https://www.diamondsystems.com/pc104)
 
+The adpater pin assignment document I use is listed here [shadow-flight-pc104bus](https://docs.google.com/spreadsheets/d/11hD9y9vYMRVWSRXsNhsD9LqnLeL-uE_WEjQZ-0ekRwc/edit?usp=sharing)
 
 ## 3. Attitude Determination and Control
 This system is responsible for receiving attitude data from sensors and acting on it in realtime 
