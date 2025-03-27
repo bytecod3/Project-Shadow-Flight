@@ -101,6 +101,10 @@ Data from the sensors is read, then passed to the ADCS algorithm.
 A list of related documents realated to this pject are provided below. They include diagrams, schematics,
 design source files, datasheets, 2D diagrams, 3D assembly diagrams, test information and logs etc.
 
+## Relevent videos and resource materials 
+1. https://youtu.be/5voQfQOTem8 (Build your own satelite)
+2. 
+
 ## Contribution and support
 This project is not funded by any organization or entity and 
 is solely reliant on out-of-pocket funding. 
