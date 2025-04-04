@@ -44,7 +44,7 @@ The OBC is made up of the following sub-systems:
 - 
 
 The image below shows the memory and debug block diagram used on the OBC:
-![](./user-docs/images/obc-memory-and-debug.png)
+![](./user-docs/images/obc-block.jpg)
 
 
 In addition, the sensor board is also equipped with an ISA connector to maintain the PC-104 standard used 
