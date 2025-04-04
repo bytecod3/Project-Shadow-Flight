@@ -28,8 +28,27 @@ tasks.
 
 # System components 
 ## 1. On-Board Computer 
-The onboard computer is designed around STM32F104CCU6 Chip. 
-The OBC is made up of the following components: 
+The onboard computer is designed around STM32F401CCU6 Chip. 
+The OBC is made up of the following sub-systems:
+- STM32F401CCU6 
+- MEMORY AND Data storage
+- Interboard Wired communication 
+- Status LEDs
+- Programming header
+- Deployment switcheS
+- Remove before flight mechanism
+- Interfaces to Payload board
+- Power monitoring system from EPS
+- Brown-out detection circuit 
+- Hardware watchdog timer 
+- 
+
+The image below shows the memory and debug block diagram used on the OBC:
+![](./user-docs/images/obc-memory-and-debug.png)
+
+
+In addition, the sensor board is also equipped with an ISA connector to maintain the PC-104 standard used 
+ffor cubesats. This will further aid in communication with other boards.
 
 ### Requirements 
 
