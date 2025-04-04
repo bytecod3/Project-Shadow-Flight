@@ -41,7 +41,6 @@ The OBC is made up of the following sub-systems:
 - Power monitoring system from EPS
 - Brown-out detection circuit 
 - Hardware watchdog timer 
-- 
 
 The image below shows the memory and debug block diagram used on the OBC:
 ![](./user-docs/images/obc-block.jpg)
