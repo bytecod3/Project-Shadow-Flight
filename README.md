@@ -115,13 +115,51 @@ The signals produced are fed into ana actuator or tticde coontrol,
 
 Data from the sensors is read, then passed to the ADCS algorithm.
 
+
+## 4. Electrical Power System (EPS)
+### Introduction
+The EPS is responsible for the following functions:
+    - Energy generation
+    - Energy conversion
+    - Power regulation
+    - Power storage
+    - Power distribution to loads
+
+There are several methods to do power generation and other fucntions listed above. However, the recommended approach among most cubesat design teams, and the one I choose to follow for this project, is the procedure below:
+
+    1. Define the power consumption and electrical characteristics of the spacecraft bus components 
+    2. Define the necessary power generation and energy storage required 
+    3. Select the power generation and energy storage methods 
+    4. Analyse the system's power budget and profile based on the start to end of mission
+    5. Design power conversion, management and distribution subsystem to interface the power sources 
+    6. Procure and fabricate components 
+    7. Conduct tests on isolated components 
+    8. Conduct tests on integrated components 
+
+There is a lot that can be discussed in respect to EPS but I have tried to be consise and to the point in the 
+summaries below:
+
+### a) Power consumption of different bus components 
+### b) Power generation 
+### c) Energy storage 
+### d) Mission analysis in regards to power 
+### e) EPS Schematics summary
+
+#### Conversion
+#### Power Distribution Schemes
+#### Power supply control
+
+### f) Isolated tests 
+### g) EPS integration and Testing
+
+
 ## Related documents
 A list of related documents realated to this pject are provided below. They include diagrams, schematics,
 design source files, datasheets, 2D diagrams, 3D assembly diagrams, test information and logs etc.
 
 ## Relevent videos and resource materials 
 1. https://youtu.be/5voQfQOTem8 (Build your own satelite)
-2. 
+2. https://pressbooks-dev.oer.hawaii.edu/epet302/chapter/5-4-design-process-and-drivers/
 
 ## Contribution and support
 This project is not funded by any organization or entity and 
