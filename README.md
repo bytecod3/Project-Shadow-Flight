@@ -160,6 +160,10 @@ design source files, datasheets, 2D diagrams, 3D assembly diagrams, test informa
 ## Relevent videos and resource materials 
 1. https://youtu.be/5voQfQOTem8 (Build your own satelite)
 2. https://pressbooks-dev.oer.hawaii.edu/epet302/chapter/5-4-design-process-and-drivers/
+3. https://resources.altium.com/p/prototyping-solar-solution-your-outdoor-embedded-device
+4. https://pycubed.org/What%20is%20PyCubed%20f257a98ec60044538d8fbdc20fec987f.html
+5. https://github.com/hsfl/artemis-hardware
+6. https://sites.google.com/hawaii.edu/artemiscubesatkit
 
 ## Contribution and support
 This project is not funded by any organization or entity and 
