@@ -1,7 +1,15 @@
+<div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;">
+  <strong>🚧 In Development:</strong> This CubeSat project and its documentation are actively being developed. Expect frequent updates and changes.
+</div>
+
 # Project-Shadow-Flight
 "Oh yee space fairer!
 I will write your name on the moon with my fingertips"
 ~ ESA, EIRSAT-mission
+
+**Project Creator:** Edwin Mwiti  
+**Contact:** emwiti658@gmail.com  
+**Github:** [bytecod3](https://github.com/bytecod3)
 
 ![Static Badge](https://img.shields.io/badge/size-1U-blue)
 ![Static Badge](https://img.shields.io/badge/status-development-green)
@@ -55,38 +63,39 @@ subsystems used in the cubesat.
 ### Functional requirements
 The following is a list of the functional requirements of the OBC:
 
-#### 1. The CubeSat shall perform reliable data processing and control operations using an STM32F401CCU6 microcontroller.
-This includes handling telemetry, command execution, subsystem coordination, and real-time control tasks.
 
-#### 2. The CubeSat shall store mission-critical data and logs in non-volatile memory to prevent data loss during power cycles.
-Memory must support both temporary (RAM) and permanent (Flash or EEPROM) storage for payload data, telemetry, and system logs.
+1. **The CubeSat shall perform reliable data processing and control operations using an STM32F401CCU6 microcontroller.**  
+   This includes handling telemetry, command execution, subsystem coordination, and real-time control tasks.
 
-#### 3. The CubeSat shall support inter-board wired communication between the OBC, payload, and EPS using standard digital protocols (e.g., UART, I2C, SPI).
-The interfaces must support command, telemetry, and sensor data exchange.
+2. **The CubeSat shall store mission-critical data and logs in non-volatile memory to prevent data loss during power cycles.**  
+   Memory must support both temporary (RAM) and permanent (Flash or EEPROM) storage for payload data, telemetry, and system logs.
 
-#### 4. The CubeSat shall indicate system and subsystem statuses using onboard status LEDs.
-LED indicators shall reflect boot status, error conditions, power state, and communication activity for debugging and development.
+3. **The CubeSat shall support inter-board wired communication between the OBC, payload, and EPS using standard digital protocols (e.g., UART, I2C, SPI).**  
+   The interfaces must support command, telemetry, and sensor data exchange.
 
-#### 5. The CubeSat shall be programmable via an external programming/debugging header accessible during integration and testing.
-This header must support SWD or UART-based flashing and debugging.
+4. **The CubeSat shall indicate system and subsystem statuses using onboard status LEDs.**  
+   LED indicators shall reflect boot status, error conditions, power state, and communication activity for debugging and development.
 
-#### 6. The CubeSat shall utilize deployment and "Remove Before Flight" (RBF) switches to ensure safe handling and automatic activation post-deployment.
-RBF switch shall disconnect power from the CubeSat until it is removed prior to launch. Deployment switches must detect separation from the deployer and initiate startup sequences.
+5. **The CubeSat shall be programmable via an external programming/debugging header accessible during integration and testing.**  
+   This header must support SWD or UART-based flashing and debugging.
 
-#### 7. The CubeSat shall interface with the payload board via a standardized electrical connector to exchange power, control, and data signals.
-This nterface must be robust to launch vibrations and support defined command/data protocols.
+6. **The CubeSat shall utilize deployment and "Remove Before Flight" (RBF) switches to ensure safe handling and automatic activation post-deployment.**  
+   RBF switch shall disconnect power from the CubeSat until it is removed prior to launch. Deployment switches must detect separation from the deployer and initiate startup sequences.
 
-#### 8. The CubeSat shall monitor voltage and current levels of its power system using telemetry from the EPS.
-Power monitoring shall allow detection of over/under-voltage and overcurrent events to protect hardware.
+7. **The CubeSat shall interface with the payload board via a standardized electrical connector to exchange power, control, and data signals.**  
+   This interface must be robust to launch vibrations and support defined command/data protocols.
 
-#### 9. The CubeSat shall implement a brown-out detection mechanism to safely handle unexpected power drops.
-Upon voltage drop below a threshold, the MCU must reset safely or enter a low-power state to preserve system integrity.
+8. **The CubeSat shall monitor voltage and current levels of its power system using telemetry from the EPS.**  
+   Power monitoring shall allow detection of over/under-voltage and overcurrent events to protect hardware.
 
-#### 10. The CubeSat shall include a hardware watchdog timer to recover from software faults or unresponsive states.
-The watchdog must be periodically refreshed by software; failure to do so shall cause a system reset.
+9. **The CubeSat shall implement a brown-out detection mechanism to safely handle unexpected power drops.**  
+   Upon voltage drop below a threshold, the MCU must reset safely or enter a low-power state to preserve system integrity.
 
-#### 11. The CubeSat shall include up to 3 inhibit switches in accordance with CubeSat deployment standards to prevent premature activation of systems.
-Inhibits must disable power or specific subsystems until conditions for deployment are met (e.g., separation from deployer).
+10. **The CubeSat shall include a hardware watchdog timer to recover from software faults or unresponsive states.**  
+    The watchdog must be periodically refreshed by software; failure to do so shall cause a system reset.
+
+11. **The CubeSat shall include up to 3 inhibit switches in accordance with CubeSat deployment standards to prevent premature activation of systems.**  
+    Inhibits must disable power or specific subsystems until conditions for deployment are met (e.g., separation from deployer).
 
 ### Components of the OBC
 The OBC is made up of the following sub-systems:
@@ -110,28 +119,72 @@ The image below shows the memory and debug block diagram used on this cubesat's 
 
 **To note, all the PCBs are equipped with ISA PC/104 connectors to make stacking possible**
 
+
+
 ## 2. Sensor Board 
-### Requirements 
-1. Measure temperature inside the satellite
-2. Detect acceleration of the satellite 
-3. Determine angular velocity of the satellite
-4. Detemine GPS location of the satelite
-5. Measure the magnetic field around the satelite
-6. Determine the position of the satelite in relation to the sun
-7. Send sensor data to the on-board computer(OBC)
+### Introduction 
+The sensor board is responsible for housing the sensors used for environmental monitoring around the cubesat in space. The list of components 
+used in this project's sensor board is as below: 
+
+1. VGA Monochrome Camera
+2. Temperature sensor 
+3. Humidity sensor
+4. Pressure sensor 
+5. Sun sensors 
+6. Dedicated MCU 
+7. Flash memory 
+8. Dedicated Voltage regulator
+9. Debug LEDs
+10. ISA connector 
+11. Watchdog Timer 
+12. Inhibit switches
+13. Remove before flight switch
+14. GPS module
+
+### Functional requirements 
+
+1. **The sensor board shall capture monochrome VGA images using an onboard camera module.**  
+   The camera shall output image data in a format compatible with the main OBC or a local MCU for processing or storage.
+
+2. **The sensor board shall measure ambient temperature using a digital temperature sensor.**  
+   Temperature readings shall be provided periodically to the OBC via a digital interface (e.g., I²C or SPI).
+
+3. **The sensor board shall measure relative humidity using a digital humidity sensor.**  
+   Data shall be sampled at a configurable rate and stored or transmitted as telemetry.
+
+4. **The sensor board shall measure ambient atmospheric pressure using a barometric pressure sensor.**  
+   Pressure data shall support environmental diagnostics or payload experimentation.
+
+5. **The sensor board shall include sun sensors to determine the direction and intensity of incident sunlight.**  
+   Sensor data may be used to correlate with camera imagery or power system behavior.
+
+6. **The sensor board shall operate using a dedicated low-power microcontroller (MCU) to manage data acquisition and communication.**  
+   The MCU shall handle sensor polling, data formatting, and camera interfacing independently of the OBC.
+
+7. **The sensor board shall store acquired data in non-volatile Flash memory for later retrieval.**  
+   Stored data shall persist through power cycles and include image frames and sensor telemetry.
+
+8. **The sensor board shall regulate its internal power using a dedicated voltage regulator.**  
+   The regulator shall provide stable 3.3V and/or 1.8V rails from the main CubeSat power bus.
+
+9. **The sensor board shall interface with the CubeSat On-Board Computer (OBC) through an ISA connector.**  
+   The interface shall support communication (e.g., I²C/SPI/UART), power, and synchronization signals.
+
+10. **The sensor board shall include a hardware watchdog timer to reset the MCU in case of software lockup or failure.**  
+    The watchdog shall require regular refresh signals; failure to refresh shall initiate an automatic system reset.
+
+11. **The sensor board shall respond to Inhibit switches to disable or enable functionality based on the satellite’s deployment state.**  
+    All active electronics must remain off until inhibit conditions are cleared.
+
+12. **The sensor board shall remain unpowered until the Remove-Before-Flight (RBF) switch is removed.**  
+    The board must detect the RBF switch state and delay power-up until it is safe to operate.
+
+13. **The CubeSat shall include a GPS module to provide real-time position, velocity, and timing data.**  
+The GPS module shall interface with the OBC via UART or another compatible digital protocol and provide NMEA or binary-format data for onboard logging, orbital tracking, and synchronization.
 
 The block diagram is shown below:
 
-![](user-docs/images/sensor-board.png)
-
-### Sensors used 
-Listed below are the sensors used on the sensor board of the cubesat:
-- Temperature Sensor
-- Accelerometer
-- Gyroscope
-- GPS
-- Magnetometer
-- Sun sensor
+<img src="images/sensor-board.png" alt="Shadow flight OBC" width="500" height="700"/>
 
 ### Communication protocol for sensors 
 |   | Sensor             | Protocol |
@@ -143,8 +196,8 @@ Listed below are the sensors used on the sensor board of the cubesat:
 | 5 | Magnetometer       | I2C      |
 | 6 | Sun sensor         | ADC      |
 
-### PC-104 BUS
-This project used the PC 104 standard for communication bus implementation. 
+### The PC/104 ISA Bus
+This project used the PC/104 standard for communication bus implementation. 
 
 Bigest advantages of this standard:
 - Stackable
@@ -153,19 +206,30 @@ Bigest advantages of this standard:
 - Compact 
 - Rugged - can handle shock and vibration 
 
-An ISA connector looks like below: 
-![](./user-docs/images/pc104-pcb.jpeg)
+An ISA connector looks like below:   
+<img src="images/pc104-pcb.jpeg" alt="Shadow flight OBC" width="300" height="200"/>
 
-The images below explain the stacking of the PCB boards *(credit: Diamond Systems)*
-![](./user-docs/images/pc104-dwg-500.gif)
+The images below explain the stacking of the PCB boards *(credit: Diamond Systems)*:  
+<img src="images/pc104-dwg-500.gif" alt="Shadow flight OBC" width="400" height="600"/>  
 
-![](./user-docs/images/pc104stack.gif)
+<img src="images/pc104stack.gif" alt="Shadow flight OBC" width="500" height="700"/>  
 
 Further reference: [PC-104 standard reference](https://www.diamondsystems.com/pc104)
 
-The adpater pin assignment document I use is listed here [shadow-flight-pc104bus](https://docs.google.com/spreadsheets/d/11hD9y9vYMRVWSRXsNhsD9LqnLeL-uE_WEjQZ-0ekRwc/edit?usp=sharing)
+### My Pin definition 
+In order to customize the ISA connector to fit what this project uses, I have defined the pins as shown in this 
+pin definition document. Since the project is in progress, these pin assignments are bound to change often:
+
+<a href="https://docs.google.com/spreadsheets/d/11hD9y9vYMRVWSRXsNhsD9LqnLeL-uE_WEjQZ-0ekRwc/edit?usp=sharing" target="_blank">
+    Shadow-Flight-PC/104 BUS
+</a>
+
+
 
 ## 3. Attitude Determination and Control
+<div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;">
+  <strong>🚧 In Development</strong> 
+</div>
 This system is responsible for receiving attitude data from sensors and acting on it in realtime 
 to control the attitude(orientation ) of the satellite.
 This is mainly implemented in software as the diagram below depicts.
@@ -176,6 +240,9 @@ Data from the sensors is read, then passed to the ADCS algorithm.
 
 
 ## 4. Electrical Power System (EPS)
+<div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;">
+  <strong>🚧 In Development</strong> 
+</div>
 ### Introduction
 The EPS is responsible for the following functions:
     - Energy generation
@@ -213,7 +280,7 @@ summaries below:
 
 
 ## Related documents
-A list of related documents realated to this pject are provided below. They include diagrams, schematics,
+A list of related documents related to this project are provided below. They include diagrams, schematics,
 design source files, datasheets, 2D diagrams, 3D assembly diagrams, test information and logs etc.
 
 ## Relevent videos and resource materials 
@@ -229,10 +296,12 @@ This project is not funded by any organization or entity and
 is solely reliant on out-of-pocket funding. 
 We therefore heed to anyone desiring to contribute, 
 in monetary form, technical advise, links and connections, 
-electronic components etc., or even if you are interested in knowing more 
+electronic components, code and schematic design contribution, etc., or even if you are interested in knowing more 
 about the project details,
- you can reach out to us via this email (emwiti658@gmail.com) 
- and we will get back to you soonest.  
+ you can reach out to me via this email (emwiti658@gmail.com) 
+ and I will get back to you soonest.  
 
  Thank you again for your consideration! Ad Astra!
 
+## Contributors 
+1. Edwin Mwiti

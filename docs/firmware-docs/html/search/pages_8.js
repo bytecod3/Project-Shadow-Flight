@@ -1,4 +1,9 @@
 var searchData=
 [
-  ['9_20the_20cubesat_20shall_20implement_20a_20brown_20out_20detection_20mechanism_20to_20safely_20handle_20unexpected_20power_20drops_0',['9. The CubeSat shall implement a brown-out detection mechanism to safely handle unexpected power drops.',['../index.html#autotoc_md17',1,'']]]
+  ['e_20eps_20schematics_20summary_0',['e) EPS Schematics summary',['../index.html#autotoc_md23',1,'']]],
+  ['electrical_20power_20system_20eps_1',['4. Electrical Power System (EPS)',['../index.html#autotoc_md17',1,'']]],
+  ['energy_20storage_2',['c) Energy storage',['../index.html#autotoc_md21',1,'']]],
+  ['eps_3',['4. Electrical Power System (EPS)',['../index.html#autotoc_md17',1,'']]],
+  ['eps_20integration_20and_20testing_4',['g) EPS integration and Testing',['../index.html#autotoc_md28',1,'']]],
+  ['eps_20schematics_20summary_5',['e) EPS Schematics summary',['../index.html#autotoc_md23',1,'']]]
 ];

@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['g_20eps_20integration_20and_20testing_0',['g) EPS integration and Testing',['../index.html#autotoc_md38',1,'']]],
-  ['g_20uart_20i2c_20spi_1',['3. The CubeSat shall support inter-board wired communication between the OBC, payload, and EPS using standard digital protocols (e.g., UART, I2C, SPI).',['../index.html#autotoc_md11',1,'']]],
-  ['generation_2',['b) Power generation',['../index.html#autotoc_md30',1,'']]]
+  ['regards_20to_20power_0',['d) Mission analysis in regards to power',['../index.html#autotoc_md22',1,'']]],
+  ['related_20documents_1',['Related documents',['../index.html#autotoc_md29',1,'']]],
+  ['relevent_20videos_20and_20resource_20materials_2',['Relevent videos and resource materials',['../index.html#autotoc_md30',1,'']]],
+  ['requirements_3',['requirements',['../index.html#autotoc_md8',1,'Functional requirements'],['../index.html#autotoc_md12',1,'Functional requirements']]],
+  ['resource_20materials_4',['Relevent videos and resource materials',['../index.html#autotoc_md30',1,'']]]
 ];

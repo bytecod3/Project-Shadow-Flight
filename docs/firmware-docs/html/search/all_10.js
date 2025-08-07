@@ -1,7 +1,16 @@
 var searchData=
 [
-  ['handle_20unexpected_20power_20drops_0',['9. The CubeSat shall implement a brown-out detection mechanism to safely handle unexpected power drops.',['../index.html#autotoc_md17',1,'']]],
-  ['handling_20and_20automatic_20activation_20post_20deployment_1',['6. The CubeSat shall utilize deployment and &quot;Remove Before Flight&quot; (RBF) switches to ensure safe handling and automatic activation post-deployment.',['../index.html#autotoc_md14',1,'']]],
-  ['hardware_20watchdog_20timer_20to_20recover_20from_20software_20faults_20or_20unresponsive_20states_2',['10. The CubeSat shall include a hardware watchdog timer to recover from software faults or unresponsive states.',['../index.html#autotoc_md18',1,'']]],
-  ['header_20accessible_20during_20integration_20and_20testing_3',['5. The CubeSat shall be programmable via an external programming/debugging header accessible during integration and testing.',['../index.html#autotoc_md13',1,'']]]
+  ['schematics_20summary_0',['e) EPS Schematics summary',['../index.html#autotoc_md23',1,'']]],
+  ['schemes_1',['Power Distribution Schemes',['../index.html#autotoc_md25',1,'']]],
+  ['sensor_20board_2',['2. Sensor Board',['../index.html#autotoc_md10',1,'']]],
+  ['sensors_3',['Communication protocol for sensors',['../index.html#autotoc_md13',1,'']]],
+  ['shadow_20flight_4',['Project-Shadow-Flight',['../index.html#autotoc_md0',1,'']]],
+  ['shadow_20flight_201u_20cubesat_5',['Project Shadow Flight 1U Cubesat',['../index.html',1,'']]],
+  ['statement_6',['Mission statement',['../index.html#autotoc_md4',1,'']]],
+  ['storage_7',['c) Energy storage',['../index.html#autotoc_md21',1,'']]],
+  ['summary_8',['e) EPS Schematics summary',['../index.html#autotoc_md23',1,'']]],
+  ['supply_20control_9',['Power supply control',['../index.html#autotoc_md26',1,'']]],
+  ['support_10',['Contribution and support',['../index.html#autotoc_md31',1,'']]],
+  ['system_20components_11',['System components',['../index.html#autotoc_md5',1,'']]],
+  ['system_20eps_12',['4. Electrical Power System (EPS)',['../index.html#autotoc_md17',1,'']]]
 ];

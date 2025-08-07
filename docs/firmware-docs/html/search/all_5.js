@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['6_20the_20cubesat_20shall_20utilize_20deployment_20and_20remove_20before_20flight_20rbf_20switches_20to_20ensure_20safe_20handling_20and_20automatic_20activation_20post_20deployment_0',['6. The CubeSat shall utilize deployment and &quot;Remove Before Flight&quot; (RBF) switches to ensure safe handling and automatic activation post-deployment.',['../index.html#autotoc_md14',1,'']]]
+  ['b_20power_20generation_0',['b) Power generation',['../index.html#autotoc_md20',1,'']]],
+  ['board_1',['2. Sensor Board',['../index.html#autotoc_md10',1,'']]],
+  ['bus_2',['The PC/104 ISA Bus',['../index.html#autotoc_md14',1,'']]],
+  ['bus_20components_3',['a) Power consumption of different bus components',['../index.html#autotoc_md19',1,'']]]
 ];

@@ -1,12 +1,14 @@
 var searchData=
 [
-  ['f_20isolated_20tests_0',['f) Isolated tests',['../index.html#autotoc_md37',1,'']]],
-  ['faults_20or_20unresponsive_20states_1',['10. The CubeSat shall include a hardware watchdog timer to recover from software faults or unresponsive states.',['../index.html#autotoc_md18',1,'']]],
-  ['flight_2',['Project-Shadow-Flight',['../index.html',1,'']]],
-  ['flight_20rbf_20switches_20to_20ensure_20safe_20handling_20and_20automatic_20activation_20post_20deployment_3',['6. The CubeSat shall utilize deployment and &quot;Remove Before Flight&quot; (RBF) switches to ensure safe handling and automatic activation post-deployment.',['../index.html#autotoc_md14',1,'']]],
-  ['for_20sensors_4',['Communication protocol for sensors',['../index.html#autotoc_md24',1,'']]],
-  ['for_20viual_20consumers_5',['Design Videos for viual consumers',['../index.html#autotoc_md2',1,'']]],
-  ['from_20software_20faults_20or_20unresponsive_20states_6',['10. The CubeSat shall include a hardware watchdog timer to recover from software faults or unresponsive states.',['../index.html#autotoc_md18',1,'']]],
-  ['from_20the_20eps_7',['8. The CubeSat shall monitor voltage and current levels of its power system using telemetry from the EPS.',['../index.html#autotoc_md16',1,'']]],
-  ['functional_20requirements_8',['Functional requirements',['../index.html#autotoc_md8',1,'']]]
+  ['pc_20104_20isa_20bus_0',['The PC/104 ISA Bus',['../index.html#autotoc_md14',1,'']]],
+  ['pin_20definition_1',['My Pin definition',['../index.html#autotoc_md15',1,'']]],
+  ['power_2',['d) Mission analysis in regards to power',['../index.html#autotoc_md22',1,'']]],
+  ['power_20consumption_20of_20different_20bus_20components_3',['a) Power consumption of different bus components',['../index.html#autotoc_md19',1,'']]],
+  ['power_20distribution_20schemes_4',['Power Distribution Schemes',['../index.html#autotoc_md25',1,'']]],
+  ['power_20generation_5',['b) Power generation',['../index.html#autotoc_md20',1,'']]],
+  ['power_20supply_20control_6',['Power supply control',['../index.html#autotoc_md26',1,'']]],
+  ['power_20system_20eps_7',['4. Electrical Power System (EPS)',['../index.html#autotoc_md17',1,'']]],
+  ['project_20shadow_20flight_8',['Project-Shadow-Flight',['../index.html#autotoc_md0',1,'']]],
+  ['project_20shadow_20flight_201u_20cubesat_9',['Project Shadow Flight 1U Cubesat',['../index.html',1,'']]],
+  ['protocol_20for_20sensors_10',['Communication protocol for sensors',['../index.html#autotoc_md13',1,'']]]
 ];
