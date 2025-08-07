@@ -1,6 +1,29 @@
 var searchData=
 [
-  ['f_20isolated_20tests_0',['f) Isolated tests',['../index.html#autotoc_md22',1,'']]],
-  ['flight_1',['Project-Shadow-Flight',['../index.html',1,'']]],
-  ['for_20sensors_2',['Communication protocol for sensors',['../index.html#autotoc_md9',1,'']]]
+  ['a_20brown_20out_20detection_20mechanism_20to_20safely_20handle_20unexpected_20power_20drops_0',['9. The CubeSat shall implement a brown-out detection mechanism to safely handle unexpected power drops.',['../index.html#autotoc_md17',1,'']]],
+  ['a_20hardware_20watchdog_20timer_20to_20recover_20from_20software_20faults_20or_20unresponsive_20states_1',['10. The CubeSat shall include a hardware watchdog timer to recover from software faults or unresponsive states.',['../index.html#autotoc_md18',1,'']]],
+  ['a_20power_20consumption_20of_20different_20bus_20components_2',['a) Power consumption of different bus components',['../index.html#autotoc_md29',1,'']]],
+  ['a_20standardized_20electrical_20connector_20to_20exchange_20power_20control_20and_20data_20signals_3',['7. The CubeSat shall interface with the payload board via a standardized electrical connector to exchange power, control, and data signals.',['../index.html#autotoc_md15',1,'']]],
+  ['accessible_20during_20integration_20and_20testing_4',['5. The CubeSat shall be programmable via an external programming/debugging header accessible during integration and testing.',['../index.html#autotoc_md13',1,'']]],
+  ['accordance_20with_20cubesat_20deployment_20standards_20to_20prevent_20premature_20activation_20of_20systems_5',['11. The CubeSat shall include up to 3 inhibit switches in accordance with CubeSat deployment standards to prevent premature activation of systems.',['../index.html#autotoc_md19',1,'']]],
+  ['activation_20of_20systems_6',['11. The CubeSat shall include up to 3 inhibit switches in accordance with CubeSat deployment standards to prevent premature activation of systems.',['../index.html#autotoc_md19',1,'']]],
+  ['activation_20post_20deployment_7',['6. The CubeSat shall utilize deployment and &quot;Remove Before Flight&quot; (RBF) switches to ensure safe handling and automatic activation post-deployment.',['../index.html#autotoc_md14',1,'']]],
+  ['an_20external_20programming_20debugging_20header_20accessible_20during_20integration_20and_20testing_8',['5. The CubeSat shall be programmable via an external programming/debugging header accessible during integration and testing.',['../index.html#autotoc_md13',1,'']]],
+  ['an_20stm32f401ccu6_20microcontroller_9',['1. The CubeSat shall perform reliable data processing and control operations using an STM32F401CCU6 microcontroller.',['../index.html#autotoc_md9',1,'']]],
+  ['analysis_20in_20regards_20to_20power_10',['d) Mission analysis in regards to power',['../index.html#autotoc_md32',1,'']]],
+  ['and_20automatic_20activation_20post_20deployment_11',['6. The CubeSat shall utilize deployment and &quot;Remove Before Flight&quot; (RBF) switches to ensure safe handling and automatic activation post-deployment.',['../index.html#autotoc_md14',1,'']]],
+  ['and_20control_12',['3. Attitude Determination and Control',['../index.html#autotoc_md26',1,'']]],
+  ['and_20control_20operations_20using_20an_20stm32f401ccu6_20microcontroller_13',['1. The CubeSat shall perform reliable data processing and control operations using an STM32F401CCU6 microcontroller.',['../index.html#autotoc_md9',1,'']]],
+  ['and_20current_20levels_20of_20its_20power_20system_20using_20telemetry_20from_20the_20eps_14',['8. The CubeSat shall monitor voltage and current levels of its power system using telemetry from the EPS.',['../index.html#autotoc_md16',1,'']]],
+  ['and_20data_20signals_15',['7. The CubeSat shall interface with the payload board via a standardized electrical connector to exchange power, control, and data signals.',['../index.html#autotoc_md15',1,'']]],
+  ['and_20eps_20using_20standard_20digital_20protocols_20e_20g_20uart_20i2c_20spi_16',['3. The CubeSat shall support inter-board wired communication between the OBC, payload, and EPS using standard digital protocols (e.g., UART, I2C, SPI).',['../index.html#autotoc_md11',1,'']]],
+  ['and_20logs_20in_20non_20volatile_20memory_20to_20prevent_20data_20loss_20during_20power_20cycles_17',['2. The CubeSat shall store mission-critical data and logs in non-volatile memory to prevent data loss during power cycles.',['../index.html#autotoc_md10',1,'']]],
+  ['and_20remove_20before_20flight_20rbf_20switches_20to_20ensure_20safe_20handling_20and_20automatic_20activation_20post_20deployment_18',['6. The CubeSat shall utilize deployment and &quot;Remove Before Flight&quot; (RBF) switches to ensure safe handling and automatic activation post-deployment.',['../index.html#autotoc_md14',1,'']]],
+  ['and_20resource_20materials_19',['Relevent videos and resource materials',['../index.html#autotoc_md40',1,'']]],
+  ['and_20subsystem_20statuses_20using_20onboard_20status_20leds_20',['4. The CubeSat shall indicate system and subsystem statuses using onboard status LEDs.',['../index.html#autotoc_md12',1,'']]],
+  ['and_20support_21',['Contribution and support',['../index.html#autotoc_md41',1,'']]],
+  ['and_20testing_22',['g) EPS integration and Testing',['../index.html#autotoc_md38',1,'']]],
+  ['and_20testing_23',['5. The CubeSat shall be programmable via an external programming/debugging header accessible during integration and testing.',['../index.html#autotoc_md13',1,'']]],
+  ['attitude_20determination_20and_20control_24',['3. Attitude Determination and Control',['../index.html#autotoc_md26',1,'']]],
+  ['automatic_20activation_20post_20deployment_25',['6. The CubeSat shall utilize deployment and &quot;Remove Before Flight&quot; (RBF) switches to ensure safe handling and automatic activation post-deployment.',['../index.html#autotoc_md14',1,'']]]
 ];

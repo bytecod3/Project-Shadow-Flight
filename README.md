@@ -8,48 +8,107 @@ I will write your name on the moon with my fingertips"
 ![Static Badge](https://img.shields.io/badge/software-FreeRTOS-orange)
 ![Static Badge](https://img.shields.io/badge/MCU-STM32-purple)
 
-
 ## Introduction
-*Project-Shadow Flight* is a homemade 1U cubesat using FreeRTOS on STM32F104CCU6 OBC 
-and COTS components. None of these components are rad-hard. All are locally available 
-components. This project was motivated by the curiosity to learn about space systems, 
-mission softwares and space hardware in general, and try to replicate, within 
-a defined time-frame,  a simple yet fully functional cubesat that can be used 
+**Project-Shadow Flight** is a homemade 1U cubesat designed and built using FreeRTOS on STM32 framework 
+and COTS components. None of these components are radiation hardened. 
+
+
+### Design Videos for visual consumers
+If you are more of a visual consumer, I have documented the whole design process in my Youtube channel playlist 
+here: 
+[Comprehensive Design videos](https://youtu.be/9HoKzI_bBjs?list=PLSQRKAY5h7mGCnkXsugdVSHa72dnC0zQU)
+
+
+## Motivation
+This project was motivated by the curiosity to learn about space systems, especially cubesats, 
+mission softwares and space electronic hardware in general, and try to replicate, within 
+a defined time-frame, a simple yet fully functional cubesat that can be used 
 for demo purposes or even better, through the available channels, be improved for launch! 
 
-This cubesat is designed to operate in the Low Earth Orbit(LEO). 
+## Mission statement
+The primary mission for this cubesat is Earth Observation (EO). 
+It is designed to operate in the Low Earth Orbit(LEO). It will capture images over
+a given area, on a sun-synchronous subrecurrent orbit, depending on the received command from ground station. These images are then
+compressed, stored and transmitted back to ground when a pass over a base station is reached. No image processing is 
+done on board the Cubesate so as to save battery power and processing power for other critical tasks. 
 
-### Mission statement
-The primary mission for this cubesat is Earth Observation (EO). It will capture images over
-a given area, depending on the received mission from ground station. These images are then
-compressed, stored and transmitted back to ground when in the TRANSMIT_TO_GROUND state. No image processing is 
-done on board the Cubesate so as to save battery power and processing power for other critical 
-tasks. 
+The cubesat is designed to have two major operation modes:  
+1. Normal operation mode
+2. Mission operation mode 
+
+These two states can be configured and changed accordingly from the ground station.
 
 # System components 
-## 1. On-Board Computer 
-The onboard computer is designed around STM32F401CCU6 Chip. 
+A cubesat in general is made up of the following subsystems:  
+1. Onboard Computer system (OBC)
+2. Communication and Data Handling system (CD & H)
+3. Electrical Power Supply system (EPS)
+4. Attitude Determination and Control system (ADCS)
+5. Sensor and Payload System 
+6. Structural and Thermal system 
+
+## 1. Onboard Computer 
+### Introduction
+The onboard computer performs the housekeeping tasks needed by the cubesat. It is the main link between all the other 
+subsystems used in the cubesat.
+
+### Functional requirements
+The following is a list of the functional requirements of the OBC:
+
+#### 1. The CubeSat shall perform reliable data processing and control operations using an STM32F401CCU6 microcontroller.
+This includes handling telemetry, command execution, subsystem coordination, and real-time control tasks.
+
+#### 2. The CubeSat shall store mission-critical data and logs in non-volatile memory to prevent data loss during power cycles.
+Memory must support both temporary (RAM) and permanent (Flash or EEPROM) storage for payload data, telemetry, and system logs.
+
+#### 3. The CubeSat shall support inter-board wired communication between the OBC, payload, and EPS using standard digital protocols (e.g., UART, I2C, SPI).
+The interfaces must support command, telemetry, and sensor data exchange.
+
+#### 4. The CubeSat shall indicate system and subsystem statuses using onboard status LEDs.
+LED indicators shall reflect boot status, error conditions, power state, and communication activity for debugging and development.
+
+#### 5. The CubeSat shall be programmable via an external programming/debugging header accessible during integration and testing.
+This header must support SWD or UART-based flashing and debugging.
+
+#### 6. The CubeSat shall utilize deployment and "Remove Before Flight" (RBF) switches to ensure safe handling and automatic activation post-deployment.
+RBF switch shall disconnect power from the CubeSat until it is removed prior to launch. Deployment switches must detect separation from the deployer and initiate startup sequences.
+
+#### 7. The CubeSat shall interface with the payload board via a standardized electrical connector to exchange power, control, and data signals.
+This nterface must be robust to launch vibrations and support defined command/data protocols.
+
+#### 8. The CubeSat shall monitor voltage and current levels of its power system using telemetry from the EPS.
+Power monitoring shall allow detection of over/under-voltage and overcurrent events to protect hardware.
+
+#### 9. The CubeSat shall implement a brown-out detection mechanism to safely handle unexpected power drops.
+Upon voltage drop below a threshold, the MCU must reset safely or enter a low-power state to preserve system integrity.
+
+#### 10. The CubeSat shall include a hardware watchdog timer to recover from software faults or unresponsive states.
+The watchdog must be periodically refreshed by software; failure to do so shall cause a system reset.
+
+#### 11. The CubeSat shall include up to 3 inhibit switches in accordance with CubeSat deployment standards to prevent premature activation of systems.
+Inhibits must disable power or specific subsystems until conditions for deployment are met (e.g., separation from deployer).
+
+### Components of the OBC
 The OBC is made up of the following sub-systems:
 - STM32F401CCU6 
 - MEMORY AND Data storage
 - Interboard Wired communication 
 - Status LEDs
 - Programming header
-- Deployment switcheS
-- Remove before flight mechanism
+- Deployment switches
+- Remove before flight switch
 - Interfaces to Payload board
 - Power monitoring system from EPS
 - Brown-out detection circuit 
 - Hardware watchdog timer 
+- Inhibit switches 
 
-The image below shows the memory and debug block diagram used on the OBC:
-![](./user-docs/images/obc-block.jpg)
+The image below shows the memory and debug block diagram used on this cubesat's OBC:
 
+<img src="images/obc-block.jpg" alt="Shadow flight OBC" width="500" height="700"/>
+  
 
-In addition, the sensor board is also equipped with an ISA connector to maintain the PC-104 standard used 
-ffor cubesats. This will further aid in communication with other boards.
-
-### Requirements 
+**To note, all the PCBs are equipped with ISA PC/104 connectors to make stacking possible**
 
 ## 2. Sensor Board 
 ### Requirements 
@@ -63,7 +122,7 @@ ffor cubesats. This will further aid in communication with other boards.
 
 The block diagram is shown below:
 
-![](./user-docs/images/sensor-board.png)
+![](user-docs/images/sensor-board.png)
 
 ### Sensors used 
 Listed below are the sensors used on the sensor board of the cubesat:

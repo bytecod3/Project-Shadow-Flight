@@ -1,6 +1,19 @@
 var searchData=
 [
-  ['testing_0',['g) EPS integration and Testing',['../index.html#autotoc_md23',1,'']]],
-  ['tests_1',['f) Isolated tests',['../index.html#autotoc_md22',1,'']]],
-  ['to_20power_2',['d) Mission analysis in regards to power',['../index.html#autotoc_md17',1,'']]]
+  ['i2c_20spi_0',['3. The CubeSat shall support inter-board wired communication between the OBC, payload, and EPS using standard digital protocols (e.g., UART, I2C, SPI).',['../index.html#autotoc_md11',1,'']]],
+  ['implement_20a_20brown_20out_20detection_20mechanism_20to_20safely_20handle_20unexpected_20power_20drops_1',['9. The CubeSat shall implement a brown-out detection mechanism to safely handle unexpected power drops.',['../index.html#autotoc_md17',1,'']]],
+  ['in_20accordance_20with_20cubesat_20deployment_20standards_20to_20prevent_20premature_20activation_20of_20systems_2',['11. The CubeSat shall include up to 3 inhibit switches in accordance with CubeSat deployment standards to prevent premature activation of systems.',['../index.html#autotoc_md19',1,'']]],
+  ['in_20non_20volatile_20memory_20to_20prevent_20data_20loss_20during_20power_20cycles_3',['2. The CubeSat shall store mission-critical data and logs in non-volatile memory to prevent data loss during power cycles.',['../index.html#autotoc_md10',1,'']]],
+  ['in_20regards_20to_20power_4',['d) Mission analysis in regards to power',['../index.html#autotoc_md32',1,'']]],
+  ['include_20a_20hardware_20watchdog_20timer_20to_20recover_20from_20software_20faults_20or_20unresponsive_20states_5',['10. The CubeSat shall include a hardware watchdog timer to recover from software faults or unresponsive states.',['../index.html#autotoc_md18',1,'']]],
+  ['include_20up_20to_203_20inhibit_20switches_20in_20accordance_20with_20cubesat_20deployment_20standards_20to_20prevent_20premature_20activation_20of_20systems_6',['11. The CubeSat shall include up to 3 inhibit switches in accordance with CubeSat deployment standards to prevent premature activation of systems.',['../index.html#autotoc_md19',1,'']]],
+  ['indicate_20system_20and_20subsystem_20statuses_20using_20onboard_20status_20leds_7',['4. The CubeSat shall indicate system and subsystem statuses using onboard status LEDs.',['../index.html#autotoc_md12',1,'']]],
+  ['inhibit_20switches_20in_20accordance_20with_20cubesat_20deployment_20standards_20to_20prevent_20premature_20activation_20of_20systems_8',['11. The CubeSat shall include up to 3 inhibit switches in accordance with CubeSat deployment standards to prevent premature activation of systems.',['../index.html#autotoc_md19',1,'']]],
+  ['integration_20and_20testing_9',['g) EPS integration and Testing',['../index.html#autotoc_md38',1,'']]],
+  ['integration_20and_20testing_10',['5. The CubeSat shall be programmable via an external programming/debugging header accessible during integration and testing.',['../index.html#autotoc_md13',1,'']]],
+  ['inter_20board_20wired_20communication_20between_20the_20obc_20payload_20and_20eps_20using_20standard_20digital_20protocols_20e_20g_20uart_20i2c_20spi_11',['3. The CubeSat shall support inter-board wired communication between the OBC, payload, and EPS using standard digital protocols (e.g., UART, I2C, SPI).',['../index.html#autotoc_md11',1,'']]],
+  ['interface_20with_20the_20payload_20board_20via_20a_20standardized_20electrical_20connector_20to_20exchange_20power_20control_20and_20data_20signals_12',['7. The CubeSat shall interface with the payload board via a standardized electrical connector to exchange power, control, and data signals.',['../index.html#autotoc_md15',1,'']]],
+  ['introduction_13',['Introduction',['../index.html#autotoc_md1',1,'Introduction'],['../index.html#autotoc_md7',1,'Introduction'],['../index.html#autotoc_md28',1,'Introduction']]],
+  ['isolated_20tests_14',['f) Isolated tests',['../index.html#autotoc_md37',1,'']]],
+  ['its_20power_20system_20using_20telemetry_20from_20the_20eps_15',['8. The CubeSat shall monitor voltage and current levels of its power system using telemetry from the EPS.',['../index.html#autotoc_md16',1,'']]]
 ];

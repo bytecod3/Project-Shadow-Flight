@@ -1,10 +1,4 @@
 var searchData=
 [
-  ['a_20power_20consumption_20of_20different_20bus_20components_0',['a) Power consumption of different bus components',['../index.html#autotoc_md14',1,'']]],
-  ['analysis_20in_20regards_20to_20power_1',['d) Mission analysis in regards to power',['../index.html#autotoc_md17',1,'']]],
-  ['and_20control_2',['3. Attitude Determination and Control',['../index.html#autotoc_md11',1,'']]],
-  ['and_20resource_20materials_3',['Relevent videos and resource materials',['../index.html#autotoc_md25',1,'']]],
-  ['and_20support_4',['Contribution and support',['../index.html#autotoc_md26',1,'']]],
-  ['and_20testing_5',['g) EPS integration and Testing',['../index.html#autotoc_md23',1,'']]],
-  ['attitude_20determination_20and_20control_6',['3. Attitude Determination and Control',['../index.html#autotoc_md11',1,'']]]
+  ['5_20the_20cubesat_20shall_20be_20programmable_20via_20an_20external_20programming_20debugging_20header_20accessible_20during_20integration_20and_20testing_0',['5. The CubeSat shall be programmable via an external programming/debugging header accessible during integration and testing.',['../index.html#autotoc_md13',1,'']]]
 ];
