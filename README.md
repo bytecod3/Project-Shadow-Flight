@@ -280,6 +280,10 @@ summaries below:
 ### f) Isolated tests 
 ### g) EPS integration and Testing
 
+#### Battery and solar panel sizing data 
+During design, the selection criteria for the battery and solar panel is detailed in this spreadsheet: 
+https://docs.google.com/spreadsheets/d/1j73pPU9ySfrlBch6TJMzdRGcuBdh9BN55jUy6Fb-AV4/edit?usp=sharing
+
 
 ## Related documents
 A list of related documents related to this project are provided below. They include diagrams, schematics,
