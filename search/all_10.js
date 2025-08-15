@@ -6,11 +6,13 @@ var searchData=
   ['sensors_3',['Communication protocol for sensors',['../index.html#autotoc_md14',1,'']]],
   ['shadow_20flight_4',['Project-Shadow-Flight',['../index.html#autotoc_md0',1,'']]],
   ['shadow_20flight_201u_20cubesat_5',['Project Shadow Flight 1U Cubesat',['../index.html',1,'']]],
-  ['statement_6',['Mission statement',['../index.html#autotoc_md5',1,'']]],
-  ['storage_7',['c) Energy storage',['../index.html#autotoc_md22',1,'']]],
-  ['summary_8',['e) EPS Schematics summary',['../index.html#autotoc_md24',1,'']]],
-  ['supply_20control_9',['Power supply control',['../index.html#autotoc_md27',1,'']]],
-  ['support_10',['Contribution and support',['../index.html#autotoc_md32',1,'']]],
-  ['system_20components_11',['System components',['../index.html#autotoc_md6',1,'']]],
-  ['system_20eps_12',['4. Electrical Power System (EPS)',['../index.html#autotoc_md18',1,'']]]
+  ['sizing_20data_6',['Battery and solar panel sizing data',['../index.html#autotoc_md30',1,'']]],
+  ['solar_20panel_20sizing_20data_7',['Battery and solar panel sizing data',['../index.html#autotoc_md30',1,'']]],
+  ['statement_8',['Mission statement',['../index.html#autotoc_md5',1,'']]],
+  ['storage_9',['c) Energy storage',['../index.html#autotoc_md22',1,'']]],
+  ['summary_10',['e) EPS Schematics summary',['../index.html#autotoc_md24',1,'']]],
+  ['supply_20control_11',['Power supply control',['../index.html#autotoc_md27',1,'']]],
+  ['support_12',['Contribution and support',['../index.html#autotoc_md33',1,'']]],
+  ['system_20components_13',['System components',['../index.html#autotoc_md6',1,'']]],
+  ['system_20eps_14',['4. Electrical Power System (EPS)',['../index.html#autotoc_md18',1,'']]]
 ];

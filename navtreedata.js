@@ -59,12 +59,14 @@ var NAVTREE =
           [ "Power supply control", "index.html#autotoc_md27", null ]
         ] ],
         [ "f) Isolated tests", "index.html#autotoc_md28", null ],
-        [ "g) EPS integration and Testing", "index.html#autotoc_md29", null ]
+        [ "g) EPS integration and Testing", "index.html#autotoc_md29", [
+          [ "Battery and solar panel sizing data", "index.html#autotoc_md30", null ]
+        ] ]
       ] ],
-      [ "Related documents", "index.html#autotoc_md30", null ],
-      [ "Relevent videos and resource materials", "index.html#autotoc_md31", null ],
-      [ "Contribution and support", "index.html#autotoc_md32", null ],
-      [ "Contributors", "index.html#autotoc_md33", null ]
+      [ "Related documents", "index.html#autotoc_md31", null ],
+      [ "Relevent videos and resource materials", "index.html#autotoc_md32", null ],
+      [ "Contribution and support", "index.html#autotoc_md33", null ],
+      [ "Contributors", "index.html#autotoc_md34", null ]
     ] ]
   ] ]
 ];
