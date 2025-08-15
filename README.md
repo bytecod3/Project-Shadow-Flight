@@ -20,6 +20,8 @@ I will write your name on the moon with my fingertips"
 **Project-Shadow Flight** is a homemade 1U cubesat designed and built using FreeRTOS on STM32 framework 
 and COTS components. None of these components are radiation hardened. 
 
+### Web documentation 
+You can find a web friendly documentation format here: https://bytecod3.github.io/Project-Shadow-Flight/
 
 ### Design Videos for visual consumers
 If you are more of a visual consumer, I have documented the whole design process in my Youtube channel playlist 
