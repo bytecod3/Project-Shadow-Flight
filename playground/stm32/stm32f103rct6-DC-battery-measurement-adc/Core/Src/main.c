@@ -104,6 +104,8 @@ int main(void)
   uint32_t raw_dc_battery_voltage = 0;
   float converted_dc_battery_voltage = 0;
 
+  const float divider_scale = 4.24;
+
   char eps_packet_buffer[50];
 
   /* USER CODE END 2 */
@@ -115,21 +117,23 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-	  HAL_Delay(100);
+//	  HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+//	  HAL_Delay(100);
 
-	  // read the battery
-	  HAL_ADC_PollForConversion(&hadc1, 500);
-	  raw_dc_battery_voltage = HAL_ADC_GetValue(&hadc1);
-	  converted_dc_battery_voltage = ((float) raw_dc_battery_voltage) * (3300 / 4095); // 12 bit
+	  // read the battery voltage
+	  // wait for scan to complete
+	  if(HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY) == HAL_OK) {
+		  raw_dc_battery_voltage = HAL_ADC_GetValue(&hadc1);
+		  converted_dc_battery_voltage = ( ((float) raw_dc_battery_voltage) * ((float) 3.3 / 4095) ) * divider_scale; // 12 bit
+	  }
 
 	  sprintf(eps_packet_buffer,
-			  "raw:%lu, real:%.2f\r\n",
-			  raw_dc_battery_voltage,
-			  converted_dc_battery_voltage);
+	  				  "raw:%lu, real:%.2f\r\n",
+	  				  raw_dc_battery_voltage,
+	  				  converted_dc_battery_voltage);
 
 	  HAL_UART_Transmit(&huart2, (uint8_t*)eps_packet_buffer, strlen(eps_packet_buffer), 500);
-
+	  HAL_Delay(200);
 
   }
   /* USER CODE END 3 */
@@ -193,6 +197,7 @@ static void MX_ADC1_Init(void)
   ADC_ChannelConfTypeDef sConfig = {0};
 
   /* USER CODE BEGIN ADC1_Init 1 */
+  //hadc1.Init.Resolution = ADC_RESOLUTION_12B; // 12 bit resolution
 
   /* USER CODE END ADC1_Init 1 */
 
@@ -214,7 +219,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_10;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_239CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
