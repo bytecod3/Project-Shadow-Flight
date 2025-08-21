@@ -53,14 +53,15 @@ void MCP23017_IO::set_pin_mode(uint8_t pin, uint8_t mode) {
 
     uint8_t port = (pin < 8) ? 0 : 1;
 
-    data_frame[1] = 
+    // register to write 
+    data_frame[1] = 0x09;
 
-    if(pin > 15) { 
-        pin %= 16;
-    } 
-    if(mode > 2) {
-        mode %= 3;
-    }
+    // if(pin > 15) { 
+    //     pin %= 16;
+    // } 
+    // if(mode > 2) {
+    //     mode %= 3;
+    // }
 
     /**
      * An input is set as 1
@@ -76,14 +77,44 @@ void MCP23017_IO::set_pin_mode(uint8_t pin, uint8_t mode) {
 
     data_frame[2] = _m;   
 
+
+    for (size_t i = 0; i < 3; i++)
+    {
+        Wire.write(data_frame[i]);
+    }
+    
+    Wire.endTransmission(true);    
+
 }
 
-uint8_t MCP23017_IO::resolve_register(uint8_t base, uint8_t pin = 0) {
-    uint8_t reg_addr = base;
-    if(pin < 8) {
-        return reg_addr;
-    } else {
-        reg_addr = reg_addr
+// uint8_t MCP23017_IO::resolve_register(uint8_t base, uint8_t pin = 0) {
+//     uint8_t reg_addr = base;
+//     if(pin < 8) {
+//         return reg_addr;
+//     } else {
+//         reg_addr = reg_addr;
+//     }
+
+// }
+
+void MCP23017_IO::digital_write(uint8_t pin, uint8_t level) {
+    Wire.beginTransmission(this->_dev_address);
+
+    uint8_t data_frame[2];
+    data_frame[0] = 0x00; // IODIR A
+
+    // check pin 
+    // check level
+    // check mode 
+
+    data_frame[1] = 0x00;
+
+    for (size_t i = 0; i < 2; i++)
+    {
+        Wire.write(data_frame[i]);
     }
+
+    Wire.endTransmission(true);
+    
 
 }

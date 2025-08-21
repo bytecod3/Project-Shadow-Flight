@@ -16,6 +16,7 @@ void setup() {
     }
 
     io_expander.set_pin_mode(0, INPUT);
+    io_expander.digital_write(0, HIGH);
 }
 
 void loop() {

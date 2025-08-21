@@ -90,7 +90,7 @@ class MCP23017_IO{
     uint8_t write_register(uint8_t address, uint8_t* buffer);
     void set_pin_mode(uint8_t pin, uint8_t mode);
     uint8_t digital_read(uint8_t pin);
-    uint8_t digital_write(uint8_t pin);
+    void digital_write(uint8_t pin, uint8_t level);
     uint8_t read_port(uint8_t port);
     //uint8_t MCP23017_IO_set_interrupts();
     //uint8_t MCP23017_IO_setup_interrupt_pin();
