@@ -69,9 +69,13 @@ static uint8_t OLATB_BANK_1 = 0x1A;
 
 
 class MCP23017_IO{
-    private:    
+    private:  
+    uint8_t _dev_address;  
 
     public:
+
+    MCP23017_IO(uint8_t address);
+
     /**
      * Init sequence 
      * Start, OPCODE, Write, Address
@@ -81,7 +85,7 @@ class MCP23017_IO{
     /**
      * @brief This function initializes MCP23017 in I2C mode
      */
-    uint8_t init(uint8_t DEV_ADDR);
+    uint8_t init();
     uint8_t read_register(uint8_t address, uint8_t data);
     uint8_t write_register(uint8_t address, uint8_t* buffer);
     void set_pin_mode(uint8_t pin, uint8_t mode);
@@ -91,6 +95,7 @@ class MCP23017_IO{
     //uint8_t MCP23017_IO_set_interrupts();
     //uint8_t MCP23017_IO_setup_interrupt_pin();
     void MCP23017_IO_reset();
+    uint8_t resolve_register(uint8_t base, uint8_t pin = 0);
 
 };
 
