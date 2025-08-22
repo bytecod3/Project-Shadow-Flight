@@ -29,7 +29,7 @@ void MCP23017_IO::pin_mode(uint8_t pin, uint8_t mode) {
     uint8_t p;
     reg = (pin < 8) ? IODIRA : IODIRB; // todo: put into helper
 
-    p = p % 8; // loopback for next port // todo: put into helper
+    p = pin % 8; // loopback for next port // todo: put into helper
     
     // read the intended register  //todo: put into helper 
     uint8_t reg_value;
@@ -48,8 +48,8 @@ void MCP23017_IO::pin_mode(uint8_t pin, uint8_t mode) {
      */
     if(mode == INPUT) {
         reg_value |= (1 <<p); 
-    } else {
-        reg_value &= ~(reg_value);
+    } else if (mode == OUTPUT) {
+        reg_value &= ~(1 << p);
     }
 
     // write the register with new value 
@@ -99,4 +99,23 @@ void MCP23017_IO::digital_write(uint8_t pin, uint8_t level) {
     Wire.write(reg_value);
     Wire.endTransmission(true);
 
+}
+
+uint8_t MCP23017_IO::digital_read(uint8_t pin) {
+    // resolve the register bank (A or B)
+    uint8_t reg = (pin < 8) ? GPIOA : GPIOB;
+    uint8_t reg_value;
+    uint8_t pin_val;
+    
+    // read the GPIO via I2C
+    Wire.beginTransmission(this->_dev_address);
+    Wire.write(reg);
+    Wire.endTransmission(false);
+
+    Wire.requestFrom(this->_dev_address, (uint8_t)1);
+    reg_value = Wire.read();
+    Wire.endTransmission(true);
+    
+    uint8_t val = (reg_value >> pin) & 0x01;
+    return val;
 }
