@@ -5,33 +5,16 @@
 MCP23017_IO::MCP23017_IO(uint8_t address) {
     this->_dev_address = address;
 }
+
 /**
  * @brief This function initializes the MCP23017
  * @ret True if init OK, false otherwise
  */
 uint8_t MCP23017_IO::init() {
-    uint8_t init_status = Wire.begin(this->_dev_address);
-
-    if (init_status == true) {
-        Wire.beginTransmission(this->_dev_address);
-        uint8_t data_frame[3];
-
-        // set mode to 16bit, sequential
-        data_frame[0] = this->_dev_address; // device opcode
-        data_frame[1] = IOCONA_BANK_0; // 0x0A -> address when bank is 0
-        data_frame[2] = 0x00; // sequential addressing, address pointer increments 
-
-        // send the init sequence 
-        for (size_t i = 0; i < 3; i++)
-        {
-            Wire.write(data_frame[i]); // push to the I2C buffer 
-        }
-
-        Wire.endTransmission(true); // write to slave
-    }
-
-    return init_status;
-
+    Wire.beginTransmission(this->_dev_address);
+    uint8_t error = Wire.endTransmission(true);
+    
+    return !error;
 }
 
 /**
@@ -40,50 +23,40 @@ uint8_t MCP23017_IO::init() {
  * @param mode pin direction, 1 for input, 0 for output
  * 
  */
-void MCP23017_IO::set_pin_mode(uint8_t pin, uint8_t mode) {
-    // todo: check if object is valid
+void MCP23017_IO::pin_mode(uint8_t pin, uint8_t mode) {
+    // check which port to write to 
+    uint8_t reg;
+    uint8_t p;
+    reg = (pin < 8) ? IODIRA : IODIRB; // todo: put into helper
+
+    p = p % 8; // loopback for next port // todo: put into helper
+    
+    // read the intended register  //todo: put into helper 
+    uint8_t reg_value;
     Wire.beginTransmission(this->_dev_address);
-
-    uint8_t data_frame[3];
-    uint8_t _m;
-
-    // clear LSB to set as write 
-    this->_dev_address &= ~(1 << 0); // set write bit
-    data_frame[0] = this->_dev_address;
-
-    uint8_t port = (pin < 8) ? 0 : 1;
-
-    // register to write 
-    data_frame[1] = 0x09;
-
-    // if(pin > 15) { 
-    //     pin %= 16;
-    // } 
-    // if(mode > 2) {
-    //     mode %= 3;
-    // }
+    Wire.write(reg);
+    Wire.endTransmission(false); // do not interrupt the reading from the same device 
+    Wire.requestFrom(this->_dev_address, 1); // request 1 byte from device
+    reg_value = Wire.read();
 
     /**
-     * An input is set as 1
-     * an output is set as 0
+     * set the value for that particular pin passed
+     * INPUT -> 1 (set)
+     * OUTPUT -> 0 (clear)
+     * 
+     * INPUT is an inbuilt macro on Arduino
      */
-    if(mode == 0) { 
-        // set as output
-        _m &= ~(1 << pin);
+    if(mode == INPUT) {
+        reg_value |= (1 <<p); 
     } else {
-        // set as input
-        _m |= (1 << pin);
+        reg_value &= ~(reg_value);
     }
 
-    data_frame[2] = _m;   
-
-
-    for (size_t i = 0; i < 3; i++)
-    {
-        Wire.write(data_frame[i]);
-    }
-    
-    Wire.endTransmission(true);    
+    // write the register with new value 
+    Wire.beginTransmission(this->_dev_address);
+    Wire.write(reg); // register address
+    Wire.write(reg_value); // register value 
+    Wire.endTransmission(true); // end transmission, no restart
 
 }
 
@@ -98,23 +71,32 @@ void MCP23017_IO::set_pin_mode(uint8_t pin, uint8_t mode) {
 // }
 
 void MCP23017_IO::digital_write(uint8_t pin, uint8_t level) {
+  
+    uint8_t reg;
+    uint8_t reg_value;
+    uint8_t p = pin % 8; // check which pin we need to write 
+
+    // read the current state of the GPIO
+    reg = (pin < 8) ? OLATA : OLATB; // get register address
     Wire.beginTransmission(this->_dev_address);
+    Wire.write(reg);
+    Wire.endTransmission(false); // do not interrupt the reading from the same device 
+    Wire.requestFrom(this->_dev_address, 1); // request 1 byte from device
+    reg_value = Wire.read();
 
-    uint8_t data_frame[2];
-    data_frame[0] = 0x00; // IODIR A
-
-    // check pin 
-    // check level
-    // check mode 
-
-    data_frame[1] = 0x00;
-
-    for (size_t i = 0; i < 2; i++)
-    {
-        Wire.write(data_frame[i]);
+    // set pin and direction 
+    if(level == HIGH) {
+        // set bit 
+        reg_value |= (1 << p);
+    } else {
+        // clear bit 
+        reg_value &= ~(1 << p);
     }
 
+    // send to slave device 
+    Wire.beginTransmission(this->_dev_address);
+    Wire.write(reg);
+    Wire.write(reg_value);
     Wire.endTransmission(true);
-    
 
 }

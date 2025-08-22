@@ -4,69 +4,35 @@
 #include <stdint.h>
 
 /**
+ * 
  * IO PORT A registers - BANK 0
  * 
  * todo: name registers
  */
-static uint8_t IODIRA_BANK_0        = 0x00;
-static uint8_t IOPOLA_BANK_0        = 0x02;
-static uint8_t GPINTENA_BANK_0      = 0x04;
-static uint8_t DEFVALA_BANK_0       = 0x06;
-static uint8_t INTCONA_BANK_0       = 0x08;
-static uint8_t IOCONA_BANK_0        = 0x0A;
-static uint8_t GPPUA_BANK_0         = 0x0C;
-static uint8_t INTFA_BANK_0         = 0x0E;
-static uint8_t INTCAPA_BANK_0       = 0x10;
-static uint8_t GPIOA_BANK_0         = 0x12;
-static uint8_t OLATA_BANK_0         = 0x14;
+static uint8_t IODIRA        = 0x00;
+static uint8_t IOPOLA        = 0x02;
+static uint8_t GPINTENA      = 0x04;
+static uint8_t DEFVALA       = 0x06;
+static uint8_t INTCONA       = 0x08;
+static uint8_t IOCON         = 0x0A;
+static uint8_t GPPUA         = 0x0C;
+static uint8_t INTFA         = 0x0E;
+static uint8_t INTCAPA       = 0x10;
+static uint8_t GPIOA         = 0x12;
+static uint8_t OLATA         = 0x14;
 
-/**
- * IO PORT B registers - BANK 1
- */
-static uint8_t IODIRB_BANK_0 = 0x01;
-static uint8_t IOPOLB_BANK_0 = 0x03;
-static uint8_t GPINTENB_BANK_0 = 0x05;
-static uint8_t DEFVALB_BANK_0 = 0x07;
-static uint8_t INTCONB_BANK_0 = 0x09;
-static uint8_t IOCONB_BANK_0 = 0x0B;
-static uint8_t GPPUB_BANK_0 = 0x0D;
-static uint8_t INTFB_BANK_0 = 0x0F;
-static uint8_t INTCAPB_BANK_0 = 0x11;
-static uint8_t GPIOB_BANK_0 = 0x13;
-static uint8_t OLATB_BANK_0 = 0x15;
-
-/**
- * IO PORT A registers - BANK 1
- */
-static uint8_t IODIRA_BANK_1        = 0x00;
-static uint8_t IOPOLA_BANK_1        = 0x01;
-static uint8_t GPINTENA_BANK_1      = 0x02;
-static uint8_t DEFVALA_BANK_1       = 0x03;
-static uint8_t INTCONA_BANK_1       = 0x04;
-static uint8_t IOCONA_BANK_1        = 0x05;
-static uint8_t GPPUA_BANK_1         = 0x06;
-static uint8_t INTFA_BANK_1         = 0x07;
-static uint8_t INTCAPA_BANK_1       = 0x08;
-static uint8_t GPIOA_BANK_1         = 0x09;
-static uint8_t OLATA_BANK_1         = 0x0A;
-
-/**
- * IO PORT B registers - BANK 1
- */
-static uint8_t IODIRB_BANK_1 = 0x10;
-static uint8_t IOPOLB_BANK_1 = 0x11;
-static uint8_t GPINTENB_BANK_1 = 0x12;
-static uint8_t DEFVALB_BANK_1 = 0x13;
-static uint8_t INTCONB_BANK_1 = 0x14;
-static uint8_t IOCONB_BANK_1 = 0x15;
-static uint8_t GPPUB_BANK_1 = 0x16;
-static uint8_t INTFB_BANK_1 = 0x17;
-static uint8_t INTCAPB_BANK_1 = 0x18;
-static uint8_t GPIOB_BANK_1 = 0x19;
-static uint8_t OLATB_BANK_1 = 0x1A;
+static uint8_t IODIRB        = 0x01;
+static uint8_t IOPOLB        = 0x03;
+static uint8_t GPINTENB      = 0x05;
+static uint8_t DEFVALB       = 0x07;
+static uint8_t INTCONB       = 0x09;
+static uint8_t GPPUB         = 0x0D;
+static uint8_t INTFB         = 0x0F;
+static uint8_t INTCAPB       = 0x11;
+static uint8_t GPIOB         = 0x13;
+static uint8_t OLATB         = 0x15;
 
 #define INIT_SEQ_LENGTH 4
-
 
 class MCP23017_IO{
     private:  
@@ -88,7 +54,7 @@ class MCP23017_IO{
     uint8_t init();
     uint8_t read_register(uint8_t address, uint8_t data);
     uint8_t write_register(uint8_t address, uint8_t* buffer);
-    void set_pin_mode(uint8_t pin, uint8_t mode);
+    void pin_mode(uint8_t pin, uint8_t mode);
     uint8_t digital_read(uint8_t pin);
     void digital_write(uint8_t pin, uint8_t level);
     uint8_t read_port(uint8_t port);
