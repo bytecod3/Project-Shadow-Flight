@@ -14,7 +14,7 @@
  * Register map and addresses
  *
  */
-#define DEVID				0x00		/*!< Device ID */
+#define DEVID_REG			0x00		/*!< Device ID */
 #define THRES_TAP			0x1D		/*!< Tap threshold */
 #define OFSX				0x1E		/*!< x-axis offset */
 #define OFSY				0x1F		/*!< y-axis offset */
@@ -45,18 +45,24 @@
 #define FIFO_CTL 			0x38		/*!< fifo control */
 #define FIFO_STATUS 		0x39		/*!< fifo status */
 
+/* device ID*/
+#define DEVICE_ID 0xE5
+
+/* device I2C address */
+#define ADXL345_ADDRESS 0x1D
+
 /**
  * @brief This struct represents the ADXL345 object
  */
 typedef struct {
 	I2C_HandleTypedef* i2c_handle;
-	float acceleration[3]; // x, y, z acceleration
+	float acceleration_buffer[3]; // x, y, z acceleration
 	float internal_temperature;
 } ADXL345;
 
 typedef ADXL345* ADXL345_instance;
 
-uint8_t initialize(ADXL345_instance);
+uint8_t initialize(ADXL345_instance, I2C_HandleTypeDef);
 HAL_StatusTypeDef read_single_register(ADXL345_instance, uint8_t reg, uint8_t* data);
 HAL_StatusTypeDef read_multiple_registers(ADXL345_instance, uint8_t reg, uint8_t* data, uint8_t length);
 HAL_StatusTypeDef write_register(ADXL345_instance, uint8_t reg, uint8_t* data);
