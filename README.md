@@ -99,6 +99,9 @@ The following is a list of the functional requirements of the OBC:
 11. **The CubeSat shall include up to 3 inhibit switches in accordance with CubeSat deployment standards to prevent premature activation of systems.**  
     Inhibits must disable power or specific subsystems until conditions for deployment are met (e.g., separation from deployer).
 
+12. **The CubeSat shall include a TRANSCEIVER which includes a Receiver , Transmitter , and Terminal Node Controller (TNC).**
+    This will ensure telecommunication link between CubeSat and Ground Station.
+
 ### Components of the OBC
 The OBC is made up of the following sub-systems:
 - STM32F401CCU6 
