@@ -28,17 +28,19 @@ uint8_t ADXL_initialize(ADXL345_instance device, I2C_HandleTypeDef* i2c_handle) 
 
 	uint8_t reg_data;
 
-	/* set the ODR(output data rate) and digital filters: 25Hz data rate, 12.5 LPF Bandwidth  */
-	reg_data = 0x08;
-	ADXL_write_register(device, BW_RATE, &reg_data);
-
-	/* put the sensor in measurement mode */
-	ADXL_write_register(device, POWER_CTL, &reg_data);
-
 	/**
 	 * check device id, mems and part ID
 	 */
 	ADXL_read_single_register(device, DEVID_REG, &reg_data);
+
+	/* set the ODR(output data rate) and digital filters: 25Hz data rate, 12.5 LPF Bandwidth  */
+	//reg_data = 0x08;
+	//ADXL_write_register(device, BW_RATE, &reg_data);
+
+	/* set data format */
+
+	/* put the sensor in measurement mode */
+	//ADXL_write_register(device, POWER_CTL, &reg_data);
 
 	return reg_data;
 
@@ -56,13 +58,13 @@ HAL_StatusTypeDef ADXL_read_acceleration(ADXL345_instance device) {
 	 * combine values
 	 */
 
-	int16_t acc_raw_signed[3]; // x, y, z
-	acc_raw_signed[0] = (uint16_t) ((reg_data[0] << 8) | (reg_data[1]));
+	//int16_t acc_raw_signed[3]; // x, y, z
+	//acc_raw_signed[0] = (uint16_t) ((reg_data[0] << 8) | (reg_data[1]));
 
 	/**
 	 * convert to g values
 	 */
-	device->acceleration_buffer[0] = 0.000061035f * 9.81 * acc_raw_signed[0];
+	//device->acceleration_buffer[0] = 0.000061035f * 9.81 * acc_raw_signed[0];
 
 
 	return status;

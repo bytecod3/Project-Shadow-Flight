@@ -104,11 +104,11 @@ int main(void)
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  uint8_t adxl_init_val = 0;
-  adxl_init_val = ADXL_initialize(accelerometer, &hi2c1);
+  uint8_t device_id;
+  device_id = ADXL_initialize(accelerometer, &hi2c1);
 
   /* send to UART */
-  sprintf(uart_msg, "%#x\r\n", adxl_init_val);
+  sprintf(uart_msg, "%#x\r\n", device_id);
   HAL_UART_Transmit(&huart6, (uint8_t*)uart_msg, strlen(uart_msg), HAL_MAX_DELAY);
 
   /* USER CODE END 2 */
@@ -120,9 +120,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  sprintf(uart_msg, "%.4f\r\n", accelerometer->acceleration_buffer[0]);
-	  HAL_UART_Transmit(&huart6, (uint8_t*)uart_msg, strlen(uart_msg), HAL_MAX_DELAY);
-	  HAL_Delay(200);
+	  //sprintf(uart_msg, "%.4f\r\n", accelerometer->acceleration_buffer[0]);
+	  //HAL_UART_Transmit(&huart6, (uint8_t*)uart_msg, strlen(uart_msg), HAL_MAX_DELAY);
+	  //HAL_Delay(200);
 
   }
   /* USER CODE END 3 */

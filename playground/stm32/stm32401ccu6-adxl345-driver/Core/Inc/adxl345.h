@@ -49,7 +49,7 @@
 #define DEVICE_ID 0xE5
 
 /* device I2C address */
-#define ADXL345_ADDRESS (0x53 << 1)
+#define ADXL345_ADDRESS (0x53)
 
 /**
  * @brief This struct represents the ADXL345 object
