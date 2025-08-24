@@ -120,6 +120,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  sprintf(uart_msg, "%.4f\r\n", accelerometer->acceleration_buffer[0]);
+	  HAL_UART_Transmit(&huart6, (uint8_t*)uart_msg, strlen(uart_msg), HAL_MAX_DELAY);
+	  HAL_Delay(200);
+
   }
   /* USER CODE END 3 */
 }

@@ -61,7 +61,7 @@ main-build: stm32401ccu6-adxl345-driver.elf secondary-outputs
 
 # Tool invocations
 stm32401ccu6-adxl345-driver.elf stm32401ccu6-adxl345-driver.map: $(OBJS) $(USER_OBJS) C:\Users\USER\Desktop\2025-projects\Project-Shadow-Flight\playground\stm32\stm32401ccu6-adxl345-driver\STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "stm32401ccu6-adxl345-driver.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\USER\Desktop\2025-projects\Project-Shadow-Flight\playground\stm32\stm32401ccu6-adxl345-driver\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32401ccu6-adxl345-driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "stm32401ccu6-adxl345-driver.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\USER\Desktop\2025-projects\Project-Shadow-Flight\playground\stm32\stm32401ccu6-adxl345-driver\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32401ccu6-adxl345-driver.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

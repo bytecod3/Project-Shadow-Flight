@@ -38,10 +38,35 @@ uint8_t ADXL_initialize(ADXL345_instance device, I2C_HandleTypeDef* i2c_handle) 
 	/**
 	 * check device id, mems and part ID
 	 */
-
 	ADXL_read_single_register(device, DEVID_REG, &reg_data);
 
 	return reg_data;
+
+}
+
+/**
+ * @brief Read acceleration values
+ */
+HAL_StatusTypeDef ADXL_read_acceleration(ADXL345_instance device) {
+	uint8_t reg_data[2];
+
+	HAL_StatusTypeDef status = ADXL_read_multiple_registers(device, DATAX0, reg_data, 2);
+
+	/**
+	 * combine values
+	 */
+
+	int16_t acc_raw_signed[3]; // x, y, z
+	acc_raw_signed[0] = (uint16_t) ((reg_data[0] << 8) | (reg_data[1]));
+
+	/**
+	 * convert to g values
+	 */
+	device->acceleration_buffer[0] = 0.000061035f * 9.81 * acc_raw_signed[0];
+
+
+	return status;
+
 
 }
 
