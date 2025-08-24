@@ -21,6 +21,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include "adxl345.h"
 
 /* USER CODE END Includes */
 
@@ -60,6 +64,11 @@ static void MX_USART6_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+/* ADXL instance */
+ADXL345_instance accelerometer;
+
+char uart_msg[64];
+
 /* USER CODE END 0 */
 
 /**
@@ -94,6 +103,13 @@ int main(void)
   MX_I2C1_Init();
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
+
+  uint8_t adxl_init_val = 0;
+  adxl_init_val = ADXL_initialize(accelerometer, &hi2c1);
+
+  /* send to UART */
+  sprintf(uart_msg, "%#x\r\n", adxl_init_val);
+  HAL_UART_Transmit(&huart6, (uint8_t*)uart_msg, strlen(uart_msg), HAL_MAX_DELAY);
 
   /* USER CODE END 2 */
 

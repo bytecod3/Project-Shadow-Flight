@@ -1,0 +1,4 @@
+../Core/Src/adxl345.c:14:9:ADXL_initialize	1
+../Core/Src/adxl345.c:52:19:ADXL_read_single_register	1
+../Core/Src/adxl345.c:59:19:ADXL_read_multiple_registers	1
+../Core/Src/adxl345.c:66:19:ADXL_write_register	1
