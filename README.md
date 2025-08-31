@@ -121,7 +121,7 @@ The OBC is made up of the following sub-systems:
 
 The image below shows the memory and debug block diagram used on this cubesat's OBC:
 
-<img src="images/obc-block.jpg" alt="Shadow flight OBC" width="500" height="700"/>
+<img src="./user-docs/images/obc-block.jpg" alt="Shadow flight OBC" width="500" height="700"/>
   
 
 **To note, all the PCBs are equipped with ISA PC/104 connectors to make stacking possible**
@@ -133,7 +133,7 @@ The image below shows the memory and debug block diagram used on this cubesat's 
 The sensor board is responsible for housing the sensors used for environmental monitoring around the cubesat in space. The list of components 
 used in this project's sensor board is as below: 
 
-1. VGA Monochrome Camera
+1. VGA Color Camera
 2. Temperature sensor 
 3. Humidity sensor
 4. Pressure sensor 
@@ -149,49 +149,45 @@ used in this project's sensor board is as below:
 14. GPS module
 
 ### Functional requirements 
-
-1. **The sensor board shall capture monochrome VGA images using an onboard camera module.**  
-   The camera shall output image data in a format compatible with the main OBC or a local MCU for processing or storage.
-
-2. **The sensor board shall measure ambient temperature using a digital temperature sensor.**  
+1. **The sensor board shall measure ambient temperature using a digital temperature sensor.**  
    Temperature readings shall be provided periodically to the OBC via a digital interface (e.g., I²C or SPI).
 
-3. **The sensor board shall measure relative humidity using a digital humidity sensor.**  
+2. **The sensor board shall measure relative humidity using a digital humidity sensor.**  
    Data shall be sampled at a configurable rate and stored or transmitted as telemetry.
 
-4. **The sensor board shall measure ambient atmospheric pressure using a barometric pressure sensor.**  
+3. **The sensor board shall measure ambient atmospheric pressure using a barometric pressure sensor.**  
    Pressure data shall support environmental diagnostics or payload experimentation.
 
-5. **The sensor board shall include sun sensors to determine the direction and intensity of incident sunlight.**  
+4. **The sensor board shall include sun sensors to determine the direction and intensity of incident sunlight.**  
    Sensor data may be used to correlate with camera imagery or power system behavior.
 
-6. **The sensor board shall operate using a dedicated low-power microcontroller (MCU) to manage data acquisition and communication.**  
-   The MCU shall handle sensor polling, data formatting, and camera interfacing independently of the OBC.
+7. **The sensor board shall operate using a dedicated low-power microcontroller (MCU) to manage data acquisition and communication.**  
+   The MCU shall handle sensor polling and data formatting independent of the OBC
 
-7. **The sensor board shall store acquired data in non-volatile Flash memory for later retrieval.**  
+8. **The sensor board shall store acquired data in non-volatile Flash memory for later retrieval.**  
    Stored data shall persist through power cycles and include image frames and sensor telemetry.
 
-8. **The sensor board shall regulate its internal power using a dedicated voltage regulator.**  
+9. **The sensor board shall regulate its internal power using a dedicated voltage regulator.**  
    The regulator shall provide stable 3.3V and/or 1.8V rails from the main CubeSat power bus.
 
-9. **The sensor board shall interface with the CubeSat On-Board Computer (OBC) through an ISA connector.**  
+10. **The sensor board shall interface with the CubeSat On-Board Computer (OBC) through an ISA connector.**  
    The interface shall support communication (e.g., I²C/SPI/UART), power, and synchronization signals.
 
-10. **The sensor board shall include a hardware watchdog timer to reset the MCU in case of software lockup or failure.**  
+11. **The sensor board shall include a hardware watchdog timer to reset the MCU in case of software lockup or failure.**  
     The watchdog shall require regular refresh signals; failure to refresh shall initiate an automatic system reset.
 
-11. **The sensor board shall respond to Inhibit switches to disable or enable functionality based on the satellite’s deployment state.**  
+12. **The sensor board shall respond to Inhibit switches to disable or enable functionality based on the satellite’s deployment state.**  
     All active electronics must remain off until inhibit conditions are cleared.
 
-12. **The sensor board shall remain unpowered until the Remove-Before-Flight (RBF) switch is removed.**  
+13. **The sensor board shall remain unpowered until the Remove-Before-Flight (RBF) switch is removed.**  
     The board must detect the RBF switch state and delay power-up until it is safe to operate.
 
-13. **The CubeSat shall include a GPS module to provide real-time position, velocity, and timing data.**  
+14. **The CubeSat shall include a GPS module to provide real-time position, velocity, and timing data.**  
 The GPS module shall interface with the OBC via UART or another compatible digital protocol and provide NMEA or binary-format data for onboard logging, orbital tracking, and synchronization.
 
 The block diagram is shown below:
 
-<img src="images/sensor-board.png" alt="Shadow flight OBC" width="500" height="700"/>
+<img src="./user-docs/images/sensor-board.png" alt="Shadow flight OBC" width="500" height="700"/>
 
 ### Communication protocol for sensors 
 |   | Sensor             | Protocol |
@@ -214,12 +210,17 @@ Bigest advantages of this standard:
 - Rugged - can handle shock and vibration 
 
 An ISA connector looks like below:   
-<img src="images/pc104-pcb.jpeg" alt="Shadow flight OBC" width="300" height="200"/>
+<img src="./user-docs/images/pc104-pcb.jpeg" alt="Shadow flight OBC" width="300" height="200"/>
+
+----
 
 The images below explain the stacking of the PCB boards *(credit: Diamond Systems)*:  
-<img src="images/pc104-dwg-500.gif" alt="Shadow flight OBC" width="400" height="600"/>  
+<img src="./user-docs/images/pc104-dwg-500.gif" alt="Shadow flight OBC" width="400" height="400"/>  
+----
 
-<img src="images/pc104stack.gif" alt="Shadow flight OBC" width="500" height="700"/>  
+<img src="./user-docs/images/pc104stack.gif" alt="Shadow flight OBC" width="500" height="700"/>  
+
+----
 
 Further reference: [PC-104 standard reference](https://www.diamondsystems.com/pc104)
 
@@ -294,7 +295,7 @@ https://docs.google.com/spreadsheets/d/1j73pPU9ySfrlBch6TJMzdRGcuBdh9BN55jUy6Fb-
 The payload system of the cubesat is responsible for carrying out the primary mission objective. Everything else designed so far
 is for the sole purpose of supporting the mission objective. 
 
-Our primary payload is a monochrome camera, since this is an earth observation cubesat.
+Our primary payload is a color VGA camera, since this is an earth observation cubesat.
 
 ### Payload system requirements 
 1. **Mission Objectives**
@@ -334,7 +335,17 @@ Our primary payload is a monochrome camera, since this is an earth observation c
 6. **Reliability & Limitations**
    - Payload is **COTS (not radiation hardened)**  
    - Expected degradation in LEO environment  
-   - Payload can be **disabled via power control** in case of malfunction  
+   - Payload can be **disabled via power control** in case of malfunction
+
+The payload system is designed as a daughter-board mounted on the OBC via M3 screw connector with standoffs. 
+The wired connection is made via a JST header pin. This header pin supplies the necessary power, control and communication signals to and from the Payload System. 
+
+This simple block diagram is shown below:
+
+<img src="./payload/images/payload-structure.png" alt="Shadow flight OBC" width="500" height="450"/>
+
+### Payload communication interface
+[TBD]
 
 ## Related documents
 A list of related documents related to this project are provided below. They include diagrams, schematics,

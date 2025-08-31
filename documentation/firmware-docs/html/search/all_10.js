@@ -1,18 +1,9 @@
 var searchData=
 [
-  ['schematics_20summary_0',['e) EPS Schematics summary',['../index.html#autotoc_md24',1,'']]],
-  ['schemes_1',['Power Distribution Schemes',['../index.html#autotoc_md26',1,'']]],
-  ['sensor_20board_2',['2. Sensor Board',['../index.html#autotoc_md11',1,'']]],
-  ['sensors_3',['Communication protocol for sensors',['../index.html#autotoc_md14',1,'']]],
-  ['shadow_20flight_4',['Project-Shadow-Flight',['../index.html#autotoc_md0',1,'']]],
-  ['shadow_20flight_201u_20cubesat_5',['Project Shadow Flight 1U Cubesat',['../index.html',1,'']]],
-  ['sizing_20data_6',['Battery and solar panel sizing data',['../index.html#autotoc_md30',1,'']]],
-  ['solar_20panel_20sizing_20data_7',['Battery and solar panel sizing data',['../index.html#autotoc_md30',1,'']]],
-  ['statement_8',['Mission statement',['../index.html#autotoc_md5',1,'']]],
-  ['storage_9',['c) Energy storage',['../index.html#autotoc_md22',1,'']]],
-  ['summary_10',['e) EPS Schematics summary',['../index.html#autotoc_md24',1,'']]],
-  ['supply_20control_11',['Power supply control',['../index.html#autotoc_md27',1,'']]],
-  ['support_12',['Contribution and support',['../index.html#autotoc_md33',1,'']]],
-  ['system_20components_13',['System components',['../index.html#autotoc_md6',1,'']]],
-  ['system_20eps_14',['4. Electrical Power System (EPS)',['../index.html#autotoc_md18',1,'']]]
+  ['readme_2emd_0',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['regards_20to_20power_1',['d) Mission analysis in regards to power',['../index.html#autotoc_md26',1,'']]],
+  ['related_20documents_2',['Related documents',['../index.html#autotoc_md37',1,'']]],
+  ['relevent_20videos_20and_20resource_20materials_3',['Relevent videos and resource materials',['../index.html#autotoc_md38',1,'']]],
+  ['requirements_4',['requirements',['../index.html#autotoc_md9',1,'Functional requirements'],['../index.html#autotoc_md13',1,'Functional requirements'],['../index.html#autotoc_md35',1,'Payload system requirements']]],
+  ['resource_20materials_5',['Relevent videos and resource materials',['../index.html#autotoc_md38',1,'']]]
 ];

@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['obc_0',['Components of the OBC',['../index.html#autotoc_md10',1,'']]],
-  ['of_20different_20bus_20components_1',['a) Power consumption of different bus components',['../index.html#autotoc_md20',1,'']]],
-  ['of_20the_20obc_2',['Components of the OBC',['../index.html#autotoc_md10',1,'']]],
-  ['onboard_20computer_3',['1. Onboard Computer',['../index.html#autotoc_md7',1,'']]]
+  ['materials_0',['Relevent videos and resource materials',['../index.html#autotoc_md38',1,'']]],
+  ['mission_20analysis_20in_20regards_20to_20power_1',['d) Mission analysis in regards to power',['../index.html#autotoc_md26',1,'']]],
+  ['mission_20design_2',['5. Payload and Mission Design',['../index.html#autotoc_md34',1,'']]],
+  ['mission_20statement_3',['Mission statement',['../index.html#autotoc_md5',1,'']]],
+  ['motivation_4',['Motivation',['../index.html#autotoc_md4',1,'']]],
+  ['my_20pin_20definition_5',['My Pin definition',['../index.html#autotoc_md19',1,'']]]
 ];

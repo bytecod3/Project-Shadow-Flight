@@ -43,30 +43,34 @@ var NAVTREE =
         [ "Introduction", "index.html#autotoc_md12", null ],
         [ "Functional requirements", "index.html#autotoc_md13", null ],
         [ "Communication protocol for sensors", "index.html#autotoc_md14", null ],
-        [ "The PC/104 ISA Bus", "index.html#autotoc_md15", null ],
-        [ "My Pin definition", "index.html#autotoc_md16", null ]
+        [ "The PC/104 ISA Bus", "index.html#autotoc_md15", null ]
       ] ],
-      [ "3. Attitude Determination and Control", "index.html#autotoc_md17", null ],
-      [ "4. Electrical Power System (EPS)", "index.html#autotoc_md18", [
-        [ "Introduction", "index.html#autotoc_md19", null ],
-        [ "a) Power consumption of different bus components", "index.html#autotoc_md20", null ],
-        [ "b) Power generation", "index.html#autotoc_md21", null ],
-        [ "c) Energy storage", "index.html#autotoc_md22", null ],
-        [ "d) Mission analysis in regards to power", "index.html#autotoc_md23", null ],
-        [ "e) EPS Schematics summary", "index.html#autotoc_md24", [
-          [ "Conversion", "index.html#autotoc_md25", null ],
-          [ "Power Distribution Schemes", "index.html#autotoc_md26", null ],
-          [ "Power supply control", "index.html#autotoc_md27", null ]
+      [ "<img src=\"./user-docs/images/pc104-dwg-500.gif\" alt=\"Shadow flight OBC\" width=\"400\" height=\"400\" class=\"inline\"/>", "index.html#autotoc_md17", [
+        [ "My Pin definition", "index.html#autotoc_md19", null ]
+      ] ],
+      [ "3. Attitude Determination and Control", "index.html#autotoc_md20", null ],
+      [ "4. Electrical Power System (EPS)", "index.html#autotoc_md21", [
+        [ "Introduction", "index.html#autotoc_md22", null ],
+        [ "a) Power consumption of different bus components", "index.html#autotoc_md23", null ],
+        [ "b) Power generation", "index.html#autotoc_md24", null ],
+        [ "c) Energy storage", "index.html#autotoc_md25", null ],
+        [ "d) Mission analysis in regards to power", "index.html#autotoc_md26", null ],
+        [ "e) EPS Schematics summary", "index.html#autotoc_md27", [
+          [ "Conversion", "index.html#autotoc_md28", null ],
+          [ "Power Distribution Schemes", "index.html#autotoc_md29", null ],
+          [ "Power supply control", "index.html#autotoc_md30", null ]
         ] ],
-        [ "f) Isolated tests", "index.html#autotoc_md28", null ],
-        [ "g) EPS integration and Testing", "index.html#autotoc_md29", [
-          [ "Battery and solar panel sizing data", "index.html#autotoc_md30", null ]
+        [ "f) Isolated tests", "index.html#autotoc_md31", null ],
+        [ "g) EPS integration and Testing", "index.html#autotoc_md32", [
+          [ "Battery and solar panel sizing data", "index.html#autotoc_md33", null ]
         ] ]
-      ] ],
-      [ "Related documents", "index.html#autotoc_md31", null ],
-      [ "Relevent videos and resource materials", "index.html#autotoc_md32", null ],
-      [ "Contribution and support", "index.html#autotoc_md33", null ],
-      [ "Contributors", "index.html#autotoc_md34", null ]
+      ] ]
+    ] ],
+    [ "5. Payload and Mission Design", "index.html#autotoc_md34", [
+      [ "Related documents", "index.html#autotoc_md37", null ],
+      [ "Relevent videos and resource materials", "index.html#autotoc_md38", null ],
+      [ "Contribution and support", "index.html#autotoc_md39", null ],
+      [ "Contributors", "index.html#autotoc_md40", null ]
     ] ]
   ] ]
 ];
