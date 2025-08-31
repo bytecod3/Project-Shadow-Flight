@@ -28,7 +28,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="logo-1.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="logo-3.png"/></td>
   <td id="projectalign">
    <div id="projectname">Project Shadow Flight 1U Cubesat<span id="projectnumber">&#160;v1.0</span>
    </div>
@@ -111,12 +111,15 @@ I will write your name on the moon with my fingertips" ~ ESA, EIRSAT-mission</p>
 Introduction</h2>
 <p><b>Project-Shadow Flight</b> is a homemade 1U cubesat designed and built using FreeRTOS on STM32 framework and COTS components. None of these components are radiation hardened.</p>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
+Web documentation</h3>
+<p>You can find a web friendly documentation format here: <a href="https://bytecod3.github.io/Project-Shadow-Flight/">https://bytecod3.github.io/Project-Shadow-Flight/</a></p>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
 Design Videos for visual consumers</h3>
 <p>If you are more of a visual consumer, I have documented the whole design process in my Youtube channel playlist here: <a href="https://youtu.be/9HoKzI_bBjs?list=PLSQRKAY5h7mGCnkXsugdVSHa72dnC0zQU">Comprehensive Design videos</a></p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
 Motivation</h2>
 <p>This project was motivated by the curiosity to learn about space systems, especially cubesats, mission softwares and space electronic hardware in general, and try to replicate, within a defined time-frame, a simple yet fully functional cubesat that can be used for demo purposes or even better, through the available channels, be improved for launch!</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
 Mission statement</h2>
 <p>The primary mission for this cubesat is Earth Observation (EO). It is designed to operate in the Low Earth Orbit(LEO). It will capture images over a given area, on a sun-synchronous subrecurrent orbit, depending on the received command from ground station. These images are then compressed, stored and transmitted back to ground when a pass over a base station is reached. No image processing is done on board the Cubesate so as to save battery power and processing power for other critical tasks.</p>
 <p>The cubesat is designed to have two major operation modes: <br  />
@@ -125,7 +128,7 @@ Mission statement</h2>
 <li>Mission operation mode</li>
 </ol>
 <p>These two states can be configured and changed accordingly from the ground station.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
 System components</h1>
 <p>A cubesat in general is made up of the following subsystems: <br  />
 </p><ol type="1">
@@ -136,12 +139,12 @@ System components</h1>
 <li>Sensor and Payload System</li>
 <li>Structural and Thermal system</li>
 </ol>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
 1. Onboard Computer</h2>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md8"></a>
 Introduction</h3>
 <p>The onboard computer performs the housekeeping tasks needed by the cubesat. It is the main link between all the other subsystems used in the cubesat.</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md8"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
 Functional requirements</h3>
 <p>The following is a list of the functional requirements of the OBC:</p>
 <ol type="1">
@@ -167,8 +170,9 @@ Functional requirements</h3>
  The watchdog must be periodically refreshed by software; failure to do so shall cause a system reset.</li>
 <li><b>The CubeSat shall include up to 3 inhibit switches in accordance with CubeSat deployment standards to prevent premature activation of systems.</b> <br  />
  Inhibits must disable power or specific subsystems until conditions for deployment are met (e.g., separation from deployer).</li>
+<li><b>The CubeSat shall include a TRANSCEIVER which includes a Receiver , Transmitter , and Terminal Node Controller (TNC).</b> This will ensure telecommunication link between CubeSat and Ground Station.</li>
 </ol>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
 Components of the OBC</h3>
 <p>The OBC is made up of the following sub-systems:</p><ul>
 <li>STM32F401CCU6</li>
@@ -187,9 +191,9 @@ Components of the OBC</h3>
 <p>The image below shows the memory and debug block diagram used on this cubesat's OBC:</p>
 <p><img src="images/obc-block.jpg" alt="Shadow flight OBC" width="500" height="700" class="inline"/></p>
 <p><b>To note, all the PCBs are equipped with ISA PC/104 connectors to make stacking possible</b></p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
 2. Sensor Board</h2>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md12"></a>
 Introduction</h3>
 <p>The sensor board is responsible for housing the sensors used for environmental monitoring around the cubesat in space. The list of components used in this project's sensor board is as below:</p>
 <ol type="1">
@@ -208,7 +212,7 @@ Introduction</h3>
 <li>Remove before flight switch</li>
 <li>GPS module</li>
 </ol>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md12"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
 Functional requirements</h3>
 <ol type="1">
 <li><b>The sensor board shall capture monochrome VGA images using an onboard camera module.</b> <br  />
@@ -240,7 +244,7 @@ Functional requirements</h3>
 </ol>
 <p>The block diagram is shown below:</p>
 <p><img src="images/sensor-board.png" alt="Shadow flight OBC" width="500" height="700" class="inline"/></p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md14"></a>
 Communication protocol for sensors</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -258,7 +262,7 @@ Communication protocol for sensors</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">6  </td><td class="markdownTableBodyNone">Sun sensor  </td><td class="markdownTableBodyNone">ADC  </td></tr>
 </table>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md14"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
 The PC/104 ISA Bus</h3>
 <p>This project used the PC/104 standard for communication bus implementation.</p>
 <p>Bigest advantages of this standard:</p><ul>
@@ -276,18 +280,18 @@ The PC/104 ISA Bus</h3>
 <p><img src="images/pc104stack.gif" alt="Shadow flight OBC" width="500" height="700" class="inline"/> <br  />
 </p>
 <p>Further reference: <a href="https://www.diamondsystems.com/pc104">PC-104 standard reference</a></p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
 My Pin definition</h3>
 <p>In order to customize the ISA connector to fit what this project uses, I have defined the pins as shown in this pin definition document. Since the project is in progress, these pin assignments are bound to change often:</p>
 <p><a href="https://docs.google.com/spreadsheets/d/11hD9y9vYMRVWSRXsNhsD9LqnLeL-uE_WEjQZ-0ekRwc/edit?usp=sharing" target="_blank">Shadow-Flight-PC/104 BUS </a></p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
 3. Attitude Determination and Control</h2>
 <div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;"> <b>🚧 In Development</b> </div><p> This system is responsible for receiving attitude data from sensors and acting on it in realtime to control the attitude(orientation ) of the satellite. This is mainly implemented in software as the diagram below depicts.</p>
 <p>The signals produced are fed into ana actuator or tticde coontrol,</p>
 <p>Data from the sensors is read, then passed to the ADCS algorithm.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md18"></a>
 4. Electrical Power System (EPS)</h2>
-<div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;"> <b>🚧 In Development</b> </div> <h3 class="doxsection"><a class="anchor" id="autotoc_md18"></a>
+<div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;"> <b>🚧 In Development</b> </div> <h3 class="doxsection"><a class="anchor" id="autotoc_md19"></a>
 Introduction</h3>
 <p>The EPS is responsible for the following functions:</p><ul>
 <li>Energy generation</li>
@@ -305,30 +309,33 @@ Introduction</h3>
 7. Conduct tests on isolated components 
 8. Conduct tests on integrated components 
 </pre><p>There is a lot that can be discussed in respect to EPS but I have tried to be consise and to the point in the summaries below:</p>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md19"></a>
-a) Power consumption of different bus components</h3>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md20"></a>
-b) Power generation</h3>
+a) Power consumption of different bus components</h3>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md21"></a>
-c) Energy storage</h3>
+b) Power generation</h3>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md22"></a>
-d) Mission analysis in regards to power</h3>
+c) Energy storage</h3>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md23"></a>
+d) Mission analysis in regards to power</h3>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md24"></a>
 e) EPS Schematics summary</h3>
-<h4 class="doxsection"><a class="anchor" id="autotoc_md24"></a>
-Conversion</h4>
 <h4 class="doxsection"><a class="anchor" id="autotoc_md25"></a>
-Power Distribution Schemes</h4>
+Conversion</h4>
 <h4 class="doxsection"><a class="anchor" id="autotoc_md26"></a>
+Power Distribution Schemes</h4>
+<h4 class="doxsection"><a class="anchor" id="autotoc_md27"></a>
 Power supply control</h4>
-<h3 class="doxsection"><a class="anchor" id="autotoc_md27"></a>
-f) Isolated tests</h3>
 <h3 class="doxsection"><a class="anchor" id="autotoc_md28"></a>
+f) Isolated tests</h3>
+<h3 class="doxsection"><a class="anchor" id="autotoc_md29"></a>
 g) EPS integration and Testing</h3>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md29"></a>
+<h4 class="doxsection"><a class="anchor" id="autotoc_md30"></a>
+Battery and solar panel sizing data</h4>
+<p>During design, the selection criteria for the battery and solar panel is detailed in this spreadsheet: <a href="https://docs.google.com/spreadsheets/d/1j73pPU9ySfrlBch6TJMzdRGcuBdh9BN55jUy6Fb-AV4/edit?usp=sharing">https://docs.google.com/spreadsheets/d/1j73pPU9ySfrlBch6TJMzdRGcuBdh9BN55jUy6Fb-AV4/edit?usp=sharing</a></p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md31"></a>
 Related documents</h2>
 <p>A list of related documents related to this project are provided below. They include diagrams, schematics, design source files, datasheets, 2D diagrams, 3D assembly diagrams, test information and logs etc.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md30"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md32"></a>
 Relevent videos and resource materials</h2>
 <ol type="1">
 <li><a href="https://youtu.be/5voQfQOTem8">https://youtu.be/5voQfQOTem8</a> (Build your own satelite)</li>
@@ -338,12 +345,12 @@ Relevent videos and resource materials</h2>
 <li><a href="https://github.com/hsfl/artemis-hardware">https://github.com/hsfl/artemis-hardware</a></li>
 <li><a href="https://sites.google.com/hawaii.edu/artemiscubesatkit">https://sites.google.com/hawaii.edu/artemiscubesatkit</a></li>
 </ol>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md31"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md33"></a>
 Contribution and support</h2>
 <p>This project is not funded by any organization or entity and is solely reliant on out-of-pocket funding. We therefore heed to anyone desiring to contribute, in monetary form, technical advise, links and connections, electronic components, code and schematic design contribution, etc., or even if you are interested in knowing more about the project details, you can reach out to me via this email (<a href="#" onclick="location.href='mai'+'lto:'+'emw'+'it'+'i65'+'8@'+'gma'+'il'+'.co'+'m'; return false;">emwit<span class="obfuscator">.nosp@m.</span>i658<span class="obfuscator">.nosp@m.</span>@gmai<span class="obfuscator">.nosp@m.</span>l.co<span class="obfuscator">.nosp@m.</span>m</a>) and I will get back to you soonest. <br  />
 </p>
 <p>Thank you again for your consideration! Ad Astra!</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md32"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md34"></a>
 Contributors</h2>
 <ol type="1">
 <li>Edwin Mwiti </li>

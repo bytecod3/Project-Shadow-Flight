@@ -19,6 +19,8 @@ I will write your name on the moon with my fingertips"
 ## Introduction
 **Project-Shadow Flight** is a homemade 1U cubesat designed and built using FreeRTOS on STM32 framework 
 and COTS components. None of these components are radiation hardened. 
+The primary objective is technology demonstration of an Earth Observation cubesat built from the ground up. This cubesat has 
+a VGA camera onboard to capture geo-referenced low-resolution earth imagery.
 
 ### Web documentation 
 You can find a web friendly documentation format here: https://bytecod3.github.io/Project-Shadow-Flight/
@@ -288,6 +290,52 @@ During design, the selection criteria for the battery and solar panel is detaile
 https://docs.google.com/spreadsheets/d/1j73pPU9ySfrlBch6TJMzdRGcuBdh9BN55jUy6Fb-AV4/edit?usp=sharing
 
 
+# 5. Payload and Mission Design
+The payload system of the cubesat is responsible for carrying out the primary mission objective. Everything else designed so far
+is for the sole purpose of supporting the mission objective. 
+
+Our primary payload is a monochrome camera, since this is an earth observation cubesat.
+
+### Payload system requirements 
+1. **Mission Objectives**
+   - Capture low-resolution geo-referenced Earth imagery.  
+   - Provide imaging capability to test CubeSat bus integration.  
+   - Support technology demonstration of COTS payloads in orbit.  
+
+2. **Imaging Requirements**
+   - Resolution: **640 × 480 (VGA)**  
+   - Color imaging in the **visible spectrum (RGB)**  
+   - Still image capture mode (prioritized over video)  
+   - Optical size: **1/6" sensor format**  
+   - Angle of view: **~25°**  
+   - Maximum frame rate: **30 fps @ VGA**  
+   - Sensitivity: **1.3 V / (Lux·sec)**  
+   - Signal-to-noise ratio: **46 dB**  
+   - Dynamic range: **52 dB**  
+
+3. **Data Handling Requirements**
+   - Data acquisition via **parallel 8-bit bus (D0–D7)**  
+   - Interface with OBC via **DMA**  
+   - Lightweight **image compression** before storage and downlink  
+   - Downlink data rate requirement: **< 100 kbps**  
+
+4. **Electrical & Power Requirements**
+   - Supply voltage: **2.5 – 3.3 V**  
+   - Power consumption: **~60 mW (active)**  
+   - Ability to **power off payload** to protect the bus  
+
+5. **Mechanical & Thermal Requirements**
+   - Mass and volume: **< 10 g, PCB-mounted**  
+   - Mechanical interface: **Mounted on PCB, lens protrusion aligned with nadir face**  
+   - Cooling: **Passive conduction only**  
+   - Operating temperature: **-30 °C to +70 °C**  
+   - Stable operation range: **0 °C to 50 °C**  
+
+6. **Reliability & Limitations**
+   - Payload is **COTS (not radiation hardened)**  
+   - Expected degradation in LEO environment  
+   - Payload can be **disabled via power control** in case of malfunction  
+
 ## Related documents
 A list of related documents related to this project are provided below. They include diagrams, schematics,
 design source files, datasheets, 2D diagrams, 3D assembly diagrams, test information and logs etc.
@@ -314,3 +362,4 @@ about the project details,
 
 ## Contributors 
 1. Edwin Mwiti
+2. Augustine Gyan
