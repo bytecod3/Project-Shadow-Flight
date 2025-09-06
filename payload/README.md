@@ -1,0 +1,1 @@
+- https://blog.shirtec.com/2019/12/ov5640-with-stm32f427.html
