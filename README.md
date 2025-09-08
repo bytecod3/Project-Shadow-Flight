@@ -355,11 +355,20 @@ This MCU also has modes that allow us to to have either continous mode or snapsh
 The LCD shown in the above schematic will not be used on the actual satelite, but a connector is placed on teh payload PCB to help during 
 ground testing and confirm the images we are taking. 
 
+## Payload PCB 
+The designed camera payload is shown below: 
+#### Tracks 
+<img src="./payload/images/payload-tracks.png" alt="Shadow flight OBC" />
+
+#### 3D view
+<img src="./payload/images/payload-complete.png" alt="Shadow flight OBC" />
+
+
 ## Related documents
 A list of related documents related to this project are provided below. They include diagrams, schematics,
 design source files, datasheets, 2D diagrams, 3D assembly diagrams, test information and logs etc.
 
-## Relevent videos and resource materials 
+## Relevant videos and resource materials 
 1. https://youtu.be/5voQfQOTem8 (Build your own satelite)
 2. https://pressbooks-dev.oer.hawaii.edu/epet302/chapter/5-4-design-process-and-drivers/
 3. https://resources.altium.com/p/prototyping-solar-solution-your-outdoor-embedded-device
