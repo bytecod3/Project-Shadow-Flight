@@ -49,25 +49,38 @@
 #define DEVICE_ID 0xE5
 
 /* device I2C address */
-#define ADXL345_ADDRESS (0x53)
+#define ADXL345_ADDRESS (0x53 << 1) // 0xa6
+#define ADXL345_ALT_ADDRESS (0x1D)
 
 /**
  * @brief This struct represents the ADXL345 object
  */
 typedef struct {
 	I2C_HandleTypeDef* i2c_handle;
+	uint8_t address; // device address
 	float acceleration_buffer[3]; // x, y, z acceleration
 	float internal_temperature;
+	uint8_t test_byte;
 } ADXL345;
 
-typedef ADXL345* ADXL345_instance;
+//typedef ADXL345* ADXL345_instance;
 
-uint8_t ADXL_initialize(ADXL345_instance, I2C_HandleTypeDef*);
-HAL_StatusTypeDef ADXL_read_single_register(ADXL345_instance, uint8_t reg, uint8_t* data);
-HAL_StatusTypeDef ADXL_read_multiple_registers(ADXL345_instance, uint8_t reg, uint8_t* data, uint8_t length);
-HAL_StatusTypeDef ADXL_write_register(ADXL345_instance, uint8_t reg, uint8_t* data);
-HAL_StatusTypeDef ADXL_read_acceleration(ADXL345_instance);
-float ADXL_get_internal_temperature(ADXL345_instance);
+//uint8_t ADXL_initialize(ADXL345_instance, I2C_HandleTypeDef*);
+//void ADXL_read_single_register(ADXL345_instance, uint8_t reg, uint8_t* data);
+////HAL_StatusTypeDef ADXL_read_single_register(ADXL345_instance, uint8_t reg, uint8_t* data);
+//HAL_StatusTypeDef ADXL_read_multiple_registers(ADXL345_instance, uint8_t reg, uint8_t* data, uint8_t length);
+//HAL_StatusTypeDef ADXL_write_register(ADXL345_instance, uint8_t reg, uint8_t* data);
+//HAL_StatusTypeDef ADXL_read_acceleration(ADXL345_instance);
+//float ADXL_get_internal_temperature(ADXL345_instance);
+
+// to test struct
+uint8_t ADXL_initialize(ADXL345*, I2C_HandleTypeDef*);
+void ADXL_read_single_register(ADXL345*, uint8_t reg, uint8_t* data);
+//HAL_StatusTypeDef ADXL_read_single_register(ADXL345_instance, uint8_t reg, uint8_t* data);
+HAL_StatusTypeDef ADXL_read_multiple_registers(ADXL345*, uint8_t reg, uint8_t* data, uint8_t length);
+HAL_StatusTypeDef ADXL_write_register(ADXL345*, uint8_t reg, uint8_t* data);
+HAL_StatusTypeDef ADXL_read_acceleration(ADXL345*);
+float ADXL_get_internal_temperature(ADXL345*);
 
 
 

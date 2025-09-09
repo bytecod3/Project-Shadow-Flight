@@ -11,14 +11,16 @@
  * @brief This function initializes the ADXL345 object
  * @return 1 if init success, 0 if init fail
  */
-uint8_t ADXL_initialize(ADXL345_instance device, I2C_HandleTypeDef* i2c_handle) {
+uint8_t ADXL_initialize(ADXL345* device, I2C_HandleTypeDef* i2c_handle) {
 	device->i2c_handle = i2c_handle;
+	device->address = 0xA6;
 
 	device->acceleration_buffer[0] = 0.0f;
 	device->acceleration_buffer[1] = 0.0f;
 	device->acceleration_buffer[2] = 0.0f;
 
 	device->internal_temperature = 0.0f;
+	device->test_byte = 0xAA;
 
 //	if(reg_data != DEVICE_ID) {
 //		return 255;
@@ -26,7 +28,7 @@ uint8_t ADXL_initialize(ADXL345_instance device, I2C_HandleTypeDef* i2c_handle) 
 //		return 1;
 //	}
 
-	uint8_t reg_data;
+	uint8_t reg_data = 0;
 
 	/**
 	 * check device id, mems and part ID
@@ -42,14 +44,14 @@ uint8_t ADXL_initialize(ADXL345_instance device, I2C_HandleTypeDef* i2c_handle) 
 	/* put the sensor in measurement mode */
 	//ADXL_write_register(device, POWER_CTL, &reg_data);
 
-	return reg_data;
+	return device->address;
 
 }
 
 /**
  * @brief Read acceleration values
  */
-HAL_StatusTypeDef ADXL_read_acceleration(ADXL345_instance device) {
+HAL_StatusTypeDef ADXL_read_acceleration(ADXL345* device) {
 	uint8_t reg_data[2];
 
 	HAL_StatusTypeDef status = ADXL_read_multiple_registers(device, DATAX0, reg_data, 2);
@@ -75,22 +77,26 @@ HAL_StatusTypeDef ADXL_read_acceleration(ADXL345_instance device) {
 /**
  * @brief This function read a single register value
  */
-HAL_StatusTypeDef ADXL_read_single_register(ADXL345_instance device, uint8_t reg, uint8_t* data) {
-	return HAL_I2C_Mem_Read(device->i2c_handle, ADXL345_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+//HAL_StatusTypeDef ADXL_read_single_register(ADXL345_instance device, uint8_t reg, uint8_t* data) {
+//	return HAL_I2C_Mem_Read(device->i2c_handle, device->address, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+//}
+
+void ADXL_read_single_register(ADXL345* device, uint8_t reg, uint8_t* data) {
+	HAL_I2C_Mem_Read(device->i2c_handle, device->address, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
 }
 
 /**
  * @brief This function reads multiple registers
  */
-HAL_StatusTypeDef ADXL_read_multiple_registers(ADXL345_instance device, uint8_t reg, uint8_t* data, uint8_t length) {
-	return HAL_I2C_Mem_Read(device->i2c_handle, ADXL345_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, length, HAL_MAX_DELAY);
+HAL_StatusTypeDef ADXL_read_multiple_registers(ADXL345* device, uint8_t reg, uint8_t* data, uint8_t length) {
+	return HAL_I2C_Mem_Read(device->i2c_handle, device->address, reg, I2C_MEMADD_SIZE_8BIT, data, length, HAL_MAX_DELAY);
 }
 
 /**
  * @brief This function writes to a single register
  */
-HAL_StatusTypeDef ADXL_write_register(ADXL345_instance device, uint8_t reg, uint8_t* data) {
-	return HAL_I2C_Mem_Write(device->i2c_handle, ADXL345_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+HAL_StatusTypeDef ADXL_write_register(ADXL345* device, uint8_t reg, uint8_t* data) {
+	return HAL_I2C_Mem_Write(device->i2c_handle, device->address, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
 };
 
 

@@ -1,5 +1,5 @@
 ../Core/Src/adxl345.c:14:9:ADXL_initialize	24	static
-../Core/Src/adxl345.c:52:19:ADXL_read_acceleration	24	static
-../Core/Src/adxl345.c:78:19:ADXL_read_single_register	40	static
-../Core/Src/adxl345.c:85:19:ADXL_read_multiple_registers	40	static
-../Core/Src/adxl345.c:92:19:ADXL_write_register	40	static
+../Core/Src/adxl345.c:54:19:ADXL_read_acceleration	24	static
+../Core/Src/adxl345.c:84:6:ADXL_read_single_register	40	static
+../Core/Src/adxl345.c:91:19:ADXL_read_multiple_registers	48	static
+../Core/Src/adxl345.c:98:19:ADXL_write_register	40	static
