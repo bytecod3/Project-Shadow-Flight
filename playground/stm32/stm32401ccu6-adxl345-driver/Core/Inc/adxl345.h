@@ -63,7 +63,7 @@ typedef struct {
 	uint8_t test_byte;
 } ADXL345;
 
-//typedef ADXL345* ADXL345_instance;
+typedef ADXL345* ADXL345_instance;
 
 //uint8_t ADXL_initialize(ADXL345_instance, I2C_HandleTypeDef*);
 //void ADXL_read_single_register(ADXL345_instance, uint8_t reg, uint8_t* data);
@@ -74,13 +74,13 @@ typedef struct {
 //float ADXL_get_internal_temperature(ADXL345_instance);
 
 // to test struct
-uint8_t ADXL_initialize(ADXL345*, I2C_HandleTypeDef*);
-void ADXL_read_single_register(ADXL345*, uint8_t reg, uint8_t* data);
+uint8_t ADXL_initialize(ADXL345_instance, I2C_HandleTypeDef*);
+void ADXL_read_single_register(ADXL345_instance, uint8_t reg, uint8_t* data);
 //HAL_StatusTypeDef ADXL_read_single_register(ADXL345_instance, uint8_t reg, uint8_t* data);
-HAL_StatusTypeDef ADXL_read_multiple_registers(ADXL345*, uint8_t reg, uint8_t* data, uint8_t length);
-HAL_StatusTypeDef ADXL_write_register(ADXL345*, uint8_t reg, uint8_t* data);
-HAL_StatusTypeDef ADXL_read_acceleration(ADXL345*);
-float ADXL_get_internal_temperature(ADXL345*);
+HAL_StatusTypeDef ADXL_read_multiple_registers(ADXL345_instance, uint8_t reg, uint8_t* data, uint8_t length);
+HAL_StatusTypeDef ADXL_write_register(ADXL345_instance, uint8_t reg, uint8_t* data);
+HAL_StatusTypeDef ADXL_read_acceleration(ADXL345_instance);
+float ADXL_get_internal_temperature(ADXL345_instance);
 
 
 

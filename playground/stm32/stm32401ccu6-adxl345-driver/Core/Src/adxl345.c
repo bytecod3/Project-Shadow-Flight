@@ -44,7 +44,7 @@ uint8_t ADXL_initialize(ADXL345* device, I2C_HandleTypeDef* i2c_handle) {
 	/* put the sensor in measurement mode */
 	//ADXL_write_register(device, POWER_CTL, &reg_data);
 
-	return device->address;
+	return reg_data;
 
 }
 
