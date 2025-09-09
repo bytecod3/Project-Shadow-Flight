@@ -68,7 +68,8 @@ static void MX_USART6_UART_Init(void);
 ADXL345 accelerometer;
 ADXL345_instance acc_ptr = &accelerometer;
 
-char uart_msg[64];
+char acc_values[10];
+char init_msg[32];
 
 /* USER CODE END 0 */
 
@@ -105,18 +106,18 @@ int main(void)
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  uint8_t device_id = 0;
-  uint8_t dev_addr = 0;
+  uint8_t init_status =0;
+  init_status = ADXL_initialize(acc_ptr, &hi2c1);
 
-  device_id = ADXL_initialize(acc_ptr, &hi2c1);
-  dev_addr = ADXL_initialize(acc_ptr, &hi2c1);
+  if(init_status) {
+	  /* initialize data buffers */
+	  sprintf(init_msg, "ADXL init OK...\r\n");
+  } else {
+	  /* debug message */
+	  sprintf(init_msg, "ADXL init failed...\r\n");
+  }
 
-
-  //HAL_I2C_Mem_Read(&hi2c1, 0xA6, 0x00, I2C_MEMADD_SIZE_8BIT, &device_id, 1, HAL_MAX_DELAY);
-
-  /* send to UART */
-  sprintf(uart_msg, "%#X\r\n", device_id);
-  HAL_UART_Transmit(&huart6, (uint8_t*)uart_msg, strlen(uart_msg), HAL_MAX_DELAY);
+  HAL_UART_Transmit(&huart6, (uint8_t*)init_msg, strlen(init_msg), HAL_MAX_DELAY);
 
   /* USER CODE END 2 */
 
@@ -127,9 +128,20 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  //sprintf(uart_msg, "%.4f\r\n", accelerometer->acceleration_buffer[0]);
-	  //HAL_UART_Transmit(&huart6, (uint8_t*)uart_msg, strlen(uart_msg), HAL_MAX_DELAY);
-	  //HAL_Delay(200);
+
+	  /* read acceleration */
+	  ADXL_read_acceleration(acc_ptr);
+
+	  /* package data */
+	  sprintf(acc_values,
+			  "%.2f,\t%.2f,\t%.2f,\r\n",
+			  acc_ptr->acceleration_buffer[0], // x
+			  acc_ptr->acceleration_buffer[1], // y
+			  acc_ptr->acceleration_buffer[2]  // z
+	);
+
+	 HAL_UART_Transmit(&huart6, (uint8_t*)acc_values, strlen(acc_values), HAL_MAX_DELAY);
+	 HAL_Delay(5);
 
   }
   /* USER CODE END 3 */

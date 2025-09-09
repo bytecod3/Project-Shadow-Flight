@@ -22,43 +22,45 @@ uint8_t ADXL_initialize(ADXL345* device, I2C_HandleTypeDef* i2c_handle) {
 	device->internal_temperature = 0.0f;
 	device->test_byte = 0xAA;
 
-//	if(reg_data != DEVICE_ID) {
-//		return 255;
-//	} else {
-//		return 1;
-//	}
-
+	/* check device ID */
 	uint8_t reg_data = 0;
-
-	/**
-	 * check device id, mems and part ID
-	 */
 	ADXL_read_single_register(device, DEVID_REG, &reg_data);
 
-	/* set the ODR(output data rate) and digital filters: 25Hz data rate, 12.5 LPF Bandwidth  */
-	//reg_data = 0x08;
-	//ADXL_write_register(device, BW_RATE, &reg_data);
+	if(reg_data == DEVICE_ID) {
 
-	/* set data format */
+		/* initialize device */
+		/* set the ODR(output data rate) and digital filters: 25Hz data rate, 12.5 LPF Bandwidth */
+		reg_data = 0x08;
+		ADXL_write_register(device, BW_RATE, &reg_data);
 
-	/* put the sensor in measurement mode */
-	//ADXL_write_register(device, POWER_CTL, &reg_data);
+		/* put the sensor in measurement mode */
+		ADXL_write_register(device, POWER_CTL, &reg_data);
+		return 1;
 
-	return reg_data;
+	} else {
+		return 0; // todo: return error codes
+	}
 
 }
 
 /**
  * @brief Read acceleration values
  */
-HAL_StatusTypeDef ADXL_read_acceleration(ADXL345* device) {
-	uint8_t reg_data[2];
+void ADXL_read_acceleration(ADXL345* device) {
+	uint8_t data[6];
 
-	HAL_StatusTypeDef status = ADXL_read_multiple_registers(device, DATAX0, reg_data, 2);
+	ADXL_read_multiple_registers(device, DATAX0, data, 6);
 
-	/**
-	 * combine values
-	 */
+	/* combine values */
+	int16_t raw_x = ( ( data[1] << 8) | data[0] );
+	int16_t raw_y = ( ( data[3] << 8) | data[2] );
+	int16_t raw_z = ( ( data[5] << 8) | data[4] );
+
+	// convert to g
+	device->acceleration_buffer[0] = raw_x * 0.0039;
+	device->acceleration_buffer[1] = raw_y * 0.0039;
+	device->acceleration_buffer[2] = raw_z * 0.0039;
+
 
 	//int16_t acc_raw_signed[3]; // x, y, z
 	//acc_raw_signed[0] = (uint16_t) ((reg_data[0] << 8) | (reg_data[1]));
@@ -67,10 +69,6 @@ HAL_StatusTypeDef ADXL_read_acceleration(ADXL345* device) {
 	 * convert to g values
 	 */
 	//device->acceleration_buffer[0] = 0.000061035f * 9.81 * acc_raw_signed[0];
-
-
-	return status;
-
 
 }
 

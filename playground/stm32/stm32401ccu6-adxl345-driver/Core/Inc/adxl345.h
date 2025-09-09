@@ -79,7 +79,7 @@ void ADXL_read_single_register(ADXL345_instance, uint8_t reg, uint8_t* data);
 //HAL_StatusTypeDef ADXL_read_single_register(ADXL345_instance, uint8_t reg, uint8_t* data);
 HAL_StatusTypeDef ADXL_read_multiple_registers(ADXL345_instance, uint8_t reg, uint8_t* data, uint8_t length);
 HAL_StatusTypeDef ADXL_write_register(ADXL345_instance, uint8_t reg, uint8_t* data);
-HAL_StatusTypeDef ADXL_read_acceleration(ADXL345_instance);
+void ADXL_read_acceleration(ADXL345_instance);
 float ADXL_get_internal_temperature(ADXL345_instance);
 
 
