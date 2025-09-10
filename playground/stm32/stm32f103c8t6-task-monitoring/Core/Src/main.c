@@ -38,6 +38,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+#define CREATE_SERIAL_TASK (0)
 
 /* USER CODE END PM */
 
@@ -105,6 +106,11 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  // get total heap size
+  char t[50];
+  sprintf(t, "Total heap, (using heap 4): %ul \r\n", configTOTAL_HEAP_SIZE);
+  HAL_UART_Transmit(&huart1, (uint8_t*)t, strlen(t), HAL_MAX_DELAY);
+
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -145,8 +151,10 @@ int main(void)
   osThreadDef(monitor_heap_task, x_task_monitor_heap, osPriorityNormal, 0, 128);
   monitor_heap_task_handle = osThreadCreate(osThread(monitor_heap_task), NULL);
 
+#if CREATE_SERIAL_TASK
   osThreadDef(print_to_serial_task, x_task_print_to_serial, osPriorityNormal, 0, 128);
   print_queue_task_handle = osThreadCreate(osThread(print_to_serial_task), NULL);
+#endif
 
   /* USER CODE END RTOS_THREADS */
 
@@ -269,8 +277,16 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 void x_task_onboard_led_blink(void const* arg) {
+	size_t free_heap;
+	char t[20];
 
 	for(;;) {
+
+		free_heap = xPortGetFreeHeapSize();
+
+		sprintf(t, "x_OL: %ul\r\n", free_heap);
+		HAL_UART_Transmit(&huart1, (uint8_t*)t, strlen(t), HAL_MAX_DELAY);
+
 		HAL_GPIO_TogglePin(USER_LED_GPIO_Port, USER_LED_Pin);
 		vTaskDelay(500);
 	}
@@ -279,15 +295,19 @@ void x_task_onboard_led_blink(void const* arg) {
 
 void x_task_monitor_heap(void const* arg) {
 	size_t free_heap;
+	char t[20];
 
 	for(;;) {
 
 		free_heap = xPortGetFreeHeapSize();
 
-		if(xQueueSend(serial_queue, &free_heap, portMAX_DELAY) != pdPASS) {
-			char* str = "Could not send to queue\n\n";
-			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), HAL_MAX_DELAY);
-		}
+		sprintf(t, "x_MH: %ul\r\n", free_heap);
+		HAL_UART_Transmit(&huart1, (uint8_t*)t, strlen(t), HAL_MAX_DELAY);
+
+//		if(xQueueSend(serial_queue, &free_heap, portMAX_DELAY) != pdPASS) {
+//			char* str = "Could not send to queue\n\n";
+//			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), HAL_MAX_DELAY);
+//		}
 
 		vTaskDelay(pdMS_TO_TICKS(200));
 	}
