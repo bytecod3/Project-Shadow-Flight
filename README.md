@@ -391,3 +391,4 @@ about the project details,
 ## Contributors 
 1. Edwin Mwiti
 2. Augustine Gyan
+3. Sebastian Muchui
