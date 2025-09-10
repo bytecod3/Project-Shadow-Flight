@@ -33,6 +33,8 @@
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:3392:8:prvIdleTask	2
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:3607:13:prvInitialiseTaskLists	2
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:3639:13:prvCheckTasksWaitingTermination	2
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:3799:32:prvTaskCheckFreeStackSpace	2
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:3859:14:uxTaskGetStackHighWaterMark	2
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:3887:14:prvDeleteTCB	4
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:3943:13:prvResetNextTaskUnblockTime	2
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:3969:15:xTaskGetCurrentTaskHandle	1

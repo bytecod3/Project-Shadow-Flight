@@ -295,13 +295,24 @@ void x_task_onboard_led_blink(void const* arg) {
 
 void x_task_monitor_heap(void const* arg) {
 	size_t free_heap;
+	UBaseType_t high_wm; // minimum amount of stack in words that has remained since the task started
 	char t[20];
 
 	for(;;) {
 
-		free_heap = xPortGetFreeHeapSize();
+		free_heap = xPortGetFreeHeapSize(); // get global free heap
 
-		sprintf(t, "x_MH: %ul\r\n", free_heap);
+		high_wm = uxTaskGetStackHighWaterMark(NULL); // null -> this task add "#define INCLUDE_uxTaskGetStackHighWaterMark   1"  in FreeRTOScONFIG.H
+
+		//sprintf(t, "x_MH: %ul\r\n", free_heap);
+		//HAL_UART_Transmit(&huart1, (uint8_t*)t, strlen(t), HAL_MAX_DELAY);
+
+		// to calculate peak stack usage
+		// this should be implemented per task and updates a stack _usage_table
+		// peak usage = allocated_stack_size - (high_wm * word size)
+
+
+		sprintf(t, "HighWM: %lu\r\n", high_wm);
 		HAL_UART_Transmit(&huart1, (uint8_t*)t, strlen(t), HAL_MAX_DELAY);
 
 //		if(xQueueSend(serial_queue, &free_heap, portMAX_DELAY) != pdPASS) {

@@ -4,7 +4,7 @@
 ../Core/Src/main.c:251:13:MX_GPIO_Init	1
 ../Core/Src/main.c:279:6:x_task_onboard_led_blink	1
 ../Core/Src/main.c:296:6:x_task_monitor_heap	1
-../Core/Src/main.c:316:6:x_task_print_to_serial	2
-../Core/Src/main.c:343:6:StartDefaultTask	1
-../Core/Src/main.c:362:6:HAL_TIM_PeriodElapsedCallback	2
-../Core/Src/main.c:380:6:Error_Handler	1
+../Core/Src/main.c:322:6:x_task_print_to_serial	2
+../Core/Src/main.c:349:6:StartDefaultTask	1
+../Core/Src/main.c:368:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:386:6:Error_Handler	1
