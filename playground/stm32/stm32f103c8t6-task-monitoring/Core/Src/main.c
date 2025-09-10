@@ -22,7 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stdio.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,6 +46,9 @@ UART_HandleTypeDef huart1;
 
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
+osThreadId blink_task_handle;
+osThreadId monitor_heap_task_handle;
+osThreadId print_queue_task_handle;
 
 /* USER CODE END PV */
 
@@ -56,10 +60,16 @@ void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 
+void x_task_onboard_led_blink(void const* argument);
+void x_task_monitor_heap(void const* argument);
+void x_task_print_to_serial(void const* argument);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+QueueHandle_t serial_queue;
 
 /* USER CODE END 0 */
 
@@ -110,7 +120,16 @@ int main(void)
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
+
+  serial_queue = xQueueCreate(5, sizeof(size_t));
+  if(serial_queue == 0) {
+	  char* str = "Serial queue not created\r\n";
+	  HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), HAL_MAX_DELAY);
+  } else {
+	  char* str = "Serial queue created successfully\r\n";
+	  HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), HAL_MAX_DELAY);
+  }
+
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -119,7 +138,16 @@ int main(void)
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+
+  osThreadDef(onboard_blink_task, x_task_onboard_led_blink, osPriorityNormal, 0, 128);
+  blink_task_handle = osThreadCreate(osThread(onboard_blink_task), NULL);
+
+  osThreadDef(monitor_heap_task, x_task_monitor_heap, osPriorityNormal, 0, 128);
+  monitor_heap_task_handle = osThreadCreate(osThread(monitor_heap_task), NULL);
+
+  osThreadDef(print_to_serial_task, x_task_print_to_serial, osPriorityNormal, 0, 128);
+  print_queue_task_handle = osThreadCreate(osThread(print_to_serial_task), NULL);
+
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */
@@ -239,6 +267,49 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void x_task_onboard_led_blink(void const* arg) {
+
+	for(;;) {
+		HAL_GPIO_TogglePin(USER_LED_GPIO_Port, USER_LED_Pin);
+		vTaskDelay(500);
+	}
+
+}
+
+void x_task_monitor_heap(void const* arg) {
+	size_t free_heap;
+
+	for(;;) {
+
+		free_heap = xPortGetFreeHeapSize();
+
+		if(xQueueSend(serial_queue, &free_heap, portMAX_DELAY) != pdPASS) {
+			char* str = "Could not send to queue\n\n";
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), HAL_MAX_DELAY);
+		}
+
+		vTaskDelay(pdMS_TO_TICKS(200));
+	}
+}
+
+void x_task_print_to_serial(void const* arg) {
+	size_t rcvd_free_heap;
+	char m[20];
+
+	for(;;) {
+
+		if(xQueueReceive(serial_queue, &rcvd_free_heap, portMAX_DELAY) != pdPASS) {
+			char* str = "Could not receive from queue\r\n";
+			HAL_UART_Transmit(&huart1, (uint8_t*)str, strlen(str), HAL_MAX_DELAY);
+		} else {
+			sprintf(m, "%u\r\n", rcvd_free_heap);
+			HAL_UART_Transmit(&huart1, (uint8_t*)m, strlen(m), HAL_MAX_DELAY);
+
+		}
+	}
+}
+
 
 /* USER CODE END 4 */
 
