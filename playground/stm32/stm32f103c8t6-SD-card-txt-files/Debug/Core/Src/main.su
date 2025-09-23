@@ -1,0 +1,8 @@
+../Core/Src/main.c:68:13:UART_Print	16	static
+../Core/Src/main.c:79:5:main	8	static
+../Core/Src/main.c:132:6:SystemClock_Config	72	static
+../Core/Src/main.c:169:13:MX_SPI1_Init	8	static
+../Core/Src/main.c:207:13:MX_USART1_UART_Init	8	static
+../Core/Src/main.c:240:13:MX_GPIO_Init	40	static
+../Core/Src/main.c:279:13:SD_Card_Test	8528	static
+../Core/Src/main.c:398:6:Error_Handler	4	static,ignoring_inline_asm

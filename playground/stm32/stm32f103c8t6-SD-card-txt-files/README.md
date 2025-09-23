@@ -1,0 +1,11 @@
+### SD card file functions 
+- mount SD card 
+- Find and print the card size and fre space 
+- create a new text file 
+- write to the text file using f_puts 
+- write tot the SD card using the f_write
+- read from text file using f_gets 
+- read from text_file using f_read
+- modify an existing file 
+- delete the file 
+- unmount SD card 
