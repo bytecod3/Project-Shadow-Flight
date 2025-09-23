@@ -375,6 +375,7 @@ design source files, datasheets, 2D diagrams, 3D assembly diagrams, test informa
 4. https://pycubed.org/What%20is%20PyCubed%20f257a98ec60044538d8fbdc20fec987f.html
 5. https://github.com/hsfl/artemis-hardware
 6. https://sites.google.com/hawaii.edu/artemiscubesatkit
+7. https://pressbooks-dev.oer.hawaii.edu/epet302/chapter/typical-software/
 
 ## Contribution and support
 This project is not funded by any organization or entity and 
