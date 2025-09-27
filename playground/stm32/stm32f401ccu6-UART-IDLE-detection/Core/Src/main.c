@@ -21,6 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdio.h"
+#include "string.h"
 
 /* USER CODE END Includes */
 
@@ -60,6 +62,8 @@ static void MX_USART1_UART_Init(void);
 
 uint8_t UART1_rx_buffer[UART_RX_BUFFER_SIZE] = {0};
 uint16_t rx_data_len = 0;
+
+char uart_buff[10] = {0};
 
 /* USER CODE END 0 */
 
@@ -211,6 +215,8 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t size) {
 	rx_data_len = size;
 
 	// echo back
+	sprintf(uart_buff, "%d\r\n", rx_data_len);
+	HAL_UART_Transmit(&huart1, (uint8_t*) uart_buff, strlen(uart_buff), 200);
 	HAL_UART_Transmit(&huart1, UART1_rx_buffer, rx_data_len, 100);
 
 	// restart teh IDLE Line interrupt

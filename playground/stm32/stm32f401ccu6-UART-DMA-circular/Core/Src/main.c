@@ -21,6 +21,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdio.h"
+#include "string.h"
 
 /* USER CODE END Includes */
 
@@ -31,6 +33,13 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+#define UART_RX_BUFFER_SIZE 50 // maximum data we expect
+
+uint8_t UART1_rx_buffer[UART_RX_BUFFER_SIZE] = {0}; // to hold the received message
+uint16_t rx_data_len = 0; // length of the received data
+
+
 
 /* USER CODE END PD */
 
@@ -94,6 +103,7 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  HAL_UARTEx_ReceiveToIdle_DMA(&huart1, UART1_rx_buffer, UART_RX_BUFFER_SIZE);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -103,6 +113,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	  // nothing to do here
   }
   /* USER CODE END 3 */
 }
@@ -219,10 +231,23 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
-	dma_recv_complete = 1;
-	// HAL_UART_Transmit(&huart1, (uint8_t*)"DMA_BUFF: ", strlen("DMA_BUFF: "), 10);
-	// HAL_UART_Transmit(&huart1, rx_data, 12, 100);
+/**
+ * called when idle event is received OR we receive the full data length
+ * we can receive variable length of data
+ */
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
+	// check the size of the received stream
+	rx_data_len = Size;
+	static char buffer[UART_RX_BUFFER_SIZE] = {0};
+
+	sprintf(buffer, "Size: %d\r\n", rx_data_len);
+	HAL_UART_Transmit(&huart1, (uint8_t*) buffer, strlen(buffer), 500);
+
+	// process it
+	HAL_UART_Transmit(&huart1, UART1_rx_buffer, rx_data_len, 500);
+
+	// restart the idle event check
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, UART1_rx_buffer, UART_RX_BUFFER_SIZE);
 
 }
 
