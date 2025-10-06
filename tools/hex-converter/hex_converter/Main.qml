@@ -55,8 +55,12 @@ Window {
 
                     ScrollView {
                         id: input_text_view
+                        anchors.fill: parent
+
                         TextArea {
                             id: input_chars_field
+                            width: parent.width
+                            wrapMode: Text.WordWrap
                             color: "black"
                             font.family: "ubuntu"
                             font.pixelSize: 23
@@ -168,7 +172,7 @@ Window {
 
             /* Holds the input field label and the input field itself */
             RowLayout {
-                Text { /* input field label */
+                Text { /* output field label */
                     horizontalAlignment: Text.AlignHCenter
                     rightPadding: 35 // crude way to alight with the top field
                     leftPadding: 10
@@ -178,20 +182,25 @@ Window {
                     font.pixelSize: 20
                 }
 
-                /* input text area */
+                /* output text area */
                 Rectangle {
                     width: 500
                     height: 100
-                    color: "#f3f3f3"
+                    color: "black"
                     border.color: "black"
                     border.width: 2
                     radius: 2
 
                     ScrollView {
                         id: output_text_view
+                        clip: true
+                        anchors.fill: parent
+
                         TextArea {
                             id: output_chars_field
-                            color: "black"
+                            width: parent.width
+                            wrapMode: Text.WordWrap
+                            color: "#00d900"
                             font.family: "ubuntu"
                             font.pixelSize: 23
                             placeholderText: "\n\n\n\n\n\n"
@@ -207,7 +216,21 @@ Window {
                         font.family: "ubuntu"
                         font.pixelSize: 23
 
+                        onClicked: {
+                            output_chars_field.selectAll()
+                            output_chars_field.copy()
+
+                            copy_button.text = "Copied"
+                            copy_button_text.color = "#00d55f"
+                        }
+
+                        onFocusChanged: {
+                            copy_button.text = "Copy"
+                            copy_button_text.color = "#ffffff"
+                        }
+
                         contentItem: Text {
+                            id: copy_button_text
                             text: copy_button.text
                             font: copy_button.font
                             opacity: enabled ? 1.0 : 0.3
@@ -230,32 +253,32 @@ Window {
                     /* end of clear button */
 
                     /* Save to file button */
-                    Button{
-                        id: save_button
-                        text: qsTr("Save")
-                        font.family: "ubuntu"
-                        font.pixelSize: 23
+                    // Button{
+                    //     id: save_button
+                    //     text: qsTr("Save")
+                    //     font.family: "ubuntu"
+                    //     font.pixelSize: 23
 
-                        contentItem: Text {
-                            text: save_button.text
-                            font: save_button.font
-                            opacity: enabled ? 1.0 : 0.3
-                            color: "#ffffff"
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            elide: Text.ElideRight
-                        }
+                    //     contentItem: Text {
+                    //         text: save_button.text
+                    //         font: save_button.font
+                    //         opacity: enabled ? 1.0 : 0.3
+                    //         color: "#ffffff"
+                    //         horizontalAlignment: Text.AlignHCenter
+                    //         verticalAlignment: Text.AlignVCenter
+                    //         elide: Text.ElideRight
+                    //     }
 
-                        background: Rectangle {
-                            implicitWidth: 100
-                            implicitHeight: 40
-                            opacity: enabled ? 1: 0.3
-                            border.color: save_button.down ? "#1c4d4d" : "#4d4d4d"
-                            color: "#636363"
-                            border.width: 2
-                            radius: 2
-                        }
-                    }
+                    //     background: Rectangle {
+                    //         implicitWidth: 100
+                    //         implicitHeight: 40
+                    //         opacity: enabled ? 1: 0.3
+                    //         border.color: save_button.down ? "#1c4d4d" : "#4d4d4d"
+                    //         color: "#636363"
+                    //         border.width: 2
+                    //         radius: 2
+                    //     }
+                    // }
                     /* end of convert button */
 
                 }
@@ -264,5 +287,4 @@ Window {
         }
 
     }
-
 }
