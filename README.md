@@ -364,6 +364,31 @@ The designed camera payload is shown below:
 <img src="./payload/images/payload-complete.png" alt="Shadow flight OBC" />
 
 
+# Communication Protocol
+## CCSDS Telemetry(TM) Space Data Link Protocol 
+This cubesat used a slightly modified version of the CCSDS space data link protocol for telemetry transmission. This section will introduce what it is and describe how this protocol is used for the cubesat. 
+
+### What is CCSDS Space Data Link Protocol
+
+### CCSDS protocol data unit (PDU)
+The image below shows an illustration of the CCSDS space data link protocol with the field names and field sizes as described in the CCSDS standard.
+
+
+
+### Field descriptions 
+The following table contains the field descriptions of the CCSDS PDU. 
+
+### How it is implemented
+For more information on the specific implemetation, please refer to the following 2 files ```ccsds_tm.h``` and ```ccsds_tm.c``` in the ```Inc``` and ```Src``` folders of ```\firmware\OBC``` folder respectively. 
+
+Additionaly, there is a full video below that describes how this protocol was implemented from scratch. 
+
+### Interface with the ground station 
+
+### Data limits and known issues
+
+
+
 ## Related documents
 A list of related documents related to this project are provided below. They include diagrams, schematics,
 design source files, datasheets, 2D diagrams, 3D assembly diagrams, test information and logs etc.

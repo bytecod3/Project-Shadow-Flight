@@ -121,6 +121,7 @@ Window {
                                 let ch = input_str[i]
                                 if(ch !== 'string' || ch !== 1) {
                                     console.log("Input must be a single character or string")
+                                    // todo: handle error better
                                 }
 
                                 let unicode_value = ch.charCodeAt(0)
@@ -129,8 +130,6 @@ Window {
                                 /* append to output string */
                                 output_str += hex_string
                             }
-
-                            console.log("HEX OUT: " + output_str)
 
                             /* display the text */
                             output_chars_field.text = output_str
@@ -195,6 +194,7 @@ Window {
                         id: output_text_view
                         clip: true
                         anchors.fill: parent
+                        width: parent.width
 
                         TextArea {
                             id: output_chars_field

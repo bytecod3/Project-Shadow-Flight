@@ -1,0 +1,30 @@
+This file describes the Modified CCSDS packet
+
+All the following data pointa/octets are contigous
+
+HEADER:
+Transfer frame version NUmber TFVN
+Spacecraft identifier SCID 
+Virtual channel identifier VCID
+
+
+PROTOCOL DATA UNIT:
+   - TELEMETRY TRANSFER FRAME
+      1.
+
+   
+
+
+Frame length 
+
+
+PACKET 
+Packet Version Number (PVN)
+
+Error checking 
+Cyclic redundancy check 
+
+
+The data unit has to be an octect-aligned data unit:
+- total length is a multiple of 8 bits 
+each subfield starts at an octect boundary 
