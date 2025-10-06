@@ -83,6 +83,10 @@ Window {
                             elide: Text.ElideRight
                         }
 
+                        onClicked: {
+                            input_chars_field.text = ""
+                        }
+
                         background: Rectangle {
                             implicitWidth: 100
                             implicitHeight: 40
@@ -101,6 +105,33 @@ Window {
                         text: qsTr("Convert")
                         font.family: "ubuntu"
                         font.pixelSize: 23
+
+                        onClicked: {
+                            console.log(input_chars_field.text)
+
+                            let input_str = input_chars_field.text
+                            let str_len = input_str.length
+                            let output_str = ""
+
+                            for(let i=0; i < str_len; i++) {
+                                let ch = input_str[i]
+                                if(ch !== 'string' || ch !== 1) {
+                                    console.log("Input must be a single character or string")
+                                }
+
+                                let unicode_value = ch.charCodeAt(0)
+                                let hex_string = unicode_value.toString(16)
+
+                                /* append to output string */
+                                output_str += hex_string
+                            }
+
+                            console.log("HEX OUT: " + output_str)
+
+                            /* display the text */
+                            output_chars_field.text = output_str
+
+                        }
 
                         contentItem: Text {
                             text: convert_button.text
