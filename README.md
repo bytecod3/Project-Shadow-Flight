@@ -2,89 +2,153 @@
   <strong>🚧 In Development:</strong> This CubeSat project and its documentation are actively being developed. Expect frequent updates and changes.
 </div>
 
-## Table of Contents
 
-- [Project-Shadow-Flight](#project-shadow-flight)
-  - [Introduction](#introduction)
-    - [Web documentation](#web-documentation)
-    - [Design Videos for visual consumers](#design-videos-for-visual-consumers)
-  - [Motivation](#motivation)
-  - [Mission statement](#mission-statement)
-- [System components](#system-components)
-  - [1. Onboard Computer](#1-onboard-computer)
-    - [Introduction](#introduction-1)
-    - [Functional requirements](#functional-requirements)
-    - [Components of the OBC](#components-of-the-obc)
-  - [2. Sensor Board](#2-sensor-board)
-    - [Introduction](#introduction-2)
-    - [Functional requirements](#functional-requirements-1)
-    - [Communication protocol for sensors](#communication-protocol-for-sensors)
-    - [The PC/104 ISA Bus](#the-pc104-isa-bus)
-    - [My Pin definition](#my-pin-definition)
-  - [3. Attitude Determination and Control](#3-attitude-determination-and-control)
-  - [4. Electrical Power System (EPS)](#4-electrical-power-system-eps)
-    - [Introduction](#introduction-3)
-    - [a) Power consumption of different bus components](#a-power-consumption-of-different-bus-components)
-    - [b) Power generation](#b-power-generation)
-    - [c) Energy storage](#c-energy-storage)
-    - [d) Mission analysis in regards to power](#d-mission-analysis-in-regards-to-power)
-    - [e) EPS Schematics summary](#e-eps-schematics-summary)
-      - [Conversion](#conversion)
-      - [Power Distribution Schemes](#power-distribution-schemes)
-      - [Power supply control](#power-supply-control)
-    - [f) Isolated tests](#f-isolated-tests)
-    - [g) EPS integration and Testing](#g-eps-integration-and-testing)
-      - [Battery and solar panel sizing data](#battery-and-solar-panel-sizing-data)
-- [5. Payload and Mission Design](#5-payload-and-mission-design)
-  - [Payload system requirements](#payload-system-requirements)
-  - [Payload communication interface](#payload-communication-interface)
-  - [Payload PCB](#payload-pcb)
-    - [Tracks](#tracks)
-    - [3D view](#3d-view)
-- [Communication Protocol](#communication-protocol)
-  - [CCSDS Telemetry(TM) Space Data Link Protocol](#ccsds-telemetrytm-space-data-link-protocol)
-    - [What is CCSDS Space Data Link Protocol](#what-is-ccsds-space-data-link-protocol)
-    - [CCSDS protocol data unit (PDU)](#ccsds-protocol-data-unit-pdu)
-    - [Field descriptions](#field-descriptions)
-    - [How it is implemented](#how-it-is-implemented)
-    - [Protocol data frame (PDU)](#protocol-data-frame-pdu)
-      - [1. Primary header](#1-primary-header)
-        - [Transfer Frame Version Number](#transfer-frame-version-number)
-        - [Spacecraft Identifier (SCID)](#spacecraft-identifier-scid)
-      - [CCSDS Transfer Frame Header – Virtual Channel, Control Flag, and Counters](#ccsds-transfer-frame-header--virtual-channel-control-flag-and-counters)
-        - [Virtual Channel Identifier (VCID)](#virtual-channel-identifier-vcid)
-        - [Operational Control Field Flag (OCF Flag)](#operational-control-field-flag-ocf-flag)
-        - [Master Channel Frame Count (MCFC)](#master-channel-frame-count-mcfc)
-        - [Virtual Channel Frame Count (VCFC)](#virtual-channel-frame-count-vcfc)
-        - [Transfer Frame Data Field Status (TFDFS)](#transfer-frame-data-field-status-tfdfs)
-        - [Purpose](#purpose)
-      - [CCSDS Transfer Frame Secondary Header](#ccsds-transfer-frame-secondary-header)
-        - [Overview](#overview)
-        - [Structure](#structure)
-        - [Channel Association](#channel-association)
-        - [Usage Rules](#usage-rules)
-        - [Secondary header data field usage](#secondary-header-data-field-usage)
-      - [Transfer Frame Data Field](#transfer-frame-data-field)
-        - [Overview](#overview-1)
-        - [Field Length](#field-length)
-        - [Field Contents](#field-contents)
-        - [Channel Data Rules](#channel-data-rules)
-        - [Packet Placement](#packet-placement)
-      - [OID (Only Idle Data) Transfer Frames](#oid-only-idle-data-transfer-frames)
-        - [OID Frame Rules](#oid-frame-rules)
-        - [LFSR Initialization](#lfsr-initialization)
-        - [VCID Association](#vcid-association)
-        - [Notes](#notes)
-        - [Idle data](#idle-data)
-      - [Frame Error Control Field (FECF)](#frame-error-control-field-fecf)
-        - [Overview](#overview-2)
-        - [Encoding Procedure](#encoding-procedure)
-    - [Interface with the ground station](#interface-with-the-ground-station)
-    - [Data limits and known issues](#data-limits-and-known-issues)
-- [Related documents](#related-documents)
-- [Relevant videos and resource materials](#relevant-videos-and-resource-materials)
-- [Contribution and support](#contribution-and-support)
-- [Contributors](#contributors)
+<details open>
+  <summary><h2> Table of Contents</h2></summary>
+
+  <ul>
+    <li><a href="#project-shadow-flight">Project-Shadow-Flight</a>
+      <ul>
+        <li><a href="#introduction">Introduction</a>
+          <ul>
+            <li><a href="#web-documentation">Web documentation</a></li>
+            <li><a href="#design-videos-for-visual-consumers">Design Videos for visual consumers</a></li>
+          </ul>
+        </li>
+        <li><a href="#motivation">Motivation</a></li>
+        <li><a href="#mission-statement">Mission statement</a></li>
+      </ul>
+    </li>
+    <li><a href="#system-components">System components</a>
+      <ul>
+        <li><a href="#1-onboard-computer">1. Onboard Computer</a>
+          <ul>
+            <li><a href="#introduction-1">Introduction</a></li>
+            <li><a href="#functional-requirements">Functional requirements</a></li>
+            <li><a href="#components-of-the-obc">Components of the OBC</a></li>
+          </ul>
+        </li>
+        <li><a href="#2-sensor-board">2. Sensor Board</a>
+          <ul>
+            <li><a href="#introduction-2">Introduction</a></li>
+            <li><a href="#functional-requirements-1">Functional requirements</a></li>
+            <li><a href="#communication-protocol-for-sensors">Communication protocol for sensors</a></li>
+            <li><a href="#the-pc104-isa-bus">The PC/104 ISA Bus</a></li>
+            <li><a href="#my-pin-definition">My Pin definition</a></li>
+          </ul>
+        </li>
+        <li><a href="#3-attitude-determination-and-control">3. Attitude Determination and Control</a></li>
+        <li><a href="#4-electrical-power-system-eps">4. Electrical Power System (EPS)</a>
+          <ul>
+            <li><a href="#introduction-3">Introduction</a></li>
+            <li><a href="#a-power-consumption-of-different-bus-components">a) Power consumption of different bus components</a></li>
+            <li><a href="#b-power-generation">b) Power generation</a></li>
+            <li><a href="#c-energy-storage">c) Energy storage</a></li>
+            <li><a href="#d-mission-analysis-in-regards-to-power">d) Mission analysis in regards to power</a></li>
+            <li><a href="#e-eps-schematics-summary">e) EPS Schematics summary</a>
+              <ul>
+                <li><a href="#conversion">Conversion</a></li>
+                <li><a href="#power-distribution-schemes">Power Distribution Schemes</a></li>
+                <li><a href="#power-supply-control">Power supply control</a></li>
+              </ul>
+            </li>
+            <li><a href="#f-isolated-tests">f) Isolated tests</a></li>
+            <li><a href="#g-eps-integration-and-testing">g) EPS integration and Testing</a>
+              <ul>
+                <li><a href="#battery-and-solar-panel-sizing-data">Battery and solar panel sizing data</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#5-payload-and-mission-design">5. Payload and Mission Design</a>
+      <ul>
+        <li><a href="#payload-system-requirements">Payload system requirements</a></li>
+        <li><a href="#payload-communication-interface">Payload communication interface</a></li>
+        <li><a href="#payload-pcb">Payload PCB</a>
+          <ul>
+            <li><a href="#tracks">Tracks</a></li>
+            <li><a href="#3d-view">3D view</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#communication-protocol">Communication Protocol</a>
+      <ul>
+        <li><a href="#ccsds-telemetrytm-space-data-link-protocol">CCSDS Telemetry(TM) Space Data Link Protocol</a>
+          <ul>
+            <li><a href="#what-is-ccsds-space-data-link-protocol">What is CCSDS Space Data Link Protocol</a></li>
+            <li><a href="#ccsds-protocol-data-unit-pdu">CCSDS protocol data unit (PDU)</a></li>
+            <li><a href="#field-descriptions">Field descriptions</a></li>
+            <li><a href="#how-it-is-implemented">How it is implemented</a></li>
+            <li><a href="#protocol-data-frame-pdu">Protocol data frame (PDU)</a>
+              <ul>
+                <li><a href="#1-primary-header">1. Primary header</a>
+                  <ul>
+                    <li><a href="#transfer-frame-version-number">Transfer Frame Version Number</a></li>
+                    <li><a href="#spacecraft-identifier-scid">Spacecraft Identifier (SCID)</a></li>
+                  </ul>
+                </li>
+                <li><a href="#ccsds-transfer-frame-header--virtual-channel-control-flag-and-counters">
+                  CCSDS Transfer Frame Header – Virtual Channel, Control Flag, and Counters
+                </a>
+                  <ul>
+                    <li><a href="#virtual-channel-identifier-vcid">Virtual Channel Identifier (VCID)</a></li>
+                    <li><a href="#operational-control-field-flag-ocf-flag">Operational Control Field Flag (OCF Flag)</a></li>
+                    <li><a href="#master-channel-frame-count-mcfc">Master Channel Frame Count (MCFC)</a></li>
+                    <li><a href="#virtual-channel-frame-count-vcfc">Virtual Channel Frame Count (VCFC)</a></li>
+                    <li><a href="#transfer-frame-data-field-status-tfdfs">Transfer Frame Data Field Status (TFDFS)</a></li>
+                    <li><a href="#purpose">Purpose</a></li>
+                  </ul>
+                </li>
+                <li><a href="#ccsds-transfer-frame-secondary-header">CCSDS Transfer Frame Secondary Header</a>
+                  <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#structure">Structure</a></li>
+                    <li><a href="#channel-association">Channel Association</a></li>
+                    <li><a href="#usage-rules">Usage Rules</a></li>
+                    <li><a href="#secondary-header-data-field-usage">Secondary header data field usage</a></li>
+                  </ul>
+                </li>
+                <li><a href="#transfer-frame-data-field">Transfer Frame Data Field</a>
+                  <ul>
+                    <li><a href="#overview-1">Overview</a></li>
+                    <li><a href="#field-length">Field Length</a></li>
+                    <li><a href="#field-contents">Field Contents</a></li>
+                    <li><a href="#channel-data-rules">Channel Data Rules</a></li>
+                    <li><a href="#packet-placement">Packet Placement</a></li>
+                  </ul>
+                </li>
+                <li><a href="#oid-only-idle-data-transfer-frames">OID (Only Idle Data) Transfer Frames</a>
+                  <ul>
+                    <li><a href="#oid-frame-rules">OID Frame Rules</a></li>
+                    <li><a href="#lfsr-initialization">LFSR Initialization</a></li>
+                    <li><a href="#vcid-association">VCID Association</a></li>
+                    <li><a href="#notes">Notes</a></li>
+                    <li><a href="#idle-data">Idle data</a></li>
+                  </ul>
+                </li>
+                <li><a href="#frame-error-control-field-fecf">Frame Error Control Field (FECF)</a>
+                  <ul>
+                    <li><a href="#overview-2">Overview</a></li>
+                    <li><a href="#encoding-procedure">Encoding Procedure</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="#interface-with-the-ground-station">Interface with the ground station</a></li>
+            <li><a href="#data-limits-and-known-issues">Data limits and known issues</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#related-documents">Related documents</a></li>
+    <li><a href="#relevant-videos-and-resource-materials">Relevant videos and resource materials</a></li>
+    <li><a href="#contribution-and-support">Contribution and support</a></li>
+    <li><a href="#contributors">Contributors</a></li>
+  </ul>
+</details>
 
 
 # Project-Shadow-Flight
@@ -724,5 +788,5 @@ about the project details,
 
 ## Contributors 
 1. Edwin Mwiti
-2. Augustine Gyan
-3. Sebastian Muchui
+2. Augustine Gyan [](https://github.com/augustinegyan)
+3. Sebastian Muchui [](https://github.com/astianmuchui)
