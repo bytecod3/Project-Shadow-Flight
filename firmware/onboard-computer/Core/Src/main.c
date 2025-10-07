@@ -62,6 +62,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdio.h"
+#include "string.h"
+#include "math.h"
+#include "defines.h"
+#include "filter_config.h"
 
 /* USER CODE END Includes */
 
@@ -103,6 +108,184 @@ static void MX_USART6_UART_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
+
+/**
+ * @fn void x_task_create_tasks(const void*)
+ * @brief This function creates all the tasks then self-deletes
+ *
+ * @param argument parameter to the task
+ */
+void x_task_create_tasks(void const* argument);
+
+/**
+ * @fn void x_task_control_onboard_led(const void*)
+ * @brief This task controls the on-board LEDs depending on the state
+ *
+ * @param argument parameter to the task
+ */
+void x_task_control_onboard_led(void const* argument);
+
+/**
+ * @fn void x_task_control_onboard_buzzer(const void*)
+ * @brief
+ *
+ * @param argument parameter to the task
+ */
+void x_task_control_onboard_buzzer(void const* argument);
+
+/**
+ * @fn void x_task_get_watchdog(const void*)
+ * @brief
+ *
+ * @param argument
+ */
+void x_task_get_watchdog(void const* argument);
+
+/**
+ * @fn void x_task_core_fsm_monitor(const void*)
+ * @brief This task monitors the current state of the device and calls relevant action
+ *
+ * @param argument
+ */
+void x_task_core_fsm_monitor(void const* argument);
+
+/**
+ * @fn void x_task_get_heap_memory_stats(const void*)
+ * @brief This task collects the heap memory usage statistics
+ *
+ * @param argument parameter to the task
+ */
+void x_task_get_heap_memory_stats(void const* argument);
+
+/**
+ * @fn void x_task_get_task_stats(const void*)
+ * @brief This task gets information about the tasks currently running
+ *
+ * @param argument
+ */
+void x_task_get_task_stats(void const* argument);
+
+/**
+ * @fn void x_task_read_acceleration(const void*)
+ * @brief Thif task read the pure acceleration from the accelerometer
+ *
+ * @param argument parameter to the task
+ */
+void x_task_read_acceleration(void const* argument);
+
+/**
+ * @fn void x_task_read_imu(const void*)
+ * @brief This task reads the inertial measurement unit
+ *
+ * @param argument
+ */
+void x_task_read_imu(void const* argument);
+
+/**
+ * @fn void x_task_read_magnetometer(const void*)
+ * @brief This task reads the magnetometer/compass
+ *
+ * @param argument
+ */
+void x_task_read_magnetometer(void const* argument);
+
+/**
+ * @fn void x_task_read_temperature(const void*)
+ * @brief This function reads the temperature from the onboard temperature sensor
+ * on the OBC
+ *
+ * @param argument
+ */
+void x_task_read_temperature(void const* argument);
+
+/**
+ * @fn void x_task_sun_sensors(const void*)
+ * @brief This function reads the data from the sun sensors
+ *
+ * @param argument
+ */
+void x_task_sun_sensors(void const* argument);
+
+/**
+ * @fn void x_task_read_GPS(const void*)
+ * @brief This function reads the GPS coordinates
+ *
+ * @param argument
+ */
+void x_task_read_GPS(void const* argument);
+
+/**
+ * @fn void x_task_data_dispatcher(const void*)
+ * @brief This task sends the data to relevant queues
+ *
+ * @param argument
+ */
+void x_task_data_dispatcher(void const* argument);
+
+/**
+ * @fn void x_task_sensor_queue_notify(const void*)
+ * @brief
+ *
+ * @param argument
+ */
+void x_task_sensor_queue_notify(void const* argument);
+
+/**
+ * @fn void x_task_kalman_filter(const void*)
+ * @brief This task filters the sensor data using Kalman Filter
+ *
+ * @param argument
+ */
+void x_task_kalman_filter(void const* argument);
+
+/**
+ * @fn void x_task_median_filter(const void*)
+ * @brief This function filters data using median filter
+ *
+ * @param argument
+ */
+void x_task_median_filter(void const* argument);
+
+/**
+ * @fn void x_task_moving_avg_filter(const void*)
+ * @brief This task filters data using the moving average filter
+ *
+ * @param argument
+ */
+void x_task_moving_avg_filter(void const* argument);
+
+/**
+ * @fn void x_task_complementary_filter(const void*)
+ * @brief This task filters data using complementary filter
+ *
+ * @param argument
+ */
+void x_task_complementary_filter(void const* argument);
+
+/**
+ * @fn void x_task_compose_telemetry_packet(const void*)
+ * @brief This task arranged the telemetry data for transmission to ground
+ *
+ * @param argument
+ */
+void x_task_compose_telemetry_packet(void const* argument);
+
+/**
+ * @fn void x_task_transmit_telemetry(const void*)
+ * @brief This task transmits telemetry packet to ground station
+ *
+ * @param argument
+ */
+void x_task_transmit_telemetry(void const* argument);
+
+/**
+ * @fn void x_task_check_fault(const void*)
+ * @brief This task contantly monitors relevant thresholds to check for faults
+ *
+ * @param argument
+ */
+void x_task_check_fault(void const* argument);
+
 
 /* USER CODE END PFP */
 
@@ -170,7 +353,11 @@ int main(void)
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);			/// create all tasks
+  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */

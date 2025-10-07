@@ -3,14 +3,21 @@ This file describes the Modified CCSDS packet
 All the following data pointa/octets are contigous
 
 HEADER:
-Transfer frame version NUmber TFVN
-Spacecraft identifier SCID 
-Virtual channel identifier VCID
 
 
 PROTOCOL DATA UNIT:
    - TELEMETRY TRANSFER FRAME
-      1.
+      1. Header (6 bytes) - mandatory :
+                  Transfer frame version NUmber TFVN
+                  Spacecraft identifier SCID
+                  Virtual channel identifier VCID
+      2. Secondary header (64 bytes) - optional
+
+      3. Data field (N bytes) - mandatory
+
+      4. Operational control field ((4 bytes)
+
+      5. Frame error control field (2 bytes)
 
    
 
