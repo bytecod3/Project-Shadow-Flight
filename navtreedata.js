@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Project Shadow Flight 1U Cubesat", "index.html", [
+  [ "Project Shadow Flight - A 1U Cubesat", "index.html", [
     [ "Project-Shadow-Flight", "index.html#autotoc_md0", [
       [ "Introduction", "index.html#autotoc_md1", [
         [ "Web documentation", "index.html#autotoc_md2", null ],
@@ -73,11 +73,21 @@ var NAVTREE =
           [ "Tracks", "index.html#autotoc_md38", null ],
           [ "3D view", "index.html#autotoc_md39", null ]
         ] ]
+      ] ]
+    ] ],
+    [ "Communication Protocol", "index.html#autotoc_md40", [
+      [ "CCSDS Telemetry(TM) Space Data Link Protocol", "index.html#autotoc_md41", [
+        [ "What is CCSDS Space Data Link Protocol", "index.html#autotoc_md42", null ],
+        [ "CCSDS protocol data unit (PDU)", "index.html#autotoc_md43", null ],
+        [ "Field descriptions", "index.html#autotoc_md44", null ],
+        [ "How it is implemented", "index.html#autotoc_md45", null ],
+        [ "Interface with the ground station", "index.html#autotoc_md46", null ],
+        [ "Data limits and known issues", "index.html#autotoc_md47", null ]
       ] ],
-      [ "Related documents", "index.html#autotoc_md40", null ],
-      [ "Relevant videos and resource materials", "index.html#autotoc_md41", null ],
-      [ "Contribution and support", "index.html#autotoc_md42", null ],
-      [ "Contributors", "index.html#autotoc_md43", null ]
+      [ "Related documents", "index.html#autotoc_md48", null ],
+      [ "Relevant videos and resource materials", "index.html#autotoc_md49", null ],
+      [ "Contribution and support", "index.html#autotoc_md50", null ],
+      [ "Contributors", "index.html#autotoc_md51", null ]
     ] ]
   ] ]
 ];

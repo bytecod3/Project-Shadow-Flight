@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['readme_2emd_0',['README.md',['../README_8md.html',1,'']]],
-  ['regards_20to_20power_1',['d) Mission analysis in regards to power',['../index.html#autotoc_md26',1,'']]],
-  ['related_20documents_2',['Related documents',['../index.html#autotoc_md40',1,'']]],
-  ['relevant_20videos_20and_20resource_20materials_3',['Relevant videos and resource materials',['../index.html#autotoc_md41',1,'']]],
-  ['requirements_4',['requirements',['../index.html#autotoc_md9',1,'Functional requirements'],['../index.html#autotoc_md13',1,'Functional requirements'],['../index.html#autotoc_md35',1,'Payload system requirements']]],
-  ['resource_20materials_5',['Relevant videos and resource materials',['../index.html#autotoc_md41',1,'']]]
+  ['obc_0',['Components of the OBC',['../index.html#autotoc_md10',1,'']]],
+  ['obc_20width_20400_20height_20400_1',['&lt;img src=&quot;./user-docs/images/pc104-dwg-500.gif&quot; alt=&quot;Shadow flight OBC&quot; width=&quot;400&quot; height=&quot;400&quot;/&gt;',['../index.html#autotoc_md17',1,'']]],
+  ['of_20different_20bus_20components_2',['a) Power consumption of different bus components',['../index.html#autotoc_md23',1,'']]],
+  ['of_20the_20obc_3',['Components of the OBC',['../index.html#autotoc_md10',1,'']]],
+  ['onboard_20computer_4',['1. Onboard Computer',['../index.html#autotoc_md7',1,'']]]
 ];

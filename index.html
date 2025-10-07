@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Project Shadow Flight 1U Cubesat: Project Shadow Flight 1U Cubesat</title>
+<title>Project Shadow Flight - A 1U Cubesat: Project Shadow Flight - A 1U Cubesat</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -31,9 +31,8 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="logo-3.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Project Shadow Flight 1U Cubesat<span id="projectnumber">&#160;v1.0</span>
+   <div id="projectname">Project Shadow Flight - A 1U Cubesat<span id="projectnumber">&#160;v1.0</span>
    </div>
    <div id="projectbrief">1U Cubesat Documentation</div>
   </td>
@@ -104,7 +103,7 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Project Shadow Flight 1U Cubesat </div></div>
+  <div class="headertitle"><div class="title">Project Shadow Flight - A 1U Cubesat </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a> </p><div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;"> <b>🚧 In Development:</b> This CubeSat project and its documentation are actively being developed. Expect frequent updates and changes. </div><h1><a class="anchor" id="autotoc_md0"></a>
@@ -438,10 +437,32 @@ Tracks</h4>
 <h4><a class="anchor" id="autotoc_md39"></a>
 3D view</h4>
 <p><img src="./payload/images/payload-complete.png" alt="Shadow flight OBC" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md40"></a>
+Communication Protocol</h1>
+<h2><a class="anchor" id="autotoc_md41"></a>
+CCSDS Telemetry(TM) Space Data Link Protocol</h2>
+<p>This cubesat used a slightly modified version of the CCSDS space data link protocol for telemetry transmission. This section will introduce what it is and describe how this protocol is used for the cubesat.</p>
+<h3><a class="anchor" id="autotoc_md42"></a>
+What is CCSDS Space Data Link Protocol</h3>
+<h3><a class="anchor" id="autotoc_md43"></a>
+CCSDS protocol data unit (PDU)</h3>
+<p>The image below shows an illustration of the CCSDS space data link protocol with the field names and field sizes as described in the CCSDS standard.</p>
+<p><img src=".images//ccsds-protocol-image.png" alt="ccsds-image" class="inline"/></p>
+<h3><a class="anchor" id="autotoc_md44"></a>
+Field descriptions</h3>
+<p>The following table contains the field descriptions of the CCSDS PDU.</p>
+<h3><a class="anchor" id="autotoc_md45"></a>
+How it is implemented</h3>
+<p>For more information on the specific implemetation, please refer to the following 2 files <code>ccsds_tm.h</code> and <code>ccsds_tm.c</code> in the <code>Inc</code> and <code>Src</code> folders of <code>\firmware\OBC</code> folder respectively.</p>
+<p>Additionaly, there is a full video below that describes how this protocol was implemented from scratch.</p>
+<h3><a class="anchor" id="autotoc_md46"></a>
+Interface with the ground station</h3>
+<h3><a class="anchor" id="autotoc_md47"></a>
+Data limits and known issues</h3>
+<h2><a class="anchor" id="autotoc_md48"></a>
 Related documents</h2>
 <p>A list of related documents related to this project are provided below. They include diagrams, schematics, design source files, datasheets, 2D diagrams, 3D assembly diagrams, test information and logs etc.</p>
-<h2><a class="anchor" id="autotoc_md41"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 Relevant videos and resource materials</h2>
 <ol type="1">
 <li><a href="https://youtu.be/5voQfQOTem8">https://youtu.be/5voQfQOTem8</a> (Build your own satelite)</li>
@@ -452,12 +473,12 @@ Relevant videos and resource materials</h2>
 <li><a href="https://sites.google.com/hawaii.edu/artemiscubesatkit">https://sites.google.com/hawaii.edu/artemiscubesatkit</a></li>
 <li><a href="https://pressbooks-dev.oer.hawaii.edu/epet302/chapter/typical-software/">https://pressbooks-dev.oer.hawaii.edu/epet302/chapter/typical-software/</a></li>
 </ol>
-<h2><a class="anchor" id="autotoc_md42"></a>
+<h2><a class="anchor" id="autotoc_md50"></a>
 Contribution and support</h2>
 <p>This project is not funded by any organization or entity and is solely reliant on out-of-pocket funding. We therefore heed to anyone desiring to contribute, in monetary form, technical advise, links and connections, electronic components, code and schematic design contribution, etc., or even if you are interested in knowing more about the project details, you can reach out to me via this email (<a href="#" onclick="location.href='mai'+'lto:'+'emw'+'it'+'i65'+'8@'+'gma'+'il'+'.co'+'m'; return false;">emwit<span class="obfuscator">.nosp@m.</span>i658<span class="obfuscator">.nosp@m.</span>@gmai<span class="obfuscator">.nosp@m.</span>l.co<span class="obfuscator">.nosp@m.</span>m</a>) and I will get back to you soonest. <br  />
 </p>
 <p>Thank you again for your consideration! Ad Astra!</p>
-<h2><a class="anchor" id="autotoc_md43"></a>
+<h2><a class="anchor" id="autotoc_md51"></a>
 Contributors</h2>
 <ol type="1">
 <li>Edwin Mwiti</li>
