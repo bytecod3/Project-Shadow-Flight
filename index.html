@@ -314,27 +314,26 @@ Table of Contents</summary>
 <a href="#contributors">Contributors</a> </li>
 </ul>
 </details>
-<h1><a class="anchor" id="autotoc_md0"></a>
-Project-Shadow-Flight</h1>
+<h1><a href="#project-shadow-flight">Project-Shadow-Flight</a> </h1>
 <p>"Oh yee space fairer!
 I will write your name on the moon with my fingertips" ~ ESA, EIRSAT-mission</p>
 <p><b>Project Creator:</b> Edwin Mwiti <br  />
  <b>Contact:</b> <a href="#" onclick="location.href='mai'+'lto:'+'emw'+'it'+'i65'+'8@'+'gma'+'il'+'.co'+'m'; return false;">emwit<span class="obfuscator">.nosp@m.</span>i658<span class="obfuscator">.nosp@m.</span>@gmai<span class="obfuscator">.nosp@m.</span>l.co<span class="obfuscator">.nosp@m.</span>m</a> <br  />
  <b>Github:</b> <a href="https://github.com/bytecod3">bytecod3</a></p>
 <p><img src="https://img.shields.io/badge/size-1U-blue" alt="Static Badge" class="inline"/> <img src="https://img.shields.io/badge/status-development-green" alt="Static Badge" class="inline"/> <img src="https://img.shields.io/badge/software-FreeRTOS-orange" alt="Static Badge" class="inline"/> <img src="https://img.shields.io/badge/MCU-STM32-purple" alt="Static Badge" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md1"></a>
+<h2><a class="anchor" id="autotoc_md0"></a>
 Introduction</h2>
 <p><b>Project-Shadow Flight</b> is a homemade 1U cubesat designed and built using FreeRTOS on STM32 framework and COTS components. None of these components are radiation hardened. The primary objective is technology demonstration of an Earth Observation cubesat built from the ground up. This cubesat has a VGA camera onboard to capture geo-referenced low-resolution earth imagery.</p>
-<h3><a class="anchor" id="autotoc_md2"></a>
+<h3><a class="anchor" id="autotoc_md1"></a>
 Web documentation</h3>
 <p>You can find a web friendly documentation format here: <a href="https://bytecod3.github.io/Project-Shadow-Flight/">https://bytecod3.github.io/Project-Shadow-Flight/</a></p>
-<h3><a class="anchor" id="autotoc_md3"></a>
+<h3><a class="anchor" id="autotoc_md2"></a>
 Design Videos for visual consumers</h3>
 <p>If you are more of a visual consumer, I have documented the whole design process in my Youtube channel playlist here: <a href="https://youtu.be/9HoKzI_bBjs?list=PLSQRKAY5h7mGCnkXsugdVSHa72dnC0zQU">Comprehensive Design videos</a></p>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md3"></a>
 Motivation</h2>
 <p>This project was motivated by the curiosity to learn about space systems, especially cubesats, mission softwares and space electronic hardware in general, and try to replicate, within a defined time-frame, a simple yet fully functional cubesat that can be used for demo purposes or even better, through the available channels, be improved for launch!</p>
-<h2><a class="anchor" id="autotoc_md5"></a>
+<h2><a class="anchor" id="autotoc_md4"></a>
 Mission statement</h2>
 <p>The primary mission for this cubesat is Earth Observation (EO). It is designed to operate in the Low Earth Orbit(LEO). It will capture images over a given area, on a sun-synchronous subrecurrent orbit, depending on the received command from ground station. These images are then compressed, stored and transmitted back to ground when a pass over a base station is reached. No image processing is done on board the Cubesate so as to save battery power and processing power for other critical tasks.</p>
 <p>The cubesat is designed to have two major operation modes: <br  />
@@ -343,7 +342,7 @@ Mission statement</h2>
 <li>Mission operation mode</li>
 </ol>
 <p>These two states can be configured and changed accordingly from the ground station.</p>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md5"></a>
 System components</h1>
 <p>A cubesat in general is made up of the following subsystems: <br  />
 </p><ol type="1">
@@ -354,12 +353,12 @@ System components</h1>
 <li>Sensor and Payload System</li>
 <li>Structural and Thermal system</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md6"></a>
 1. Onboard Computer</h2>
-<h3><a class="anchor" id="autotoc_md8"></a>
+<h3><a class="anchor" id="autotoc_md7"></a>
 Introduction</h3>
 <p>The onboard computer performs the housekeeping tasks needed by the cubesat. It is the main link between all the other subsystems used in the cubesat.</p>
-<h3><a class="anchor" id="autotoc_md9"></a>
+<h3><a class="anchor" id="autotoc_md8"></a>
 Functional requirements</h3>
 <p>The following is a list of the functional requirements of the OBC:</p>
 <ol type="1">
@@ -387,7 +386,7 @@ Functional requirements</h3>
  Inhibits must disable power or specific subsystems until conditions for deployment are met (e.g., separation from deployer).</li>
 <li><b>The CubeSat shall include a TRANSCEIVER which includes a Receiver , Transmitter , and Terminal Node Controller (TNC).</b> This will ensure telecommunication link between CubeSat and Ground Station.</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md10"></a>
+<h3><a class="anchor" id="autotoc_md9"></a>
 Components of the OBC</h3>
 <p>The OBC is made up of the following sub-systems:</p><ul>
 <li>STM32F401CCU6</li>
@@ -406,9 +405,9 @@ Components of the OBC</h3>
 <p>The image below shows the memory and debug block diagram used on this cubesat's OBC:</p>
 <p><img src="./user-docs/images/obc-block.jpg" alt="Shadow flight OBC" width="500" height="700" class="inline"/></p>
 <p><b>To note, all the PCBs are equipped with ISA PC/104 connectors to make stacking possible</b></p>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 2. Sensor Board</h2>
-<h3><a class="anchor" id="autotoc_md12"></a>
+<h3><a class="anchor" id="autotoc_md11"></a>
 Introduction</h3>
 <p>The sensor board is responsible for housing the sensors used for environmental monitoring around the cubesat in space. The list of components used in this project's sensor board is as below:</p>
 <ol type="1">
@@ -427,7 +426,7 @@ Introduction</h3>
 <li>Remove before flight switch</li>
 <li>GPS module</li>
 </ol>
-<h3><a class="anchor" id="autotoc_md13"></a>
+<h3><a class="anchor" id="autotoc_md12"></a>
 Functional requirements</h3>
 <ol type="1">
 <li><b>The sensor board shall measure ambient temperature using a digital temperature sensor.</b> <br  />
@@ -457,7 +456,7 @@ Functional requirements</h3>
 </ol>
 <p>The block diagram is shown below:</p>
 <p><img src="./user-docs/images/sensor-board.png" alt="Shadow flight OBC" width="500" height="700" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md14"></a>
+<h3><a class="anchor" id="autotoc_md13"></a>
 Communication protocol for sensors</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -475,7 +474,7 @@ Communication protocol for sensors</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">6   </td><td class="markdownTableBodyNone">Sun sensor   </td><td class="markdownTableBodyNone">ADC   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md15"></a>
+<h3><a class="anchor" id="autotoc_md14"></a>
 The PC/104 ISA Bus</h3>
 <p>This project used the PC/104 standard for communication bus implementation.</p>
 <p>Bigest advantages of this standard:</p><ul>
@@ -490,24 +489,24 @@ The PC/104 ISA Bus</h3>
 <hr  />
 <p>The images below explain the stacking of the PCB boards <em>(credit: Diamond Systems)</em>: <br  />
  </p>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 <img src="./user-docs/images/pc104-dwg-500.gif" alt="Shadow flight OBC" width="400" height="400" class="inline"/></h2>
 <p><img src="./user-docs/images/pc104stack.gif" alt="Shadow flight OBC" width="500" height="700" class="inline"/> <br  />
 </p>
 <hr  />
 <p>Further reference: <a href="https://www.diamondsystems.com/pc104">PC-104 standard reference</a></p>
-<h3><a class="anchor" id="autotoc_md19"></a>
+<h3><a class="anchor" id="autotoc_md18"></a>
 My Pin definition</h3>
 <p>In order to customize the ISA connector to fit what this project uses, I have defined the pins as shown in this pin definition document. Since the project is in progress, these pin assignments are bound to change often:</p>
 <p><a href="https://docs.google.com/spreadsheets/d/11hD9y9vYMRVWSRXsNhsD9LqnLeL-uE_WEjQZ-0ekRwc/edit?usp=sharing" target="_blank">Shadow-Flight-PC/104 BUS </a></p>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md19"></a>
 3. Attitude Determination and Control</h2>
 <div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;"> <b>🚧 In Development</b> </div><p> This system is responsible for receiving attitude data from sensors and acting on it in realtime to control the attitude(orientation ) of the satellite. This is mainly implemented in software as the diagram below depicts.</p>
 <p>The signals produced are fed into ana actuator or tticde coontrol,</p>
 <p>Data from the sensors is read, then passed to the ADCS algorithm.</p>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 4. Electrical Power System (EPS)</h2>
-<div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;"> <b>🚧 In Development</b> </div> <h3><a class="anchor" id="autotoc_md22"></a>
+<div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;"> <b>🚧 In Development</b> </div> <h3><a class="anchor" id="autotoc_md21"></a>
 Introduction</h3>
 <p>The EPS is responsible for the following functions:</p><ul>
 <li>Energy generation</li>
@@ -525,34 +524,34 @@ Introduction</h3>
 7. Conduct tests on isolated components 
 8. Conduct tests on integrated components 
 </pre><p>There is a lot that can be discussed in respect to EPS but I have tried to be consise and to the point in the summaries below:</p>
-<h3><a class="anchor" id="autotoc_md23"></a>
+<h3><a class="anchor" id="autotoc_md22"></a>
 a) Power consumption of different bus components</h3>
-<h3><a class="anchor" id="autotoc_md24"></a>
+<h3><a class="anchor" id="autotoc_md23"></a>
 b) Power generation</h3>
-<h3><a class="anchor" id="autotoc_md25"></a>
+<h3><a class="anchor" id="autotoc_md24"></a>
 c) Energy storage</h3>
-<h3><a class="anchor" id="autotoc_md26"></a>
+<h3><a class="anchor" id="autotoc_md25"></a>
 d) Mission analysis in regards to power</h3>
-<h3><a class="anchor" id="autotoc_md27"></a>
+<h3><a class="anchor" id="autotoc_md26"></a>
 e) EPS Schematics summary</h3>
-<h4><a class="anchor" id="autotoc_md28"></a>
+<h4><a class="anchor" id="autotoc_md27"></a>
 Conversion</h4>
-<h4><a class="anchor" id="autotoc_md29"></a>
+<h4><a class="anchor" id="autotoc_md28"></a>
 Power Distribution Schemes</h4>
-<h4><a class="anchor" id="autotoc_md30"></a>
+<h4><a class="anchor" id="autotoc_md29"></a>
 Power supply control</h4>
-<h3><a class="anchor" id="autotoc_md31"></a>
+<h3><a class="anchor" id="autotoc_md30"></a>
 f) Isolated tests</h3>
-<h3><a class="anchor" id="autotoc_md32"></a>
+<h3><a class="anchor" id="autotoc_md31"></a>
 g) EPS integration and Testing</h3>
-<h4><a class="anchor" id="autotoc_md33"></a>
+<h4><a class="anchor" id="autotoc_md32"></a>
 Battery and solar panel sizing data</h4>
 <p>During design, the selection criteria for the battery and solar panel is detailed in this spreadsheet: <a href="https://docs.google.com/spreadsheets/d/1j73pPU9ySfrlBch6TJMzdRGcuBdh9BN55jUy6Fb-AV4/edit?usp=sharing">https://docs.google.com/spreadsheets/d/1j73pPU9ySfrlBch6TJMzdRGcuBdh9BN55jUy6Fb-AV4/edit?usp=sharing</a></p>
-<h1><a class="anchor" id="autotoc_md34"></a>
+<h1><a class="anchor" id="autotoc_md33"></a>
 5. Payload and Mission Design</h1>
 <p>The payload system of the cubesat is responsible for carrying out the primary mission objective. Everything else designed so far is for the sole purpose of supporting the mission objective.</p>
 <p>Our primary payload is a color VGA camera, since this is an earth observation cubesat.</p>
-<h3><a class="anchor" id="autotoc_md35"></a>
+<h3><a class="anchor" id="autotoc_md34"></a>
 Payload system requirements</h3>
 <ol type="1">
 <li><b>Mission Objectives</b><ul>
@@ -630,41 +629,41 @@ Payload system requirements</h3>
 <p>The payload system is designed as a daughter-board mounted on the OBC via M3 screw connector with standoffs. The wired connection is made via a JST header pin. This header pin supplies the necessary power, control and communication signals to and from the Payload System.</p>
 <p>This simple block diagram is shown below:</p>
 <p><img src="./payload/images/payload-structure.png" alt="Shadow flight OBC" width="500" height="420" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md36"></a>
+<h3><a class="anchor" id="autotoc_md35"></a>
 Payload communication interface</h3>
 <p>The image below shows the camera payload system designed using STM32F407VTG MCU that has a Digital Camera Interface (DCMI) solely dedicated for handling CMOS sensors such as the OV7670 camera module. This communication is done via 8 bit parallel interface, to receive video data.</p>
 <p>This MCU also has modes that allow us to to have either continous mode or snapshot mode to take still images.</p>
 <p><img src="./payload/images/camera-payload.png" alt="Shadow flight OBC" width="500" height="420" class="inline"/></p>
 <p>The LCD shown in the above schematic will not be used on the actual satelite, but a connector is placed on teh payload PCB to help during ground testing and confirm the images we are taking.</p>
-<h2><a class="anchor" id="autotoc_md37"></a>
+<h2><a class="anchor" id="autotoc_md36"></a>
 Payload PCB</h2>
 <p>The designed camera payload is shown below: </p>
-<h4><a class="anchor" id="autotoc_md38"></a>
+<h4><a class="anchor" id="autotoc_md37"></a>
 Tracks</h4>
 <p><img src="./payload/images/payload-tracks.png" alt="Shadow flight OBC" class="inline"/></p>
-<h4><a class="anchor" id="autotoc_md39"></a>
+<h4><a class="anchor" id="autotoc_md38"></a>
 3D view</h4>
 <p><img src="./payload/images/payload-complete.png" alt="Shadow flight OBC" class="inline"/></p>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md39"></a>
 Communication Protocol</h1>
-<h2><a class="anchor" id="autotoc_md41"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 CCSDS Telemetry(TM) Space Data Link Protocol</h2>
 <p>This cubesat used a slightly modified version of the CCSDS space data link protocol for telemetry transmission. This section will introduce what it is and describe how this protocol is used for the cubesat.</p>
-<h3><a class="anchor" id="autotoc_md42"></a>
+<h3><a class="anchor" id="autotoc_md41"></a>
 What is CCSDS Space Data Link Protocol</h3>
 <p>The CCSDS Space Data Link Protocol defines how data is packaged and transmitted between a CubeSat and its ground station. It specifies the structure of Transfer Frames: standardized data units that carry telemetry, science data, and control information over the radio link. By following CCSDS, CubeSats use the same reliable communication principles as larger spacecraft, ensuring data integrity, synchronization, and compatibility with ground systems used by space agencies and universities. In practice, this protocol governs how the CubeSat’s onboard computer organizes data before sending it to Earth, and how the ground station interprets and validates that data upon reception.</p>
-<h3><a class="anchor" id="autotoc_md43"></a>
+<h3><a class="anchor" id="autotoc_md42"></a>
 CCSDS protocol data unit (PDU)</h3>
 <p>The image below shows an illustration of the CCSDS space data link protocol with the field names and field sizes as described in the CCSDS standard.</p>
 <p><img src=".images//ccsds-protocol-image.png" alt="ccsds-image" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md44"></a>
+<h3><a class="anchor" id="autotoc_md43"></a>
 Field descriptions</h3>
 <p>The following table contains the field descriptions of the CCSDS PDU.</p>
-<h3><a class="anchor" id="autotoc_md45"></a>
+<h3><a class="anchor" id="autotoc_md44"></a>
 How it is implemented</h3>
 <p>For more information on the specific implemetation, please refer to the following 2 files <code>ccsds_tm.h</code> and <code>ccsds_tm.c</code> in the <code>Inc</code> and <code>Src</code> folders of <code>\firmware\OBC</code> folder respectively.</p>
 <p>Additionaly, there is a full video below that describes how this protocol was implemented from scratch. This protocol is implemented without the SDLS (Space Data Link Security) feature, which will be implemented later. This section describes what each field stands for and how it is used in comms for this cubesat:</p>
-<h3><a class="anchor" id="autotoc_md46"></a>
+<h3><a class="anchor" id="autotoc_md45"></a>
 Protocol data frame (PDU)</h3>
 <p>A telemetry data frame contains the following:</p>
 <table class="markdownTable">
@@ -682,7 +681,7 @@ Protocol data frame (PDU)</h3>
 <td class="markdownTableBodyNone"><b>Frame Error Control Field</b>   </td><td class="markdownTableBodyNone">2   </td><td class="markdownTableBodyNone">Yes   </td><td class="markdownTableBodyNone">Holds the CRC or checksum for error detection.   </td></tr>
 </table>
 <hr  />
-<h4><a class="anchor" id="autotoc_md48"></a>
+<h4><a class="anchor" id="autotoc_md47"></a>
 1. Primary header</h4>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -700,7 +699,7 @@ Protocol data frame (PDU)</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><b>Transfer Frame Data Field Status</b>   </td><td class="markdownTableBodyNone">2 octets (16 bits)   </td><td class="markdownTableBodyNone">Yes   </td><td class="markdownTableBodyNone">Provides status information related to the data field (e.g., synchronization, packet order).   </td></tr>
 </table>
-<h4><a class="anchor" id="autotoc_md49"></a>
+<h4><a class="anchor" id="autotoc_md48"></a>
 Transfer Frame Version Number</h4>
 <ul>
 <li>Bits <b>0–1</b> of the Transfer Frame Primary Header represent the <b>Transfer Frame Version Number</b>. <br  />
@@ -711,7 +710,7 @@ Transfer Frame Version Number</h4>
 </li>
 <li>Although Telemetry (TM) and Telecommand (TC) frames share the same version number, they can still be distinguished by their <b>Attached Sync Marker</b> or <b>Start Sequence</b> at the physical layer.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md50"></a>
+<h4><a class="anchor" id="autotoc_md49"></a>
 Spacecraft Identifier (SCID)</h4>
 <ul>
 <li>Bits <b>2–11</b> of the Primary Header contain the <b>Spacecraft Identifier (SCID)</b>. <br  />
@@ -725,9 +724,9 @@ Spacecraft Identifier (SCID)</h4>
 <li>The same SCID value may be reused by another spacecraft operating in a <b>different frequency band</b>.</li>
 </ul>
 <p>For this cubesat, I will use a self-assigned SCID.</p>
-<h3><a class="anchor" id="autotoc_md51"></a>
+<h3><a class="anchor" id="autotoc_md50"></a>
 CCSDS Transfer Frame Header – Virtual Channel, Control Flag, and Counters</h3>
-<h4><a class="anchor" id="autotoc_md52"></a>
+<h4><a class="anchor" id="autotoc_md51"></a>
 Virtual Channel Identifier (VCID)</h4>
 <ul>
 <li>The <b>Virtual Channel Identifier</b> specifies which Virtual Channel the frame belongs to. <br  />
@@ -738,7 +737,7 @@ Virtual Channel Identifier (VCID)</h4>
 </li>
 <li>Each Virtual Channel allows data from different onboard sources (e.g., OBC, ADCS, Payload) to be multiplexed over the same Master Channel.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md53"></a>
+<h4><a class="anchor" id="autotoc_md52"></a>
 Operational Control Field Flag (OCF Flag)</h4>
 <ul>
 <li><b>Bit 15</b> of the Transfer Frame Primary Header contains the <b>Operational Control Field Flag</b>. <br  />
@@ -753,7 +752,7 @@ Operational Control Field Flag (OCF Flag)</h4>
 </li>
 <li>The OCF Flag remains <b>constant</b> within a given Master or Virtual Channel for the duration of a mission phase.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md54"></a>
+<h4><a class="anchor" id="autotoc_md53"></a>
 Master Channel Frame Count (MCFC)</h4>
 <ul>
 <li><b>Bits 16–23</b> of the Primary Header hold the <b>Master Channel Frame Count</b>. <br  />
@@ -766,7 +765,7 @@ Master Channel Frame Count (MCFC)</h4>
 </li>
 <li>If the counter is reset unexpectedly, continuity of the frame sequence cannot be guaranteed.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md55"></a>
+<h4><a class="anchor" id="autotoc_md54"></a>
 Virtual Channel Frame Count (VCFC)</h4>
 <ul>
 <li><b>Bits 24–31</b> of the Primary Header hold the <b>Virtual Channel Frame Count</b>. <br  />
@@ -775,7 +774,7 @@ Virtual Channel Frame Count (VCFC)</h4>
 </li>
 <li>The VCFC allows the receiver to check for missing or reordered frames within the same Virtual Channel.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md56"></a>
+<h4><a class="anchor" id="autotoc_md55"></a>
 Transfer Frame Data Field Status (TFDFS)</h4>
 <ul>
 <li><b>Bits 32–47</b> of the Transfer Frame Primary Header contain the <b>Transfer Frame Data Field Status</b> field. <br  />
@@ -802,7 +801,7 @@ Transfer Frame Data Field Status (TFDFS)</h4>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><b>Reserved / Spare</b>   </td><td class="markdownTableBodyNone">Remaining bits   </td><td class="markdownTableBodyNone">Reserved for future use; typically set to zero.   </td></tr>
 </table>
-<h4><a class="anchor" id="autotoc_md57"></a>
+<h4><a class="anchor" id="autotoc_md56"></a>
 Purpose</h4>
 <ul>
 <li>Provides the <b>receiver</b> with context for reconstructing packets from multiple transfer frames. <br  />
@@ -811,12 +810,12 @@ Purpose</h4>
 </li>
 <li>Ensures that higher-level telemetry processing software (e.g., the ground segment) can reassemble CCSDS packets accurately, even when frames arrive out of order or with gaps.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md58"></a>
+<h3><a class="anchor" id="autotoc_md57"></a>
 CCSDS Transfer Frame Secondary Header</h3>
-<h4><a class="anchor" id="autotoc_md59"></a>
+<h4><a class="anchor" id="autotoc_md58"></a>
 Overview</h4>
 <p>The <b>Transfer Frame Secondary Header</b> is <b>optional</b>, and its <b>presence or absence</b> is indicated by the <b>Transfer Frame Secondary Header Flag</b> in the <b>Primary Header</b> (see Section 4.1.2.7.2).</p>
-<h4><a class="anchor" id="autotoc_md60"></a>
+<h4><a class="anchor" id="autotoc_md59"></a>
 Structure</h4>
 <p>If present, the Secondary Header shall consist of an <b>integral number of octets</b> organized as follows:</p>
 <table class="markdownTable">
@@ -827,7 +826,7 @@ Structure</h4>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><b>Transfer Frame Secondary Header Data Field</b>   </td><td class="markdownTableBodyNone">1–63 octets   </td><td class="markdownTableBodyNone">Mandatory   </td><td class="markdownTableBodyNone">Contains additional header data defined by the mission or application.   </td></tr>
 </table>
-<h4><a class="anchor" id="autotoc_md61"></a>
+<h4><a class="anchor" id="autotoc_md60"></a>
 Channel Association</h4>
 <ul>
 <li>The <b>Secondary Header</b> shall be associated with <b>either</b> a <b>Master Channel</b> or a <b>Virtual Channel</b>. <br  />
@@ -842,22 +841,22 @@ Channel Association</h4>
 <li>Association with a <b>Virtual Channel</b> allows data transfer synchronized with that Virtual Channel. </li>
 </ul>
 </blockquote>
-<h4><a class="anchor" id="autotoc_md62"></a>
+<h4><a class="anchor" id="autotoc_md61"></a>
 Usage Rules</h4>
 <ul>
 <li>If present, the Secondary Header must appear in <b>every Transfer Frame</b> transmitted through the associated <b>Master</b> or <b>Virtual Channel</b> during a <b>Mission Phase</b>. <br  />
 </li>
 <li>The structure and meaning of the Secondary Header contents are typically <b>mission-specific</b> and defined by higher-level standards or user design.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md63"></a>
+<h4><a class="anchor" id="autotoc_md62"></a>
 Secondary header data field usage</h4>
 <p>For synchronization, I pack the following data into the secondary header: <br  />
- </p><div class="fragment"> </div><!-- fragment --><h3><a class="anchor" id="autotoc_md64"></a>
+ </p><div class="fragment"> </div><!-- fragment --><h3><a class="anchor" id="autotoc_md63"></a>
 Transfer Frame Data Field</h3>
-<h4><a class="anchor" id="autotoc_md65"></a>
+<h4><a class="anchor" id="autotoc_md64"></a>
 Overview</h4>
 <p>The <b>Transfer Frame Data Field</b> immediately follows the <b>Primary Header</b> or, if present, the <b>Secondary Header</b>, without any gap.</p>
-<h4><a class="anchor" id="autotoc_md66"></a>
+<h4><a class="anchor" id="autotoc_md65"></a>
 Field Length</h4>
 <p>The <b>Transfer Frame Data Field</b> has a <b>variable length</b> (an integer number of octets) determined by:</p>
 <blockquote class="doxtable">
@@ -865,14 +864,14 @@ Field Length</h4>
  (Fixed Transfer Frame Length for the Physical Channel) <br  />
  − (Length of Primary Header + Length of Secondary Header + Length of Trailer if present) </p>
 </blockquote>
-<h4><a class="anchor" id="autotoc_md67"></a>
+<h4><a class="anchor" id="autotoc_md66"></a>
 Field Contents</h4>
 <p>The <b>Transfer Frame Data Field</b> shall contain one of the following:</p><ul>
 <li><b>Packets</b></li>
 <li><b>One Virtual Channel Access Service Data Unit (VCA_SDU)</b></li>
 <li><b>Idle Data</b></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md68"></a>
+<h4><a class="anchor" id="autotoc_md67"></a>
 Channel Data Rules</h4>
 <ul>
 <li>A <b>Virtual Channel</b> shall <b>not</b> mix <b>Packets</b> and <b>VCA_SDUs</b>. <br  />
@@ -881,7 +880,7 @@ Channel Data Rules</h4>
 </li>
 <li>The type of data (Packets or VCA_SDUs) for a given Virtual Channel is <b>defined by management</b> and remains <b>static throughout a Mission Phase</b>.</li>
 </ul>
-<h4><a class="anchor" id="autotoc_md69"></a>
+<h4><a class="anchor" id="autotoc_md68"></a>
 Packet Placement</h4>
 <p>When <b>Packets</b> are contained in the Data Field:</p><ul>
 <li>They shall be <b>inserted contiguously</b> and in <b>forward order</b>.</li>
@@ -895,11 +894,11 @@ Packet Placement</h4>
 <p><b>Note:</b> This behavior supports segmentation of large data packets across multiple frames. </p>
 </blockquote>
 <hr  />
-<h3><a class="anchor" id="autotoc_md71"></a>
+<h3><a class="anchor" id="autotoc_md70"></a>
 OID (Only Idle Data) Transfer Frames</h3>
 <p>If insufficient data (Packets or VCA_SDUs) are available when a frame is ready for transmission, a <b>Transfer Frame containing only Idle Data</b> is sent. <br  />
  Such a frame is called an <b>OID Transfer Frame</b>.</p>
-<h4><a class="anchor" id="autotoc_md72"></a>
+<h4><a class="anchor" id="autotoc_md71"></a>
 OID Frame Rules</h4>
 <ul>
 <li>The <b>First Header Pointer</b> shall be set to <code>11111111110</code>. <br  />
@@ -910,7 +909,7 @@ OID Frame Rules</h4>
 <p><b>Polynomial:</b> <br  />
  D⁰ + D¹ + D² + D²² + D³² </p>
 </blockquote>
-<h4><a class="anchor" id="autotoc_md73"></a>
+<h4><a class="anchor" id="autotoc_md72"></a>
 LFSR Initialization</h4>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -925,10 +924,10 @@ LFSR Initialization</h4>
  The first 10 bytes of the OID data pattern (hexadecimal): <br  />
  <code>FF FF FF FF 6D B6 D8 61 45 1F</code> </p>
 </blockquote>
-<h4><a class="anchor" id="autotoc_md74"></a>
+<h4><a class="anchor" id="autotoc_md73"></a>
 VCID Association</h4>
 <p>The <b>VCID</b> (Virtual Channel Identifier) of an <b>OID Transfer Frame</b> shall correspond to one of the VCIDs used for transmitting <b>Packets</b>.</p>
-<h4><a class="anchor" id="autotoc_md75"></a>
+<h4><a class="anchor" id="autotoc_md74"></a>
 Notes</h4>
 <ol type="1">
 <li>The <b>Data Field</b> of an OID frame contains only <b>Idle Data</b>, but the <b>Secondary Header</b> or <b>Operational Control Field</b> may still carry valid data depending on the Virtual Channel. <br  />
@@ -941,19 +940,19 @@ Notes</h4>
 </li>
 <li>A random PN sequence ensures sufficient <b>bit randomness</b> to prevent <b>frame-reception issues</b> caused by repetitive patterns.</li>
 </ol>
-<h4><a class="anchor" id="autotoc_md76"></a>
+<h4><a class="anchor" id="autotoc_md75"></a>
 Idle data</h4>
 <p>OID (ony idle data), transfer frame is a placeholder transmitted when the spacecraft must keep sending frames at a fixed rate but there are no real data packets to be sent at that time, so instead of stopping transmission or leaving channel idle, the system sends an OID frame filled with pseudo-random data (idle data).</p>
 <p>Analogous to heartbeat packets to jeep the system link alive and synchronized until data is ready.</p>
 <p>For this cubesat, this is rarely achieved because the data rate designed is fixed, and based on the architecture used in this cubesat, it is always guaranteed to have data avaliable in the telemetry packet by the time data transmission is reached.</p>
-<h3><a class="anchor" id="autotoc_md77"></a>
+<h3><a class="anchor" id="autotoc_md76"></a>
 Frame Error Control Field (FECF)</h3>
-<h4><a class="anchor" id="autotoc_md78"></a>
+<h4><a class="anchor" id="autotoc_md77"></a>
 Overview</h4>
 <p>The <b>Frame Error Control Field (FECF)</b> is a <b>16-bit (2-byte)</b> optional field appended to the <b>end of a Transfer Frame</b>. <br  />
  It is used to <b>detect transmission errors</b> by applying a <b>Cyclic Redundancy Check (CRC)</b> algorithm over the frame data.</p>
 <hr  />
-<h4><a class="anchor" id="autotoc_md80"></a>
+<h4><a class="anchor" id="autotoc_md79"></a>
 Encoding Procedure</h4>
 <p>The FECF is generated using a <b>CRC-16</b> procedure. The encoding process works as follows:</p>
 <ol type="1">
@@ -965,14 +964,14 @@ Encoding Procedure</h4>
 </ol>
 <p>This produces a <b>systematic binary block code</b> of total length <code>n</code> bits, where:</p>
 <p>For project shadow flight, I make this field mandatory so as to detect anytransmission errors in every data frame.</p>
-<h3><a class="anchor" id="autotoc_md81"></a>
+<h3><a class="anchor" id="autotoc_md80"></a>
 Interface with the ground station</h3>
-<h3><a class="anchor" id="autotoc_md82"></a>
+<h3><a class="anchor" id="autotoc_md81"></a>
 Data limits and known issues</h3>
-<h2><a class="anchor" id="autotoc_md83"></a>
+<h2><a class="anchor" id="autotoc_md82"></a>
 Related documents</h2>
 <p>A list of related documents related to this project are provided below. They include diagrams, schematics, design source files, datasheets, 2D diagrams, 3D assembly diagrams, test information and logs etc.</p>
-<h2><a class="anchor" id="autotoc_md84"></a>
+<h2><a class="anchor" id="autotoc_md83"></a>
 Relevant videos and resource materials</h2>
 <ol type="1">
 <li><a href="https://youtu.be/5voQfQOTem8">https://youtu.be/5voQfQOTem8</a> (Build your own satelite)</li>
@@ -983,12 +982,12 @@ Relevant videos and resource materials</h2>
 <li><a href="https://sites.google.com/hawaii.edu/artemiscubesatkit">https://sites.google.com/hawaii.edu/artemiscubesatkit</a></li>
 <li><a href="https://pressbooks-dev.oer.hawaii.edu/epet302/chapter/typical-software/">https://pressbooks-dev.oer.hawaii.edu/epet302/chapter/typical-software/</a></li>
 </ol>
-<h2><a class="anchor" id="autotoc_md85"></a>
+<h2><a class="anchor" id="autotoc_md84"></a>
 Contribution and support</h2>
 <p>This project is not funded by any organization or entity and is solely reliant on out-of-pocket funding. We therefore heed to anyone desiring to contribute, in monetary form, technical advise, links and connections, electronic components, code and schematic design contribution, etc., or even if you are interested in knowing more about the project details, you can reach out to me via this email (<a href="#" onclick="location.href='mai'+'lto:'+'emw'+'it'+'i65'+'8@'+'gma'+'il'+'.co'+'m'; return false;">emwit<span class="obfuscator">.nosp@m.</span>i658<span class="obfuscator">.nosp@m.</span>@gmai<span class="obfuscator">.nosp@m.</span>l.co<span class="obfuscator">.nosp@m.</span>m</a>) and I will get back to you soonest. <br  />
 </p>
 <p>Thank you again for your consideration! Ad Astra!</p>
-<h2><a class="anchor" id="autotoc_md86"></a>
+<h2><a class="anchor" id="autotoc_md85"></a>
 Contributors</h2>
 <ol type="1">
 <li>Edwin Mwiti</li>
