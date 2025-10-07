@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Project Shadow Flight 1U Cubesat", "index.html", [
+  [ "Project Shadow Flight - A 1U Cubesat", "index.html", [
     [ "Project-Shadow-Flight", "index.html#autotoc_md0", [
       [ "Introduction", "index.html#autotoc_md1", [
         [ "Web documentation", "index.html#autotoc_md2", null ],
@@ -45,7 +45,7 @@ var NAVTREE =
         [ "Communication protocol for sensors", "index.html#autotoc_md14", null ],
         [ "The PC/104 ISA Bus", "index.html#autotoc_md15", null ]
       ] ],
-      [ "<img src=\"./user-docs/images/pc104-dwg-500.gif\" alt=\"Shadow flight OBC\" width=\"400\" height=\"400\" class=\"inline\"/>", "index.html#autotoc_md17", [
+      [ "<img src=\"./user-docs/images/pc104-dwg-500.gif\" alt=\"Shadow flight OBC\" width=\"400\" height=\"400\"/>", "index.html#autotoc_md17", [
         [ "My Pin definition", "index.html#autotoc_md19", null ]
       ] ],
       [ "3. Attitude Determination and Control", "index.html#autotoc_md20", null ],
@@ -67,10 +67,27 @@ var NAVTREE =
       ] ]
     ] ],
     [ "5. Payload and Mission Design", "index.html#autotoc_md34", [
-      [ "Related documents", "index.html#autotoc_md37", null ],
-      [ "Relevent videos and resource materials", "index.html#autotoc_md38", null ],
-      [ "Contribution and support", "index.html#autotoc_md39", null ],
-      [ "Contributors", "index.html#autotoc_md40", null ]
+      [ "Payload PCB", "index.html#autotoc_md37", [
+        [ "Payload system requirements", "index.html#autotoc_md35", null ],
+        [ "Payload communication interface", "index.html#autotoc_md36", [
+          [ "Tracks", "index.html#autotoc_md38", null ],
+          [ "3D view", "index.html#autotoc_md39", null ]
+        ] ]
+      ] ]
+    ] ],
+    [ "Communication Protocol", "index.html#autotoc_md40", [
+      [ "CCSDS Telemetry(TM) Space Data Link Protocol", "index.html#autotoc_md41", [
+        [ "What is CCSDS Space Data Link Protocol", "index.html#autotoc_md42", null ],
+        [ "CCSDS protocol data unit (PDU)", "index.html#autotoc_md43", null ],
+        [ "Field descriptions", "index.html#autotoc_md44", null ],
+        [ "How it is implemented", "index.html#autotoc_md45", null ],
+        [ "Interface with the ground station", "index.html#autotoc_md46", null ],
+        [ "Data limits and known issues", "index.html#autotoc_md47", null ]
+      ] ],
+      [ "Related documents", "index.html#autotoc_md48", null ],
+      [ "Relevant videos and resource materials", "index.html#autotoc_md49", null ],
+      [ "Contribution and support", "index.html#autotoc_md50", null ],
+      [ "Contributors", "index.html#autotoc_md51", null ]
     ] ]
   ] ]
 ];
@@ -80,6 +97,5 @@ var NAVTREEINDEX =
 "index.html"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronization';
-var SYNCOFFMSG = 'click to enable panel synchronization';
-var LISTOFALLMEMBERS = 'List of all members';
+var SYNCONMSG = 'click to disable panel synchronisation';
+var SYNCOFFMSG = 'click to enable panel synchronisation';

@@ -1,21 +1,18 @@
 var indexSectionsWithContent =
 {
-  0: "12345abcdefgimoprstvw",
-  1: "r",
-  2: "12345abcdefgimoprstvw"
+  0: "r",
+  1: "r"
 };
 
 var indexSectionNames =
 {
   0: "all",
-  1: "files",
-  2: "pages"
+  1: "files"
 };
 
 var indexSectionLabels =
 {
   0: "All",
-  1: "Files",
-  2: "Pages"
+  1: "Files"
 };
 

@@ -373,6 +373,7 @@ This cubesat used a slightly modified version of the CCSDS space data link proto
 ### CCSDS protocol data unit (PDU)
 The image below shows an illustration of the CCSDS space data link protocol with the field names and field sizes as described in the CCSDS standard.
 
+![ccsds-image](.images//ccsds-protocol-image.png)
 
 
 ### Field descriptions 
@@ -386,7 +387,6 @@ Additionaly, there is a full video below that describes how this protocol was im
 ### Interface with the ground station 
 
 ### Data limits and known issues
-
 
 
 ## Related documents
