@@ -2,6 +2,91 @@
   <strong>🚧 In Development:</strong> This CubeSat project and its documentation are actively being developed. Expect frequent updates and changes.
 </div>
 
+## Table of Contents
+
+- [Project-Shadow-Flight](#project-shadow-flight)
+  - [Introduction](#introduction)
+    - [Web documentation](#web-documentation)
+    - [Design Videos for visual consumers](#design-videos-for-visual-consumers)
+  - [Motivation](#motivation)
+  - [Mission statement](#mission-statement)
+- [System components](#system-components)
+  - [1. Onboard Computer](#1-onboard-computer)
+    - [Introduction](#introduction-1)
+    - [Functional requirements](#functional-requirements)
+    - [Components of the OBC](#components-of-the-obc)
+  - [2. Sensor Board](#2-sensor-board)
+    - [Introduction](#introduction-2)
+    - [Functional requirements](#functional-requirements-1)
+    - [Communication protocol for sensors](#communication-protocol-for-sensors)
+    - [The PC/104 ISA Bus](#the-pc104-isa-bus)
+    - [My Pin definition](#my-pin-definition)
+  - [3. Attitude Determination and Control](#3-attitude-determination-and-control)
+  - [4. Electrical Power System (EPS)](#4-electrical-power-system-eps)
+    - [Introduction](#introduction-3)
+    - [a) Power consumption of different bus components](#a-power-consumption-of-different-bus-components)
+    - [b) Power generation](#b-power-generation)
+    - [c) Energy storage](#c-energy-storage)
+    - [d) Mission analysis in regards to power](#d-mission-analysis-in-regards-to-power)
+    - [e) EPS Schematics summary](#e-eps-schematics-summary)
+      - [Conversion](#conversion)
+      - [Power Distribution Schemes](#power-distribution-schemes)
+      - [Power supply control](#power-supply-control)
+    - [f) Isolated tests](#f-isolated-tests)
+    - [g) EPS integration and Testing](#g-eps-integration-and-testing)
+      - [Battery and solar panel sizing data](#battery-and-solar-panel-sizing-data)
+- [5. Payload and Mission Design](#5-payload-and-mission-design)
+  - [Payload system requirements](#payload-system-requirements)
+  - [Payload communication interface](#payload-communication-interface)
+  - [Payload PCB](#payload-pcb)
+    - [Tracks](#tracks)
+    - [3D view](#3d-view)
+- [Communication Protocol](#communication-protocol)
+  - [CCSDS Telemetry(TM) Space Data Link Protocol](#ccsds-telemetrytm-space-data-link-protocol)
+    - [What is CCSDS Space Data Link Protocol](#what-is-ccsds-space-data-link-protocol)
+    - [CCSDS protocol data unit (PDU)](#ccsds-protocol-data-unit-pdu)
+    - [Field descriptions](#field-descriptions)
+    - [How it is implemented](#how-it-is-implemented)
+    - [Protocol data frame (PDU)](#protocol-data-frame-pdu)
+      - [1. Primary header](#1-primary-header)
+        - [Transfer Frame Version Number](#transfer-frame-version-number)
+        - [Spacecraft Identifier (SCID)](#spacecraft-identifier-scid)
+      - [CCSDS Transfer Frame Header – Virtual Channel, Control Flag, and Counters](#ccsds-transfer-frame-header--virtual-channel-control-flag-and-counters)
+        - [Virtual Channel Identifier (VCID)](#virtual-channel-identifier-vcid)
+        - [Operational Control Field Flag (OCF Flag)](#operational-control-field-flag-ocf-flag)
+        - [Master Channel Frame Count (MCFC)](#master-channel-frame-count-mcfc)
+        - [Virtual Channel Frame Count (VCFC)](#virtual-channel-frame-count-vcfc)
+        - [Transfer Frame Data Field Status (TFDFS)](#transfer-frame-data-field-status-tfdfs)
+        - [Purpose](#purpose)
+      - [CCSDS Transfer Frame Secondary Header](#ccsds-transfer-frame-secondary-header)
+        - [Overview](#overview)
+        - [Structure](#structure)
+        - [Channel Association](#channel-association)
+        - [Usage Rules](#usage-rules)
+        - [Secondary header data field usage](#secondary-header-data-field-usage)
+      - [Transfer Frame Data Field](#transfer-frame-data-field)
+        - [Overview](#overview-1)
+        - [Field Length](#field-length)
+        - [Field Contents](#field-contents)
+        - [Channel Data Rules](#channel-data-rules)
+        - [Packet Placement](#packet-placement)
+      - [OID (Only Idle Data) Transfer Frames](#oid-only-idle-data-transfer-frames)
+        - [OID Frame Rules](#oid-frame-rules)
+        - [LFSR Initialization](#lfsr-initialization)
+        - [VCID Association](#vcid-association)
+        - [Notes](#notes)
+        - [Idle data](#idle-data)
+      - [Frame Error Control Field (FECF)](#frame-error-control-field-fecf)
+        - [Overview](#overview-2)
+        - [Encoding Procedure](#encoding-procedure)
+    - [Interface with the ground station](#interface-with-the-ground-station)
+    - [Data limits and known issues](#data-limits-and-known-issues)
+- [Related documents](#related-documents)
+- [Relevant videos and resource materials](#relevant-videos-and-resource-materials)
+- [Contribution and support](#contribution-and-support)
+- [Contributors](#contributors)
+
+
 # Project-Shadow-Flight
 "Oh yee space fairer!
 I will write your name on the moon with my fingertips"
@@ -369,6 +454,8 @@ The designed camera payload is shown below:
 This cubesat used a slightly modified version of the CCSDS space data link protocol for telemetry transmission. This section will introduce what it is and describe how this protocol is used for the cubesat. 
 
 ### What is CCSDS Space Data Link Protocol
+The CCSDS Space Data Link Protocol defines how data is packaged and transmitted between a CubeSat and its ground station. It specifies the structure of Transfer Frames: standardized data units that carry telemetry, science data, and control information over the radio link. By following CCSDS, CubeSats use the same reliable communication principles as larger spacecraft, ensuring data integrity, synchronization, and compatibility with ground systems used by space agencies and universities. In practice, this protocol governs how the CubeSat’s onboard computer organizes data before sending it to Earth, and how the ground station interprets and validates that data upon reception.
+
 
 ### CCSDS protocol data unit (PDU)
 The image below shows an illustration of the CCSDS space data link protocol with the field names and field sizes as described in the CCSDS standard.
@@ -383,6 +470,227 @@ The following table contains the field descriptions of the CCSDS PDU.
 For more information on the specific implemetation, please refer to the following 2 files ```ccsds_tm.h``` and ```ccsds_tm.c``` in the ```Inc``` and ```Src``` folders of ```\firmware\OBC``` folder respectively. 
 
 Additionaly, there is a full video below that describes how this protocol was implemented from scratch. 
+This protocol is implemented without the SDLS (Space Data Link Security) feature, which will be implemented later. 
+This section describes what each field stands for and how it is used in comms for this cubesat:
+
+### Protocol data frame (PDU)
+A telemetry data frame contains the following: 
+
+
+| Field Name                    | Size (Bytes) | Optional | Description |
+|-------------------------------|---------------|-----------|--------------|
+| **Primary Header**            | 6             | No        | Contains key identification fields such as version, spacecraft ID, virtual channel ID, and frame count. |
+| **Secondary Header**          | Up to 64      | Yes       | Mission-defined field used for additional information (e.g., timestamps, mode, source ID). |
+| **Data Field**                | *n*           | No        | Contains the actual user or telemetry data payload. |
+| **Operational Control Field** | 4             | Yes       | Used for onboard control functions (e.g., synchronization or sequence control). |
+| **Frame Error Control Field** | 2             | Yes       | Holds the CRC or checksum for error detection. |
+
+---
+
+#### 1. Primary header 
+
+| Field Name                        | Size           | Mandatory | Description |
+|----------------------------------|----------------|------------|--------------|
+| **Master Channel Identifier**     | 12 bits (1.5 bytes) | Yes | Identifies the master channel through which the frame is transmitted. |
+| **Virtual Channel Identifier**    | 3 bits         | Yes | Identifies the virtual channel within the master channel. |
+| **Operational Control Field Flag**| 1 bit          | Yes | Indicates whether the optional Operational Control Field is present. |
+| **Master Channel Frame Count**    | 1 octet (8 bits) | Yes | Running count of frames sent on this master channel. |
+| **Virtual Channel Frame Count**   | 1 octet (8 bits) | Yes | Running count of frames sent on this virtual channel. |
+| **Transfer Frame Data Field Status** | 2 octets (16 bits) | Yes | Provides status information related to the data field (e.g., synchronization, packet order). |
+
+
+
+#### Transfer Frame Version Number
+- Bits **0–1** of the Transfer Frame Primary Header represent the **Transfer Frame Version Number**.  
+- This field identifies the type of transfer frame being used.  
+- For the standard CCSDS Telemetry (TM) frame, this value is always **`00` (binary)**.  
+- Although Telemetry (TM) and Telecommand (TC) frames share the same version number, they can still be distinguished by their **Attached Sync Marker** or **Start Sequence** at the physical layer.
+
+#### Spacecraft Identifier (SCID)
+- Bits **2–11** of the Primary Header contain the **Spacecraft Identifier (SCID)**.  
+- This 10-bit value uniquely identifies the spacecraft that generated the frame.  
+- The SCID remains **constant throughout all mission phases**.  
+- Spacecraft Identifiers are assigned by the **Space Assigned Numbers Authority (SANA)** to prevent duplicates within the same frequency band.  
+- The same SCID value may be reused by another spacecraft operating in a **different frequency band**.
+
+For this cubesat, I will use a self-assigned SCID. 
+
+
+### CCSDS Transfer Frame Header – Virtual Channel, Control Flag, and Counters
+
+#### Virtual Channel Identifier (VCID)
+- The **Virtual Channel Identifier** specifies which Virtual Channel the frame belongs to.  
+- There are **no restrictions** on how Virtual Channel Identifiers are assigned.  
+- Virtual Channels do **not** need to be numbered consecutively.  
+- Each Virtual Channel allows data from different onboard sources (e.g., OBC, ADCS, Payload) to be multiplexed over the same Master Channel.
+
+#### Operational Control Field Flag (OCF Flag)
+- **Bit 15** of the Transfer Frame Primary Header contains the **Operational Control Field Flag**.  
+- This flag indicates whether the **Operational Control Field** is included in the frame.  
+  - `1` → Operational Control Field **present**  
+  - `0` → Operational Control Field **not present**  
+- The OCF Flag remains **constant** within a given Master or Virtual Channel for the duration of a mission phase.
+
+#### Master Channel Frame Count (MCFC)
+- **Bits 16–23** of the Primary Header hold the **Master Channel Frame Count**.  
+- This is an **8-bit sequential counter (modulo-256)** that increments for every frame transmitted on a specific Master Channel.  
+- The counter should **not be reset** before reaching 255, except when absolutely necessary (e.g., after a system reset).  
+- The MCFC helps detect **missing or out-of-sequence frames** within a Master Channel.  
+- If the counter is reset unexpectedly, continuity of the frame sequence cannot be guaranteed.
+
+#### Virtual Channel Frame Count (VCFC)
+- **Bits 24–31** of the Primary Header hold the **Virtual Channel Frame Count**.  
+- This is also an **8-bit sequential counter (modulo-256)** that increments for each frame sent within a specific Virtual Channel.  
+- The VCFC allows the receiver to check for missing or reordered frames within the same Virtual Channel.
+
+
+
+#### Transfer Frame Data Field Status (TFDFS)
+- **Bits 32–47** of the Transfer Frame Primary Header contain the **Transfer Frame Data Field Status** field.  
+- This field provides status information about the data contained in the frame and the structure of the Data Field.  
+- It helps the receiving system correctly interpret and process the contents of the frame.
+
+The specific meaning of the bits within the TFDFS depends on the **mission configuration** and whether **Virtual Channels** and **Packet Telemetry** are being used.  
+Typical subfields include the following:
+
+| Subfield | Size | Description |
+|-----------|------|-------------|
+| **Transfer Frame Secondary Header Flag**| 1 bit| Indicates whether a **Secondary Header** is included in the frame. `1` the receiver expects a secondary header, `0` data field follows immediately after primary header  |
+| **Synchronization Flag** | 1 bit | Indicates whether the first data bit of a packet starts in this frame (`1` = yes, `0` = no). |
+| **Packet Order Flag** | 1 bit | Indicates if packets are delivered in order within the Virtual Channel. |
+| **Segment Length ID** | 2 bits | Defines how packet segments are divided among frames (e.g., continuation, start, or end of a packet). |
+| **First Header Pointer** | 11 bits | Points to the start of the first packet header within the data field (measured in bytes). A special value (e.g., `2047` or `0x7FF`) may indicate that no packet header starts in this frame. |
+| **Reserved / Spare** | Remaining bits | Reserved for future use; typically set to zero. |
+
+#### Purpose
+- Provides the **receiver** with context for reconstructing packets from multiple transfer frames.  
+- Enables detection of packet boundaries and handling of partial or fragmented packets.  
+- Ensures that higher-level telemetry processing software (e.g., the ground segment) can reassemble CCSDS packets accurately, even when frames arrive out of order or with gaps.
+
+
+### CCSDS Transfer Frame Secondary Header
+
+#### Overview
+The **Transfer Frame Secondary Header** is **optional**, and its **presence or absence** is indicated by the **Transfer Frame Secondary Header Flag** in the **Primary Header** (see Section 4.1.2.7.2).
+
+#### Structure
+If present, the Secondary Header shall consist of an **integral number of octets** organized as follows:
+
+| Field | Size | Requirement | Description |
+|--------|------|--------------|--------------|
+| **Transfer Frame Secondary Header Identification Field** | 1 octet | Mandatory | Identifies the type or purpose of the Secondary Header. |
+| **Transfer Frame Secondary Header Data Field** | 1–63 octets | Mandatory | Contains additional header data defined by the mission or application. |
+
+#### Channel Association
+- The **Secondary Header** shall be associated with **either** a **Master Channel** or a **Virtual Channel**.  
+- This association determines the synchronization behavior of the data within that channel.
+
+> **Note:**  
+> - Association with a **Master Channel** allows data transfer synchronized with that Master Channel.  
+> - Association with a **Virtual Channel** allows data transfer synchronized with that Virtual Channel.
+
+#### Usage Rules
+- If present, the Secondary Header must appear in **every Transfer Frame** transmitted through the associated **Master** or **Virtual Channel** during a **Mission Phase**.  
+- The structure and meaning of the Secondary Header contents are typically **mission-specific** and defined by higher-level standards or user design.
+
+
+#### Secondary header data field usage 
+For synchronization, I pack the following data into the secondary header:  
+```TBD```
+
+### Transfer Frame Data Field
+
+#### Overview
+The **Transfer Frame Data Field** immediately follows the **Primary Header** or, if present, the **Secondary Header**, without any gap.
+
+#### Field Length
+The **Transfer Frame Data Field** has a **variable length** (an integer number of octets) determined by:
+
+> **Length of Data Field =**  
+> (Fixed Transfer Frame Length for the Physical Channel)  
+> − (Length of Primary Header + Length of Secondary Header + Length of Trailer if present)
+
+#### Field Contents
+The **Transfer Frame Data Field** shall contain one of the following:
+- **Packets**
+- **One Virtual Channel Access Service Data Unit (VCA_SDU)**
+- **Idle Data**
+
+#### Channel Data Rules
+- A **Virtual Channel** shall **not** mix **Packets** and **VCA_SDUs**.  
+- **Idle Data** may be transmitted on a Virtual Channel that carries **Packets**.  
+- The type of data (Packets or VCA_SDUs) for a given Virtual Channel is **defined by management** and remains **static throughout a Mission Phase**.
+
+#### Packet Placement
+When **Packets** are contained in the Data Field:
+- They shall be **inserted contiguously** and in **forward order**.
+- The **first and last Packets** in a frame may be **incomplete**, since:
+  - The first Packet may continue from the **previous Transfer Frame**.
+  - The last Packet may continue into the **next Transfer Frame** of the same Virtual Channel.
+
+> **Note:** This behavior supports segmentation of large data packets across multiple frames.
+
+---
+
+### OID (Only Idle Data) Transfer Frames
+
+If insufficient data (Packets or VCA_SDUs) are available when a frame is ready for transmission, a **Transfer Frame containing only Idle Data** is sent.  
+Such a frame is called an **OID Transfer Frame**.
+
+#### OID Frame Rules
+- The **First Header Pointer** shall be set to `11111111110`.  
+- The **Data Field** shall be filled using a **Pseudo Noise (PN)** sequence generated by a **32-cell Linear Feedback Shift Register (LFSR)** with the polynomial:
+
+> **Polynomial:**  
+> D⁰ + D¹ + D² + D²² + D³²
+
+#### LFSR Initialization
+
+| LFSR Type | Initialization Seed | Notes |
+|------------|--------------------|--------|
+| **Fibonacci form** | All-ones seed | Initialized once at device start-up and not restarted. |
+| **Galois form** | `00000000001111111111111111111101` | Initialized once at device start-up and not restarted. |
+
+> **Example:**  
+> The first 10 bytes of the OID data pattern (hexadecimal):  
+> `FF FF FF FF 6D B6 D8 61 45 1F`
+
+#### VCID Association
+The **VCID** (Virtual Channel Identifier) of an **OID Transfer Frame** shall correspond to one of the VCIDs used for transmitting **Packets**.
+
+#### Notes
+1. The **Data Field** of an OID frame contains only **Idle Data**, but the **Secondary Header** or **Operational Control Field** may still carry valid data depending on the Virtual Channel.  
+2. Although OID frames may be sent on Virtual Channels that also carry valid packets, it is **preferred** to dedicate a **separate Virtual Channel** for them, unless specific channel usage is required.  
+3. An OID Transfer Frame may be generated **at any time**, even during transmission of a multi-frame packet.  
+4. OID Data in the Data Field should **not** be confused with the **Idle Packet** defined in reference [8].  
+5. A random PN sequence ensures sufficient **bit randomness** to prevent **frame-reception issues** caused by repetitive patterns.
+
+
+#### Idle data
+OID (ony idle data), transfer frame is a placeholder transmitted when the spacecraft must keep sending frames at a fixed rate but there are no real data packets to be sent at that time, so instead of stopping transmission or leaving channel idle, the system sends an OID frame filled with pseudo-random data (idle data).
+
+Analogous to heartbeat packets to jeep the system link alive and synchronized until data is ready. 
+
+For this cubesat, this is rarely achieved because the data rate designed is fixed, and based on the architecture used in this cubesat, it is always guaranteed to have data avaliable in the telemetry packet by the time data transmission is reached.
+
+### Frame Error Control Field (FECF)
+
+#### Overview
+The **Frame Error Control Field (FECF)** is a **16-bit (2-byte)** optional field appended to the **end of a Transfer Frame**.  
+It is used to **detect transmission errors** by applying a **Cyclic Redundancy Check (CRC)** algorithm over the frame data.
+
+---
+
+#### Encoding Procedure
+The FECF is generated using a **CRC-16** procedure. The encoding process works as follows:
+
+1. Take the complete **Transfer Frame**, **excluding** the FECF itself — this portion is `(n−16)` bits long.  
+2. Compute a **16-bit CRC** across that data.  
+3. Append the resulting **16-bit CRC value** to the **end of the Transfer Frame**.
+
+This produces a **systematic binary block code** of total length `n` bits, where:
+
+For project shadow flight, I make this field mandatory so as to detect anytransmission errors in every data frame.
 
 ### Interface with the ground station 
 

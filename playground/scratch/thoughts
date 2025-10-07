@@ -9,3 +9,101 @@ GPS driver (GPS_SET_I2C, GPS_SET_UART)
 ADXL345 Driver
 DS18B20 Driver
 SunSensor Driver
+
+
+
+TOC 
+## 🛰️ Table of Contents
+
+- **Project Overview**
+  - Mission Statement  
+  - Objectives  
+  - Project Tagline  
+
+- **Development Notice**
+  - In-Development Disclaimer  
+
+- **System Overview**
+  - Mission Architecture  
+  - Subsystem Overview  
+  - Functional Block Diagram  
+
+- **Onboard Computer (OBC)**
+  - Functional Requirements  
+  - Hardware Architecture  
+  - Software Stack  
+  - Power Distribution and Protection  
+  - Brown-Out Detection Mechanism  
+  - Watchdog and Fail-Safe Design  
+
+- **Communication Subsystem**
+  - Communication Protocols (LoRa, CCSDS, UART, ISA)  
+  - Uplink and Downlink Data Handling  
+  - Ground Station Interface  
+  - Antenna and RF Considerations  
+
+- **Power Subsystem**
+  - EPS Overview  
+  - Power Budget  
+  - Solar and Battery Management  
+  - Fault Protection  
+
+- **Attitude Determination and Control (ADCS)**
+  - Sensor Suite (IMU, Magnetometer, Gyro)  
+  - Control Algorithms  
+  - Actuation (Magnetorquers / Reaction Wheels)  
+  - Ground Testing Framework  
+
+- **Payload**
+  - Payload Definition  
+  - Data Acquisition and Compression  
+  - Integration with OBC  
+
+- **Ground Segment**
+  - Ground Station Software Tools  
+  - Packet Decoder (CCSDS)  
+  - Telemetry Visualization and Logging  
+  - Command Uplink Tools  
+
+- **Testing and Verification**
+  - Hardware-in-the-Loop Testing  
+  - Continuous Integration Setup  
+  - Firmware Validation Strategy  
+  - Environmental and Vibration Testing  
+
+- **Software Architecture**
+  - RTOS Overview  
+  - Task Scheduling and Priorities  
+  - Inter-task Communication (Queues, Semaphores)  
+  - Modularity and Abstraction Layers  
+
+- **Data Handling**
+  - CCSDS Implementation  
+  - Packet Routing  
+  - Data Logging and Storage  
+
+- **Mechanical Design**
+  - CAD and 3D Modeling Tools  
+  - Structural Design and Material Selection  
+  - Thermal Management  
+
+- **Launch and Operations**
+  - Pre-launch Checklist  
+  - Deployment Sequence  
+  - In-Orbit Operations and Monitoring  
+
+- **Documentation and Version Control**
+  - GitHub Repository Structure  
+  - Code Documentation Guidelines  
+  - Changelog and Issue Tracking  
+
+- **Future Work**
+  - Planned Upgrades  
+  - Advanced Communication Links  
+  - Expanded Ground Automation  
+
+- **Acknowledgements**
+  - Contributors  
+  - Tools and Libraries  
+  - References  
+
