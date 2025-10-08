@@ -200,7 +200,7 @@ void x_task_read_temperature(void const* argument);
 
 /**
  * @fn void x_task_sun_sensors(const void*)
- * @brief This function reads the data from the sun sensors
+ * @brief This function reads the light value from the sun sensors
  *
  * @param argument
  */
