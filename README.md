@@ -270,7 +270,7 @@ The OBC is made up of the following sub-systems:
 
 The image below shows the memory and debug block diagram used on this cubesat's OBC:
 
-<img src="./user-docs/images/obc-block.jpg" alt="Shadow flight OBC" width="500" height="700"/>
+<img src="obc-block.jpg" alt="Shadow flight OBC" width="500" height="700"/>
   
 
 **To note, all the PCBs are equipped with ISA PC/104 connectors to make stacking possible**
