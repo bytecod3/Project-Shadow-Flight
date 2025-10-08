@@ -391,7 +391,7 @@ Components of the OBC</h3>
 <li>Inhibit switches</li>
 </ul>
 <p>The image below shows the memory and debug block diagram used on this cubesat's OBC:</p>
-<p><img src="obc-block.jpg" alt="Shadow flight OBC" width="500" height="700" class="inline"/></p>
+<p><img src="./user-docs/images/obc-block.jpg" alt="Shadow flight OBC" width="500" height="700" class="inline"/></p>
 <p><b>To note, all the PCBs are equipped with ISA PC/104 connectors to make stacking possible</b></p>
 <h2><a class="anchor" id="autotoc_md10"></a>
 2. Sensor Board</h2>
@@ -616,22 +616,22 @@ Payload system requirements</h3>
 </ol>
 <p>The payload system is designed as a daughter-board mounted on the OBC via M3 screw connector with standoffs. The wired connection is made via a JST header pin. This header pin supplies the necessary power, control and communication signals to and from the Payload System.</p>
 <p>This simple block diagram is shown below:</p>
-<p><img src="./payload/images/payload-structure.png" alt="Shadow flight OBC" width="500" height="420" class="inline"/></p>
+<p><img src="./user-docs/images/payload-structure.png" alt="Shadow flight OBC" width="500" height="420" class="inline"/></p>
 <h3><a class="anchor" id="autotoc_md35"></a>
 Payload communication interface</h3>
 <p>The image below shows the camera payload system designed using STM32F407VTG MCU that has a Digital Camera Interface (DCMI) solely dedicated for handling CMOS sensors such as the OV7670 camera module. This communication is done via 8 bit parallel interface, to receive video data.</p>
 <p>This MCU also has modes that allow us to to have either continous mode or snapshot mode to take still images.</p>
-<p><img src="./payload/images/camera-payload.png" alt="Shadow flight OBC" width="500" height="420" class="inline"/></p>
+<p><img src="./user-docs/images/camera-payload.png" alt="Shadow flight OBC" width="500" height="420" class="inline"/></p>
 <p>The LCD shown in the above schematic will not be used on the actual satelite, but a connector is placed on teh payload PCB to help during ground testing and confirm the images we are taking.</p>
 <h2><a class="anchor" id="autotoc_md36"></a>
 Payload PCB</h2>
 <p>The designed camera payload is shown below: </p>
 <h4><a class="anchor" id="autotoc_md37"></a>
 Tracks</h4>
-<p><img src="./payload/images/payload-tracks.png" alt="Shadow flight OBC" class="inline"/></p>
+<p><img src="./user-docs/images/payload-tracks.png" alt="Shadow flight OBC" class="inline"/></p>
 <h4><a class="anchor" id="autotoc_md38"></a>
 3D view</h4>
-<p><img src="./payload/images/payload-complete.png" alt="Shadow flight OBC" class="inline"/></p>
+<p><img src="./user-docs/images/payload-complete.png" alt="Shadow flight OBC" class="inline"/></p>
 <h1><a class="anchor" id="autotoc_md39"></a>
 Communication Protocol</h1>
 <h2><a class="anchor" id="autotoc_md40"></a>
@@ -643,7 +643,7 @@ What is CCSDS Space Data Link Protocol</h3>
 <h3><a class="anchor" id="autotoc_md42"></a>
 CCSDS protocol data unit (PDU)</h3>
 <p>The image below shows an illustration of the CCSDS space data link protocol with the field names and field sizes as described in the CCSDS standard.</p>
-<p><img src=".images//ccsds-protocol-image.png" alt="ccsds-image" class="inline"/></p>
+<p><img src="./user-docs/images/ccsds-protocol-image.png" alt="ccsds-image" class="inline"/></p>
 <h3><a class="anchor" id="autotoc_md43"></a>
 Field descriptions</h3>
 <p>The following table contains the field descriptions of the CCSDS PDU.</p>
@@ -839,8 +839,7 @@ Usage Rules</h4>
 <h4><a class="anchor" id="autotoc_md62"></a>
 Secondary header data field usage</h4>
 <p>For synchronization, I pack the following data into the secondary header: <br  />
- <code>TBD</code></p>
-<h3><a class="anchor" id="autotoc_md63"></a>
+ </p><div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;"> <b>🚧 In Development</b> </div><h3><a class="anchor" id="autotoc_md63"></a>
 Transfer Frame Data Field</h3>
 <h4><a class="anchor" id="autotoc_md64"></a>
 Overview</h4>

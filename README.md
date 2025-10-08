@@ -270,7 +270,7 @@ The OBC is made up of the following sub-systems:
 
 The image below shows the memory and debug block diagram used on this cubesat's OBC:
 
-<img src="obc-block.jpg" alt="Shadow flight OBC" width="500" height="700"/>
+<img src="./user-docs/images/obc-block.jpg" alt="Shadow flight OBC" width="500" height="700"/>
   
 
 **To note, all the PCBs are equipped with ISA PC/104 connectors to make stacking possible**
@@ -491,7 +491,7 @@ The wired connection is made via a JST header pin. This header pin supplies the 
 
 This simple block diagram is shown below:
 
-<img src="./payload/images/payload-structure.png" alt="Shadow flight OBC" width="500" height="420"/>
+<img src="./user-docs/images/payload-structure.png" alt="Shadow flight OBC" width="500" height="420"/>
 
 ### Payload communication interface
 The image below shows the camera payload system designed using STM32F407VTG MCU that has a Digital Camera Interface (DCMI) solely dedicated for handling 
@@ -499,7 +499,7 @@ CMOS sensors such as the OV7670 camera module. This communication is done via 8 
 
 This MCU also has modes that allow us to to have either continous mode or snapshot mode to take still images.
 
-<img src="./payload/images/camera-payload.png" alt="Shadow flight OBC" width="500" height="420"/>
+<img src="./user-docs/images/camera-payload.png" alt="Shadow flight OBC" width="500" height="420"/>
 
 The LCD shown in the above schematic will not be used on the actual satelite, but a connector is placed on teh payload PCB to help during 
 ground testing and confirm the images we are taking. 
@@ -507,10 +507,10 @@ ground testing and confirm the images we are taking.
 ## Payload PCB 
 The designed camera payload is shown below: 
 #### Tracks 
-<img src="./payload/images/payload-tracks.png" alt="Shadow flight OBC" />
+<img src="./user-docs/images/payload-tracks.png" alt="Shadow flight OBC" />
 
 #### 3D view
-<img src="./payload/images/payload-complete.png" alt="Shadow flight OBC" />
+<img src="./user-docs/images/payload-complete.png" alt="Shadow flight OBC" />
 
 
 # Communication Protocol
@@ -524,7 +524,7 @@ The CCSDS Space Data Link Protocol defines how data is packaged and transmitted 
 ### CCSDS protocol data unit (PDU)
 The image below shows an illustration of the CCSDS space data link protocol with the field names and field sizes as described in the CCSDS standard.
 
-![ccsds-image](.images//ccsds-protocol-image.png)
+![ccsds-image](./user-docs/images/ccsds-protocol-image.png)
 
 
 ### Field descriptions 
@@ -660,7 +660,9 @@ If present, the Secondary Header shall consist of an **integral number of octets
 
 #### Secondary header data field usage 
 For synchronization, I pack the following data into the secondary header:  
-```TBD```
+<div style="background-color:#fff3cd; border:1px solid #ffeeba; padding:10px; border-radius:5px;">
+  <strong>🚧 In Development</strong> 
+</div>
 
 ### Transfer Frame Data Field
 
