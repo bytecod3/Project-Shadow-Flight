@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Project Shadow Flight - A 1U Cubesat", "index.html", [
+  [ "Project Shadow Flight - A 1U amateur Cubesat", "index.html", [
     [ "System components", "index.html#autotoc_md5", [
       [ "Introduction", "index.html#autotoc_md0", [
         [ "Web documentation", "index.html#autotoc_md1", null ],

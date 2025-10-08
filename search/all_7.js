@@ -32,5 +32,5 @@ var searchData=
   ['count_20mcfc_29',['Master Channel Frame Count (MCFC)',['../index.html#autotoc_md53',1,'']]],
   ['count_20vcfc_30',['Virtual Channel Frame Count (VCFC)',['../index.html#autotoc_md54',1,'']]],
   ['counters_31',['CCSDS Transfer Frame Header – Virtual Channel, Control Flag, and Counters',['../index.html#autotoc_md50',1,'']]],
-  ['cubesat_32',['Project Shadow Flight - A 1U Cubesat',['../index.html',1,'']]]
+  ['cubesat_32',['Project Shadow Flight - A 1U amateur Cubesat',['../index.html',1,'']]]
 ];

@@ -7,7 +7,7 @@ var searchData=
   ['secondary_20header_20data_20field_20usage_4',['Secondary header data field usage',['../index.html#autotoc_md62',1,'']]],
   ['sensor_20board_5',['2. Sensor Board',['../index.html#autotoc_md10',1,'']]],
   ['sensors_6',['Communication protocol for sensors',['../index.html#autotoc_md13',1,'']]],
-  ['shadow_20flight_20a_201u_20cubesat_7',['Project Shadow Flight - A 1U Cubesat',['../index.html',1,'']]],
+  ['shadow_20flight_20a_201u_20amateur_20cubesat_7',['Project Shadow Flight - A 1U amateur Cubesat',['../index.html',1,'']]],
   ['shadow_20flight_20obc_20width_20400_20height_20400_8',['&lt;img src=&quot;./user-docs/images/pc104-dwg-500.gif&quot; alt=&quot;Shadow flight OBC&quot; width=&quot;400&quot; height=&quot;400&quot;/&gt;',['../index.html#autotoc_md16',1,'']]],
   ['sizing_20data_9',['Battery and solar panel sizing data',['../index.html#autotoc_md32',1,'']]],
   ['solar_20panel_20sizing_20data_10',['Battery and solar panel sizing data',['../index.html#autotoc_md32',1,'']]],

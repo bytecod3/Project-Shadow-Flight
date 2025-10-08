@@ -20,7 +20,7 @@ var searchData=
   ['power_20system_20eps_17',['4. Electrical Power System (EPS)',['../index.html#autotoc_md20',1,'']]],
   ['primary_20header_18',['1. Primary header',['../index.html#autotoc_md47',1,'']]],
   ['procedure_19',['Encoding Procedure',['../index.html#autotoc_md79',1,'']]],
-  ['project_20shadow_20flight_20a_201u_20cubesat_20',['Project Shadow Flight - A 1U Cubesat',['../index.html',1,'']]],
+  ['project_20shadow_20flight_20a_201u_20amateur_20cubesat_20',['Project Shadow Flight - A 1U amateur Cubesat',['../index.html',1,'']]],
   ['protocol_21',['Protocol',['../index.html#autotoc_md40',1,'CCSDS Telemetry(TM) Space Data Link Protocol'],['../index.html#autotoc_md39',1,'Communication Protocol'],['../index.html#autotoc_md41',1,'What is CCSDS Space Data Link Protocol']]],
   ['protocol_20data_20frame_20pdu_22',['Protocol data frame (PDU)',['../index.html#autotoc_md45',1,'']]],
   ['protocol_20data_20unit_20pdu_23',['CCSDS protocol data unit (PDU)',['../index.html#autotoc_md42',1,'']]],

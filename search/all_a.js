@@ -13,7 +13,7 @@ var searchData=
   ['flag_10',['Operational Control Field Flag (OCF Flag)',['../index.html#autotoc_md52',1,'']]],
   ['flag_20and_20counters_11',['CCSDS Transfer Frame Header – Virtual Channel, Control Flag, and Counters',['../index.html#autotoc_md50',1,'']]],
   ['flag_20ocf_20flag_12',['Operational Control Field Flag (OCF Flag)',['../index.html#autotoc_md52',1,'']]],
-  ['flight_20a_201u_20cubesat_13',['Project Shadow Flight - A 1U Cubesat',['../index.html',1,'']]],
+  ['flight_20a_201u_20amateur_20cubesat_13',['Project Shadow Flight - A 1U amateur Cubesat',['../index.html',1,'']]],
   ['flight_20obc_20width_20400_20height_20400_14',['&lt;img src=&quot;./user-docs/images/pc104-dwg-500.gif&quot; alt=&quot;Shadow flight OBC&quot; width=&quot;400&quot; height=&quot;400&quot;/&gt;',['../index.html#autotoc_md16',1,'']]],
   ['for_20sensors_15',['Communication protocol for sensors',['../index.html#autotoc_md13',1,'']]],
   ['for_20visual_20consumers_16',['Design Videos for visual consumers',['../index.html#autotoc_md2',1,'']]],
