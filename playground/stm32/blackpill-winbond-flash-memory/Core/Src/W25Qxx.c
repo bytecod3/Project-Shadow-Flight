@@ -121,3 +121,109 @@ void external_flash_fast_read(uint32_t start_page, uint8_t offset, uint32_t size
 
 	cs_high();
 }
+
+/**
+ * @brief This function enables writing to the flash memory
+ * Write is automatically disabled after power-up
+ */
+void external_flash_enable_write(void) {
+	uint8_t t_data = ENABLE_WRITE;
+	cs_low();
+	external_flash_spi_write(&t_data, 1);
+	cs_high();
+	external_flash_delay(5);
+}
+
+/**
+ * @brief This function disables writing to the flash memory
+ */
+void external_flash_disable_write(void) {
+	uint8_t t_data = DISABLE_WRITE;
+	cs_low();
+	external_flash_spi_write(&t_data, 1);
+	cs_high();
+	external_flash_delay(5);
+}
+
+/**
+ * @brief This function sets a sector of memory to 0xFF
+ */
+void external_flash_erase_sector(uint16_t num_sector) {
+	uint8_t t_data[6];
+	uint32_t mem_addr = num_sector * 16 * 256;
+
+	external_flash_enable_write();
+
+	if (NUM_BLOCKS < 512) {
+		t_data[0] = ERASE_SECTOR_3_BYTE_INSTR;
+		t_data[1] = (mem_addr >> 16) & 0xFF; /* MSB */
+		t_data[2] = (mem_addr >> 8) & 0xFF;
+		t_data[3] = (mem_addr) & 0xFF; /* LSB */
+
+		cs_low();
+		external_flash_spi_write(t_data, 4);
+		cs_low();
+
+	} else {
+		t_data[0] = ERASE_SECTOR_4_BYTE_INSTR;
+		t_data[1] = (mem_addr >> 24) & 0xFF; /* MSB */
+		t_data[2] = (mem_addr >> 16) & 0xFF;
+		t_data[3] = (mem_addr >> 8) & 0xFF;
+		t_data[4] = (mem_addr) & 0xFF; /* LSB */
+
+		cs_low();
+		external_flash_spi_write(t_data, 5);
+		cs_low();
+	}
+
+	external_flash_delay(450); /* sector erase takes ~400ms*/
+
+	external_flash_disable_write();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

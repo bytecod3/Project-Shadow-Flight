@@ -14,6 +14,10 @@ extern SPI_HandleTypeDef hspi3;
 #define READ_DATA_4_BYTE_INSTR					(0x13)
 #define FAST_READ_DATA_3_BYTE_INSTR				(0x0B)
 #define FAST_READ_DATA_4_BYTE_INSTR				(0x0C)
+#define ENABLE_WRITE							(0x06)
+#define DISABLE_WRITE							(0x04)
+#define ERASE_SECTOR_3_BYTE_INSTR				(0x20)
+#define ERASE_SECTOR_4_BYTE_INSTR				(0x21)
 
 #define W25Q_SPI	hspi3
 #define NUM_BLOCKS	(32)
@@ -54,6 +58,16 @@ void external_flash_spi_read(uint8_t* data, uint8_t len);
 void external_flash_reset(void);
 
 /**
+ * @brief This function enables writing to the flash memory
+ */
+void external_flash_enable_write(void);
+
+/**
+ * @brief This function disables writing to the flash memory
+ */
+void external_flash_disable_write(void);
+
+/**
  * @brief This function read the flash memory ID
  */
 uint32_t external_flash_read_ID(void);
@@ -72,6 +86,11 @@ void external_flash_read(uint32_t start_page, uint8_t offset, uint32_t size, uin
  *
  */
 void external_flash_fast_read(uint32_t start_page, uint8_t offset, uint32_t size, uint8_t *buffer);
+
+/**
+ * @brief This function sets a sector of memory to 0xFF
+ */
+void external_flash_erase_sector(uint16_t num_sector);
 
 
 uint8_t external_flash_test();

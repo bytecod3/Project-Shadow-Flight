@@ -7,3 +7,6 @@
 ../Core/Src/W25Qxx.c:36:10:external_flash_read_ID	16	static
 ../Core/Src/W25Qxx.c:55:6:external_flash_read	40	static
 ../Core/Src/W25Qxx.c:90:6:external_flash_fast_read	40	static
+../Core/Src/W25Qxx.c:129:6:external_flash_enable_write	16	static
+../Core/Src/W25Qxx.c:140:6:external_flash_disable_write	16	static
+../Core/Src/W25Qxx.c:151:6:external_flash_erase_sector	32	static

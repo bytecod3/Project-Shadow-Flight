@@ -49,6 +49,10 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 
+char msg[64];
+uint8_t flash_data[1024]; /* to hold data read from the flash memory */
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -58,11 +62,39 @@ static void MX_SPI3_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
+void flash_test_sector_erase();
+void flash_test_sector_read();
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 uint32_t flash_id = 0;
+
+void flash_test_sector_read() {
+	/* read 200 bytes from page 20 */
+	external_flash_read(20, 1, 200, flash_data);
+	HAL_UART_Transmit(&huart1, (uint8_t*) "Flash data: \r\n", strlen("Flash data: \r\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t*) flash_data, strlen(flash_data), HAL_MAX_DELAY);
+
+}
+
+void flash_test_sector_erase() {
+	/* read 20 bytes starting at byte 85 in sector 1 */
+	external_flash_read(1, 85, 20, flash_data);
+	HAL_UART_Transmit(&huart1, (uint8_t*) "Flash data: \r\n", strlen("Flash data: \r\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t*) flash_data, strlen(flash_data), HAL_MAX_DELAY);
+
+	/* erase sector 1 */
+	external_flash_erase_sector(1);
+
+	/* re-check */
+	external_flash_read(1, 85, 20, flash_data);
+	HAL_UART_Transmit(&huart1, (uint8_t*) "sector data after erase: \r\n", strlen("sector data after erase: \r\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t*) flash_data, strlen(flash_data), HAL_MAX_DELAY);
+
+
+}
 
 /* USER CODE END 0 */
 
@@ -100,12 +132,14 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* get the flash memory ID */
-  external_flash_reset();
-  flash_id = external_flash_read_ID();
+  // external_flash_reset();
+  // flash_id = external_flash_read_ID();
 
-  char msg[64];
-  sprintf(msg, "Flash ID: %02X\r\n", flash_id);
-  HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 500);
+  //sprintf(msg, "Flash ID: %02X\r\n", flash_id);
+  // HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 500);
+
+  flash_test_sector_read();
+  //flash_test_sector_erase();
 
   /* USER CODE END 2 */
 
