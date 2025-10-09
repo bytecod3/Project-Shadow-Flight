@@ -1,0 +1,16 @@
+Basic structure of flash memory
+BYte - smallest adressable unit
+page - 256 bytes basic write unit
+sector - 4KB (16 pages x 246 bytes)  basic erase unit
+block - 64KB (16 sectors) larger erase unit
+chip - whole capacity  can be erased fully
+
+THerefore each page is 256 bytes
+
+Addressing
+The flash memory is byte addressable
+Code will express the address in terms of a page and an offset within that page
+
+absolute_address = (page_number * page_size) + byte_offset
+
+To avoid wrapping over on the same page

@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (12.3.rel1)
+# Toolchain: GNU Tools for STM32 (13.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -60,8 +60,8 @@ all: main-build
 main-build: blackpill-winbond-flash-memory.elf secondary-outputs
 
 # Tool invocations
-blackpill-winbond-flash-memory.elf blackpill-winbond-flash-memory.map: $(OBJS) $(USER_OBJS) C:\Users\user\Desktop\projects\Project-Shadow-Flight\playground\stm32\blackpill-winbond-flash-memory\STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "blackpill-winbond-flash-memory.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\user\Desktop\projects\Project-Shadow-Flight\playground\stm32\blackpill-winbond-flash-memory\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="blackpill-winbond-flash-memory.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+blackpill-winbond-flash-memory.elf blackpill-winbond-flash-memory.map: $(OBJS) $(USER_OBJS) /home/eduh/projects/Project-Shadow-Flight/playground/stm32/blackpill-winbond-flash-memory/STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "blackpill-winbond-flash-memory.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/eduh/projects/Project-Shadow-Flight/playground/stm32/blackpill-winbond-flash-memory/STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="blackpill-winbond-flash-memory.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

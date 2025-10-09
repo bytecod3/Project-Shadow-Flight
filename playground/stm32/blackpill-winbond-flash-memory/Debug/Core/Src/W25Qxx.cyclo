@@ -1,7 +1,9 @@
-../Core/Src/W25Qxx.c:4:6:W25Q_Delay	1
-../Core/Src/W25Qxx.c:8:6:cs_LOW	1
-../Core/Src/W25Qxx.c:12:6:cs_HIGH	1
-../Core/Src/W25Qxx.c:16:6:SPI_Write	1
-../Core/Src/W25Qxx.c:20:6:SPI_Read	1
-../Core/Src/W25Qxx.c:24:6:W25Q_Reset	1
-../Core/Src/W25Qxx.c:36:10:W25Q_ReadID	1
+../Core/Src/W25Qxx.c:4:6:external_flash_delay	1
+../Core/Src/W25Qxx.c:8:6:cs_low	1
+../Core/Src/W25Qxx.c:12:6:cs_high	1
+../Core/Src/W25Qxx.c:16:6:external_flash_spi_write	1
+../Core/Src/W25Qxx.c:20:6:external_flash_spi_read	1
+../Core/Src/W25Qxx.c:24:6:external_flash_reset	1
+../Core/Src/W25Qxx.c:36:10:external_flash_read_ID	1
+../Core/Src/W25Qxx.c:55:6:external_flash_read	1
+../Core/Src/W25Qxx.c:90:6:external_flash_fast_read	1

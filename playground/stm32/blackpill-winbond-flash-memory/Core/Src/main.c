@@ -100,11 +100,11 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* get the flash memory ID */
-  W25Q_Reset();
-  flash_id = W25Q_ReadID();
+  external_flash_reset();
+  flash_id = external_flash_read_ID();
 
   char msg[64];
-  sprintf(msg, "%02x\r\n", flash_id);
+  sprintf(msg, "Flash ID: %02X\r\n", flash_id);
   HAL_UART_Transmit(&huart1, (uint8_t*)msg, strlen(msg), 500);
 
   /* USER CODE END 2 */
@@ -244,8 +244,8 @@ static void MX_USART1_UART_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+  /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -283,8 +283,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+  /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -305,8 +305,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
