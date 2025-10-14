@@ -94,7 +94,17 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart6;
 
 osThreadId defaultTaskHandle;
+
 /* USER CODE BEGIN PV */
+osThreadId x_task_create_tasks_tsk_handle;
+osThreadId x_task_dummy_data_tsk_handle;
+osThreadId x_task_control_onboard_led_tsk_handle;
+osThreadId x_task_control_onboard_buzzer_tsk_handle;
+osThreadId x_task_get_watchdog_tsk_handle;
+osThreadId x_task_core_fsm_monitor_tsk_handle;
+osThreadId x_task_get_heap_memory_stats_tsk_handle;
+osThreadId x_task_get_task_stats_tsk_handle;
+
 
 /* USER CODE END PV */
 
@@ -108,6 +118,14 @@ static void MX_USART6_UART_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
+
+/**
+ * @fn void x_task_dummy_data(const void*)
+ * @brief This function generates a fake dummy data values
+ *
+ * @param argument
+ */
+void x_task_dummy_data(void const* argument);
 
 /**
  * @fn void x_task_create_tasks(const void*)
@@ -354,7 +372,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
 
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);			/// create all tasks
+  osThreadDef(dumm_data, x_task_dummy_data, osPriorityNormal, 0, 1024);			/// create all tasks
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
 

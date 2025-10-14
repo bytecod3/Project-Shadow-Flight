@@ -11,6 +11,7 @@
 #define INC_CCSDS_TM_H_
 
 #include "stdio.h"
+#include "stdint.h"
 #include "defines.h"
 
 #define CRC_POLYNOMIAL 0x1021    ///< Polynomial to use for CRC-16 calculation
