@@ -1,0 +1,28 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.1.2 Chrome/138.0.7204.243 Electron/37.4.0 Safari/537.36" version="28.1.2">
+  <diagram name="Page-1" id="BEZI4qmmZRfK3UoGMRGf">
+    <mxGraphModel dx="771" dy="625" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="C4oDjcXgk7rpG0gPZD4N-1" value="transfer frame&amp;nbsp;&lt;div&gt;primary header&lt;/div&gt;" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="120" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="C4oDjcXgk7rpG0gPZD4N-2" value="&lt;b&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 17px;&quot;&gt;Telemetry Space Data Link Protocol Data Unit&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="200" y="40" width="390" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="C4oDjcXgk7rpG0gPZD4N-3" value="transfer frame&amp;nbsp;&lt;div&gt;secondary header&lt;/div&gt;&lt;div&gt;(optional)&lt;/div&gt;" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="160" y="120" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="C4oDjcXgk7rpG0gPZD4N-4" value="transfer frame data&lt;div&gt;field&amp;nbsp;&lt;/div&gt;" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="280" y="120" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="C4oDjcXgk7rpG0gPZD4N-5" value="operational control&amp;nbsp;&lt;div&gt;field&lt;/div&gt;&lt;div&gt;(optional)&lt;/div&gt;" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="480" y="120" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="C4oDjcXgk7rpG0gPZD4N-6" value="operational control&amp;nbsp;&lt;div&gt;field&lt;/div&gt;&lt;div&gt;(optional)&lt;/div&gt;" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="600" y="120" width="120" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
