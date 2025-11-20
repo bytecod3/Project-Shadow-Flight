@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.1.2 Chrome/138.0.7204.243 Electron/37.4.0 Safari/537.36" version="28.1.2">
   <diagram name="Page-1" id="BEZI4qmmZRfK3UoGMRGf">
-    <mxGraphModel dx="721" dy="531" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+    <mxGraphModel dx="1311" dy="965" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -189,7 +189,7 @@
         <mxCell id="C4oDjcXgk7rpG0gPZD4N-62" value="6 bit" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="136" y="1037" width="41" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="C4oDjcXgk7rpG0gPZD4N-63" value="transfer&lt;div&gt;frame secondary&amp;nbsp;&lt;/div&gt;&lt;div&gt;header ID&lt;/div&gt;" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+        <mxCell id="C4oDjcXgk7rpG0gPZD4N-63" value="transfer&lt;div&gt;frame secondary&amp;nbsp;&lt;/div&gt;&lt;div&gt;header data field&lt;/div&gt;" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="238" y="895" width="184" height="69" as="geometry" />
         </mxCell>
         <mxCell id="C4oDjcXgk7rpG0gPZD4N-64" value="up to 64 bytes" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
