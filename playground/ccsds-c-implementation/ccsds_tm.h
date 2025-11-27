@@ -47,36 +47,44 @@
 #define TFSH_DATA_FIELD_MAX_LENGTH (64)
 
 /**
- * \brief faker fucntion to generate dummy telemetry
+ * \brief faker function to generate dummy telemetry
  */
 void telemetry_generate_dummy(void);
 
 
 typedef struct CCSDS_Packet CCSDS_Packet;
 
+
 /**
  * \brief Base class for CCSDS protocol
  */
 struct CCSDS_Packet {
 
-    CCSDS_Packet* CCSDS_packet_create();
-    void (*CCSDS_Packet_init)(
-        void (*CCSDS_Packet_cleanup_function)(void),
-        void (*CCSDS_Packet_telemetry_faker_function)(void)
-    );
+    uint8_t version_number;
+    uint16_t packet_size;
+    uint8_t spacecraft_id;
 
-    void (*CCSDS_Packet_cleanup)(void);
-    void (*CCSDS_Packet_telemetry_faker)(void);
+    void (*_CCSDS_packet_set_spacecraft_id)(uint8_t);
+    uint8_t (*_CCSDS_packet_get_spacecraft_id);
+    
+    void (*_CCSDS_packet_telemetry_faker)(void);
+    void (*_CCSDS_packet_cleanup)(CCSDS_Packet*);
 
 };
 
-/* create functions */
-CCSDS_Packet *CCSDS_packet_create() {
-    // allocate memory for the CCSDS packet
-    CCSDS_Packet *pkt = (CCSDS_Packet *) malloc(sizeof(uint8_t) * CCSDS_MAX_PACKET_SIZE);
-}
+CCSDS_Packet *CCSDS_packet_create();
 
-/* call init with the created functions */
 
+void CCSDS_packet_set_spacecraft_id(CCSDS_Packet* packet_inst, uint8_t);
+void CCSDS_Packet_cleanup_function (CCSDS_Packet* packet_inst);
+void CCSDS_Packet_telemetry_faker(CCSDS_Packet* packet_inst);
+
+void CCSDS_packet_init(
+    CCSDS_Packet* packet_inst, 
+    void (*_CCSDS_packet_set_spacecraft_id)(uint8_t),
+    uint8_t (*_CCSDS_packet_get_spacecraft_id), 
+    void (*_CCSDS_packet_telemetry_faker)(void),
+    void (*_CCSDS_packet_cleanup)(CCSDS_Packet*)
+);
 
 #endif
