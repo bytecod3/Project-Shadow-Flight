@@ -1,53 +1,96 @@
+/**
+ * @author Edwin Mwiti emwiti658@gmail.com
+ * 
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "ccsds_tm.h"
 
-/* create functions */
-CCSDS_Packet *CCSDS_packet_create() {
-    
+char* mission_id = "PSF_ADVENT_1";
+uint32_t spacecraft_id = 26001001; // YYXXXAA -> see telemetry packet diagram
 
+
+/* create CCDS packet struct */
+CCSDS_packet* CCSDS_packet_create() {
+    CCSDS_packet* pkt = (CCSDS_packet*) malloc(sizeof(CCSDS_packet));
+
+    if(pkt != NULL) {
+        CCSDS_packet_init(
+            pkt, 
+            CCSDS_packet_set_spacecraft_id,
+            CCSDS_packet_get_spacecraft_id,
+            CCSDS_packet_dump_metadata,
+            CCSDS_packet_telemetry_faker,
+            CCSDS_packet_telemetry_cleanup
+        );
+
+    }
 }
 
 /* call init with the created functions */
 void CCSDS_packet_init(
-    CCSDS_Packet* packet_inst, 
-    void (*CCSDS_packet_set_spacecraft_id)(uint8_t),
-    uint8_t (*CCSDS_packet_get_spacecraft_id), 
-    void (*CCSDS_packet_telemetry_faker)(void),
-    void (*CCSDS_packet_cleanup)(CCSDS_Packet*)
+    CCSDS_packet* p, 
+    void (*CCSDS_packet_set_spacecraft_id)(CCSDS_packet*, uint32_t),
+    uint32_t (*CCSDS_packet_get_spacecraft_id)(CCSDS_packet*), 
+    void (*CCSDS_packet_dump_metadata)(CCSDS_packet*),
+    void (*CCSDS_packet_telemetry_faker)(CCSDS_packet* p),
+    void (*CCSDS_packet_cleanup)(CCSDS_packet*)
 ) {
-    if(packet_inst != NULL ){
-        packet_inst->_CCSDS_packet_set_spacecraft_id = CCSDS_packet_set_spacecraft_id;
-        packet_inst->_CCSDS_packet_get_spacecraft_id = CCSDS_packet_get_spacecraft_id;
+    if(p != NULL ){
 
-        packet_inst->_CCSDS_packet_cleanup = CCSDS_packet_cleanup;
-        packet_inst->_CCSDS_packet_telemetry_faker = CCSDS_packet_telemetry_faker;
+        p->version_number = VERSION_NUMBER;
+        p->spacecraft_id = spacecraft_id;
+        strncpy(p->mission_id, mission_id, strlen(mission_id) + 1);
 
-        packet_inst->version_number = 9;
+        // assign function pointer objects 
+        p->_CCSDS_packet_set_spacecraft_id = CCSDS_packet_set_spacecraft_id;
+        p->_CCSDS_packet_get_spacecraft_id = CCSDS_packet_get_spacecraft_id;
+        p->_CCSDS_packet_dump_metadata = CCSDS_packet_dump_metadata;
+        p->_CCSDS_packet_cleanup = CCSDS_packet_cleanup;
+        p->_CCSDS_packet_telemetry_faker = CCSDS_packet_telemetry_faker;
+
+        p->version_number = 9;
 
     } else {
-        puts("Packet instance is NULL");
+        // only for embedded todo: log to logger on MCU
+        puts("packet instance is NULL");
     }
 }
 
-void CCSDS_packet_set_spacecraft_id(CCSDS_Packet* packet_inst, uint8_t id) {
-    packet_inst->spacecraft_id;
+/* set the spacecraft ID in case there is need to change */
+void CCSDS_packet_set_spacecraft_id(CCSDS_packet* p, uint32_t id) {
+    p->spacecraft_id = id;
 }
 
-uint8_t CCSDS_packet_get_spacecraft_id() {
-    
+/* get spacecraft ID*/
+uint32_t CCSDS_packet_get_spacecraft_id(CCSDS_packet* p) {
+    return p->spacecraft_id;
 }
 
 /* destructor*/
-void CCSDS_Packet_cleanup_function (CCSDS_Packet* packet) {
-    if(packet != NULL) {
-        free(packet);
+void CCSDS_packet_telemetry_cleanup(CCSDS_packet* p) {
+    if(p != NULL) {
+        free(p);
     }
 }
 
-void telemetry_generate_dummy(void)
-{
+/* print the spacecraft metadata */
+void CCSDS_packet_dump_metadata(CCSDS_packet* p) {
+    char metadata[256];
+
+    sprintf(metadata, 
+        "\r\nSpacecraft ID: %u\nMission ID: %s\r\n", 
+        p->spacecraft_id,
+        p->mission_id
+    );
+
+    puts(metadata);
+}
+
+/* generates dummy test data */
+void CCSDS_packet_telemetry_faker(CCSDS_packet* p) {
     /*generate OBS data */
     uint32_t obs_timestamp = UINT32_MAX; // timestamp
     float obs_board_voltage = 3.3;       // board_voltage

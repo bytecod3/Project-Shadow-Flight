@@ -1,4 +1,5 @@
 /**
+ * @author Edwin Mwiti
  * @brief This file declares the headers for CCSDS TM protocol
  */
 
@@ -11,7 +12,7 @@
  /**
   * byte sizes 
   */
-#define CCSDS_MAX_PACKET_SIZE (2000)
+#define CCSDS_MAX_packet_SIZE (2000)
 #define TRANSFER_FRAME_PRIMARY_HEADER_MAX_LENGTH   (6)
 #define TRANSFER_FRAME_SECONDARY_HEADER_MAX_LENGTH (6)
 #define TRANSFER_FRAME_DATA_FIELD_MAX_LENGTH (1024)
@@ -34,7 +35,7 @@
  */
 #define TFSHS_FLAG_MASK (0x01)
 #define TFSHS_SYNC_FLAG_MASK (0x01)
-#define TFSHS_PACKET_ORDER_FLAG_MASK (0x01)
+#define TFSHS_packet_ORDER_FLAG_MASK (0x01)
 #define TFSHS_SEGMENT_LENGTH_ID_MASK (0x02)
 #define TFSHS_FIRST_HEADER_POINTER_MASK (0x7FF)
 
@@ -46,45 +47,54 @@
 
 #define TFSH_DATA_FIELD_MAX_LENGTH (64)
 
+#define VERSION_NUMBER 0x00
+extern char* mission_id;
+extern uint32_t spacecraft_id; // YYXXXAA -> see telemetry packet diagram
+
+
 /**
  * \brief faker function to generate dummy telemetry
  */
 void telemetry_generate_dummy(void);
 
 
-typedef struct CCSDS_Packet CCSDS_Packet;
+typedef struct CCSDS_packet CCSDS_packet;
 
 
 /**
  * \brief Base class for CCSDS protocol
  */
-struct CCSDS_Packet {
+struct CCSDS_packet {
 
     uint8_t version_number;
     uint16_t packet_size;
-    uint8_t spacecraft_id;
+    char* mission_id;
+    uint32_t spacecraft_id;
 
-    void (*_CCSDS_packet_set_spacecraft_id)(uint8_t);
-    uint8_t (*_CCSDS_packet_get_spacecraft_id);
-    
-    void (*_CCSDS_packet_telemetry_faker)(void);
-    void (*_CCSDS_packet_cleanup)(CCSDS_Packet*);
-
+    /* member functions */
+    void (*_CCSDS_packet_set_spacecraft_id)(CCSDS_packet*, uint32_t);
+    uint32_t (*_CCSDS_packet_get_spacecraft_id)(CCSDS_packet*);
+    void (*_CCSDS_packet_dump_metadata)(CCSDS_packet*);
+    void (*_CCSDS_packet_telemetry_faker)(CCSDS_packet* p);
+    void (*_CCSDS_packet_cleanup)(CCSDS_packet*);
 };
 
-CCSDS_Packet *CCSDS_packet_create();
+CCSDS_packet *CCSDS_packet_create();
 
-
-void CCSDS_packet_set_spacecraft_id(CCSDS_Packet* packet_inst, uint8_t);
-void CCSDS_Packet_cleanup_function (CCSDS_Packet* packet_inst);
-void CCSDS_Packet_telemetry_faker(CCSDS_Packet* packet_inst);
+void CCSDS_packet_set_spacecraft_id(CCSDS_packet* p, uint32_t);
+uint32_t CCSDS_packet_get_spacecraft_id(CCSDS_packet* p);
+void CCSDS_packet_dump_metadata(CCSDS_packet* p);
+void CCSDS_packet_cleanup_function (CCSDS_packet* p);
+void CCSDS_packet_telemetry_faker(CCSDS_packet* p);
+void CCSDS_packet_telemetry_cleanup(CCSDS_packet* p);
 
 void CCSDS_packet_init(
-    CCSDS_Packet* packet_inst, 
-    void (*_CCSDS_packet_set_spacecraft_id)(uint8_t),
-    uint8_t (*_CCSDS_packet_get_spacecraft_id), 
-    void (*_CCSDS_packet_telemetry_faker)(void),
-    void (*_CCSDS_packet_cleanup)(CCSDS_Packet*)
+    CCSDS_packet* p, 
+    void (*_CCSDS_packet_set_spacecraft_id)(CCSDS_packet*, uint32_t),
+    uint32_t (*_CCSDS_packet_get_spacecraft_id)(CCSDS_packet*), 
+    void (*_CCSDS_packet_dump_metadata)(CCSDS_packet*),
+    void (*_CCSDS_packet_telemetry_faker)(CCSDS_packet* p),
+    void (*_CCSDS_packet_cleanup)(CCSDS_packet*)
 );
 
 #endif

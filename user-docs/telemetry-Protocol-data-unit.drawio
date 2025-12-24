@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.2.5 Chrome/138.0.7204.251 Electron/37.6.1 Safari/537.36" version="28.2.5">
   <diagram name="Page-1" id="BEZI4qmmZRfK3UoGMRGf">
-    <mxGraphModel dx="719" dy="432" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+    <mxGraphModel dx="803" dy="660" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -256,6 +256,60 @@
               <mxPoint x="658" y="1202" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-2" value="&lt;b&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 17px;&quot;&gt;SPACECRAFT ID&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="278" width="155" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-4" value="&lt;b&gt;&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 17px;&quot;&gt;YYXXXAA&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1070" y="319" width="99" height="32" as="geometry" />
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-5" value="" style="endArrow=none;html=1;rounded=0;exitX=0.061;exitY=0.688;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="JXNMVdlB1QQ-nzR8_1Qm-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1050" y="391" as="sourcePoint" />
+            <mxPoint x="1100" y="341" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-6" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1101" y="344" as="sourcePoint" />
+            <mxPoint x="1138" y="344" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-7" value="" style="endArrow=none;html=1;rounded=0;exitX=0.061;exitY=0.688;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1137" y="341" as="sourcePoint" />
+            <mxPoint x="1161" y="341" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-8" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1088" y="366" as="sourcePoint" />
+            <mxPoint x="1088" y="341" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-9" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1119" y="401" as="sourcePoint" />
+            <mxPoint x="1119" y="344" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-10" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1150" y="366" as="sourcePoint" />
+            <mxPoint x="1150" y="341" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-12" value="Year of&amp;nbsp;&lt;div&gt;launch&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#d79b00;fillColor=#ffe6cc;" vertex="1" parent="1">
+          <mxGeometry x="1056" y="358" width="59" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-13" value="Launch vehicle&lt;div&gt;Number&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#82b366;fillColor=#d5e8d4;" vertex="1" parent="1">
+          <mxGeometry x="1071" y="395" width="98" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-14" value="payload&amp;nbsp;&lt;div&gt;number for XXX&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="1117" y="360" width="103" height="41" as="geometry" />
+        </mxCell>
+        <mxCell id="JXNMVdlB1QQ-nzR8_1Qm-15" value="Source:&amp;nbsp;https://www.earthdata.nasa.gov/data/space-geodesy-techniques/gnss/SP3c-satellite-list" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=3" vertex="1" parent="1">
+          <mxGeometry x="914" y="439" width="528" height="26" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
