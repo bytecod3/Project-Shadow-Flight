@@ -8,11 +8,12 @@
 
  #include <stdint.h>
  #include <stdlib.h>
+ #include "data_types.h"
 
  /**
   * byte sizes 
   */
-#define CCSDS_MAX_packet_SIZE (2000)
+#define CCSDS_MAX_PACKET_SIZE (2000)
 #define TRANSFER_FRAME_PRIMARY_HEADER_MAX_LENGTH   (6)
 #define TRANSFER_FRAME_SECONDARY_HEADER_MAX_LENGTH (6)
 #define TRANSFER_FRAME_DATA_FIELD_MAX_LENGTH (1024)

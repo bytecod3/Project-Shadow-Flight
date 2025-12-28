@@ -158,6 +158,23 @@ void CCSDS_packet_create_transfer_frame_secondary_header(CCSDS_packet* p) {
     
 }
 
+void CCSDS_packet_create_data_field(CCSDS_packet* p) {
+
+}
+
+/*============ generate dummy data ================== */
+// generate EPS data
+// this will come from the EPS board as a struct from an RTOS task
+eps_data_t* generate_eps_fake(void) {
+    eps_data_t* data = (eps_data_t*) malloc(sizeof(eps_data_t));
+}
+
+
+
+// generate ADCS data
+// generate EPS data 
+// generate PAYLOAD data
+
 /**
  * @brief extract primary header fields
  */
@@ -182,8 +199,6 @@ void CCSDS_packet_dump_metadata(CCSDS_packet* p) {
 
     puts(metadata);
 
-    uint64_t a = 45500;
-    //p->_CCSDS_packet_print_bin(a);
 }
 
 /**
