@@ -59,30 +59,18 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define USER_LED_Pin GPIO_PIN_13
 #define USER_LED_GPIO_Port GPIOC
-#define CAMERA_HSYNC_Pin GPIO_PIN_4
-#define CAMERA_HSYNC_GPIO_Port GPIOA
-#define CAMERA_PCLK_Pin GPIO_PIN_6
-#define CAMERA_PCLK_GPIO_Port GPIOA
-#define CAMERA_D0_Pin GPIO_PIN_6
-#define CAMERA_D0_GPIO_Port GPIOC
-#define CAMERA_D1_Pin GPIO_PIN_7
-#define CAMERA_D1_GPIO_Port GPIOC
-#define CAMERA_D2_Pin GPIO_PIN_8
-#define CAMERA_D2_GPIO_Port GPIOC
-#define CAMERA_D3_Pin GPIO_PIN_9
-#define CAMERA_D3_GPIO_Port GPIOC
+#define PAYLOAD_NTC_Pin GPIO_PIN_0
+#define PAYLOAD_NTC_GPIO_Port GPIOA
+#define D2_LED_Pin GPIO_PIN_1
+#define D2_LED_GPIO_Port GPIOA
 #define MCLK_Pin GPIO_PIN_8
 #define MCLK_GPIO_Port GPIOA
-#define CAMERA_D5_Pin GPIO_PIN_6
-#define CAMERA_D5_GPIO_Port GPIOB
-#define CAMERA_VSYNC_Pin GPIO_PIN_7
-#define CAMERA_VSYNC_GPIO_Port GPIOB
-#define CAMERA_D6_Pin GPIO_PIN_8
-#define CAMERA_D6_GPIO_Port GPIOB
-#define CAMERA_D7_Pin GPIO_PIN_9
-#define CAMERA_D7_GPIO_Port GPIOB
+#define SD_CARD_CS_Pin GPIO_PIN_15
+#define SD_CARD_CS_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
+
+#define SD_SPI_HANDLE hspi2
 
 /* USER CODE END Private defines */
 

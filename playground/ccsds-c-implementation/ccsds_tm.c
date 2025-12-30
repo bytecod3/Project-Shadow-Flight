@@ -167,6 +167,13 @@ void CCSDS_packet_create_data_field(CCSDS_packet* p) {
 // this will come from the EPS board as a struct from an RTOS task
 eps_data_t* generate_eps_fake(void) {
     eps_data_t* data = (eps_data_t*) malloc(sizeof(eps_data_t));
+
+    if(data != NULL) {
+        
+    }
+
+
+    return data;
 }
 
 
