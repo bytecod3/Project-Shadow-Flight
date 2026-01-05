@@ -9,11 +9,12 @@
 
 #include <stdint.h>
 
-/*===================================================== ADCS data */
+/*========================= ADCS data ============================*/
 typedef struct _adxl345_data {
     float x_acc;
     float y_acc;
     float z_acc;
+    float tilt;
 } adxl345_data_t; // todo: this comes formatted from ADXL345 hardware driver
 
 typedef struct _mpu6050_data {
@@ -39,7 +40,7 @@ typedef struct _gps_data {
     float course;
 } gps_data_t; // todo: these are formatted from GPS hardware driver.
 
-// has sun 1, sun 2, sun 3, sun 4 sensors 
+// has sun 1, sun 2, sun 3, sun 4 sensors
 typedef struct _ads1015_1_data {
     uint16_t sun1;
     uint16_t sun2;
@@ -65,12 +66,25 @@ typedef struct _adcs_data{
 
 } adcs_data_t;
 
-/*================================================== COMMS board data */
+/*======================= COMMS board data ======================= */
+
+typedef struct _comms_flash_mem {
+    // external flash memory 
+    uint16_t memory_id; // MAN ID
+    uint16_t memory_size;
+    uint16_t free_sectors;
+    uint16_t num_blocks;
+} comms_flash_memory_data_t;
+
 typedef struct _comms_data{
     float t;
+    float board_temperature;
+    
+    comms_flash_memory_data_t flash_memory_data;
+    
 } comms_data_t;
 
-/* EPS_DATA */
+/*/*===================== EPS_DATA ===========================*/
 
 typedef struct _bq25703_data { // todo: comes from BQ25703 driver
     float adc_vsys;
@@ -93,7 +107,7 @@ typedef struct _eps_data{
 
     float onboard_temperature_ds;   // operational data
     float onboard_temperature_ntc;
-    uint8_t eps_board_detect;
+    uint8_t eps_board_detect; // optimize -> use but fields
 
     uint8_t deploy_1;              // deployment states
     uint8_t deploy_2;
@@ -102,6 +116,13 @@ typedef struct _eps_data{
 
 /*======================================================== PAYLOAD data */
 typedef struct _payload_data{
+    // camera
+    // capture iamge frames 
+    // compress with Huffman Compression 
+    // store in SD card 
+
+    uint8_t board_insert;
+    float board_temperature;
 
 } payload_data_t;
 
@@ -111,9 +132,13 @@ typedef struct _obc_data{
     eps_data_t eps_d;
     payload_data_t payload_d;
 
-     float onboard_temperature; // operational data
+    // internal OBC data
+    float onboard_temperature; // operational data
+    // flash memory 
+    // RTC
+    // EEPROM 
+    // SD CARD 
 } obc_data_t;
-
 
 
 #endif
