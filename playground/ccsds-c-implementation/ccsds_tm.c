@@ -116,7 +116,7 @@ void CCSDS_packet_create_transfer_frame_primary_header(CCSDS_packet* p) {
     
     /* final packaged primary header 0 -> primary header is the first 48 bits(from LSB) */
     p->transfer_frame_primary_header |= ( 
-        (v_num) |  // LSB
+        (v_num) |                               // LSB
         (id << 2) | 
         (virtual_channel_id <<  12) | 
         (op_control_flag << 15) | 
