@@ -20,52 +20,62 @@ uint16_t ce_get_cmd_length(const char* str) {
     return len;
 }
 
-char** ce_parse_command(const char* cmd) {
+char** ce_parse_command(char* cmd) {
+    
     if(ce_check_valid_command(cmd) != 0) {
+        printf("Parsing cmd: %s\n", cmd);
         /* split the string using spaces */
-        const char dlm = ' '; 
-        char* last_space = 0;
-        char** args;
+        const char* dlm = " ";
         uint8_t args_count = 0;
         char* tmp = cmd;
-        char delim[2];
-        delim[0] = dlm;
-        delim[1] = 0;
 
         /* count the number of arguments to be extracted */
-        while(*tmp) {
-            if(dlm == *tmp) {
+        uint8_t j = 0;
+        while(tmp[j] != '\0') {
+            if(tmp[j] == *dlm) {
                 args_count++;
-                last_space = tmp;
             }
-            tmp++;
+            j++;
         }
 
         /* handle the last argument, 3 spaces == 4 arguments */
         args_count++;
 
         /* store these tokens somewhere */
-        char** result = malloc(sizeof(char) * args_count);
+        char** result = malloc(sizeof(char*) * (args_count+1));
 
         if(result != NULL) {
-            size_t index = 0;
-            char* token = strtok(cmd, dlm);
-            while (token) {
-                *(result + index++) = strdup(token);
-                token = strtok(NULL, dlm);
-            }
+             size_t index = 0;
+             char* token = strtok(cmd, dlm);
+             while (token && index < args_count) {
+                 result[index] = _strdup(token);
+                 token = strtok(NULL, dlm);
+                 index++;
+             }
 
-            *(result + index) = 0;
-            
+             result[index] = NULL;
+             return result;
+        } else {
+            return NULL;
         }
-
-        return result;
 
     } else {
         /* failed to parse a null command*/
-        return 0;
+        return NULL;
     }
 
+}
+
+/* how many tokens have been extracted */
+size_t ce_get_token_count(char** tokens) {
+    if(tokens == NULL) return 0;
+    uint8_t k = 0;
+
+    while(tokens[k] != NULL ) {
+        k++;
+    }
+
+    return k;
 }
 
 // const char* ce_command_get_command_name(const char* command) {
