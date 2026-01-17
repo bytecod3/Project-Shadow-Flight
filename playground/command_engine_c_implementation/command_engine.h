@@ -12,7 +12,40 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-#include "commands.h"
+
+#define MAX_CMD_LENGTH          (255)
+
+enum subsystems {
+    OBC = 0,
+    EPS,
+    ADCU,
+    COMMS,
+    PAYLOAD
+};
+
+enum commands  {
+    RESTART,
+    SLEEP,
+    GET_TIME,
+    GET_STATE,
+    SET_STATE,
+    COMMS_ON,
+    COMMS_OFF,
+    PAYLOAD_ON,
+    PAYLOAD_OFF
+};
+
+/* holds the type of command */
+typedef enum _command_type {
+    IMMEDIATE,
+    SCHEDULED
+} command_type_t;
+
+/* represents a command type */
+typedef struct  {
+    command_type_t cmd_type;
+    char cmd[MAX_CMD_LENGTH];
+} sat_command_t;
 
 /* caculate length of command before parsing */
 uint16_t ce_get_cmd_length(const char* str);
@@ -29,11 +62,11 @@ size_t ce_get_token_count(char** tokens);
 /* check if target subsystem is valid */
 uint8_t ce_check_valid_subsystem(const char* system);
 
-/* check if time parsed as a paramter is valid*/
+/* check if time parsed as a parameter is valid*/
 uint8_t ce_check_valid_time();
 
-/* de-construct commmand into tokens */
-char** ce_parse_command(char* c);
+/* de-construct command into tokens */
+char** ce_parse_command(sat_command_t c);
 
 /* send to file system */
 uint8_t ce_store_command_to_file(char* cmd);

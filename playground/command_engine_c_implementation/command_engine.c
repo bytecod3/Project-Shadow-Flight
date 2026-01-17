@@ -11,7 +11,7 @@
  * @return true is command is valid
  */
 uint8_t ce_check_valid_command(const char* command) {
-
+    return 1;
 }
 
 uint16_t ce_get_cmd_length(const char* str) {
@@ -20,14 +20,21 @@ uint16_t ce_get_cmd_length(const char* str) {
     return len;
 }
 
-char** ce_parse_command(char* cmd) {
-    
-    if(ce_check_valid_command(cmd) != 0) {
+char** ce_parse_command(sat_command_t c) {
+
+    /* check type of command */
+    if (c.cmd_type == IMMEDIATE) {
+        puts("Immediate command");
+    } else if(c.cmd_type == SCHEDULED) {\
+        puts("scheduled command");
+    }
+
+    if(ce_check_valid_command(c.cmd) != 0) {
 
         /* make a copy of this command */
-        uint8_t cmd_len = ce_get_cmd_length(cmd);
+        uint8_t cmd_len = ce_get_cmd_length(c.cmd);
         char cmd_cpy[cmd_len + 1];
-        strcpy(cmd_cpy, cmd);
+        strcpy(cmd_cpy, c.cmd);
 
         printf("Parsing cmd: %s\n", cmd_cpy);
         /* split the string using spaces */
