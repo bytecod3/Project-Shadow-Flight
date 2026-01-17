@@ -15,6 +15,19 @@
 
 #define MAX_CMD_LENGTH          (255)
 
+/* lookup table to store available internal commands */
+static const char* commands_table[] = {
+        "RESTART",
+        "SLEEP",
+        "GET_TIME",
+        "GET_STATE",
+        "SET_STATE",
+        "COMMS_ON",
+        "COMMS_OFF",
+        "PAYLOAD_ON",
+        "PAYLOAD_OFF"
+};
+
 enum subsystems {
     OBC = 0,
     EPS,
@@ -35,6 +48,7 @@ enum commands  {
     PAYLOAD_OFF
 };
 
+
 /* holds the type of command */
 typedef enum _command_type {
     IMMEDIATE,
@@ -51,7 +65,7 @@ typedef struct  {
 uint16_t ce_get_cmd_length(const char* str);
 
 /* check if the command intended is within the valid scope */
-uint8_t ce_check_valid_command(const char* command);
+uint8_t ce_check_valid_command(char* command);
 
 /* how many tokens have been parsed */
 size_t ce_get_token_count(char** tokens);
@@ -65,8 +79,11 @@ uint8_t ce_check_valid_subsystem(const char* system);
 /* check if time parsed as a parameter is valid*/
 uint8_t ce_check_valid_time();
 
+/* parse a single command */
+void ce_parse_command(char* cmd);
+
 /* de-construct command into tokens */
-char** ce_parse_command(sat_command_t c);
+char** ce_tokenize(sat_command_t c);
 
 /* send to file system */
 uint8_t ce_store_command_to_file(char* cmd);

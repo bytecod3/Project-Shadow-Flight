@@ -5,12 +5,35 @@
 
 #include "command_engine.h"
 
+
 /**
  * @brief check if the command to be processed is valid
  * @param command
  * @return true is command is valid
  */
-uint8_t ce_check_valid_command(const char* command) {
+uint8_t ce_check_valid_command(char* cmd) {
+    /* perform a linear search for this command */
+    printf("Received %s\n", cmd);
+    uint8_t l = 0;
+    uint8_t cmd_found = 0;
+    while(commands_table[l] != NULL) {
+        l++;
+    }
+
+    uint8_t cmd_index = 0;
+    for(cmd_index =0; cmd_index < l; cmd_index++) {
+        if(strcmp(cmd, commands_table[cmd_index]) == 0) {
+            cmd_found = 1;
+        }
+    }
+
+    if(cmd_found) {
+        printf("Received: %s, Found at index %d\n", cmd, cmd_index);
+    } else {
+        printf("Received: %s, Command does not exist\n", cmd);
+
+    }
+
     return 1;
 }
 
@@ -20,7 +43,8 @@ uint16_t ce_get_cmd_length(const char* str) {
     return len;
 }
 
-char** ce_parse_command(sat_command_t c) {
+/* parse received command */
+char** ce_tokenize(sat_command_t c) {
 
     /* check type of command */
     if (c.cmd_type == IMMEDIATE) {
@@ -29,55 +53,45 @@ char** ce_parse_command(sat_command_t c) {
         puts("scheduled command");
     }
 
-    if(ce_check_valid_command(c.cmd) != 0) {
+    /* make a copy of this command */
+    uint8_t cmd_len = ce_get_cmd_length(c.cmd);
+    char cmd_cpy[cmd_len + 1];
+    strcpy(cmd_cpy, c.cmd);
 
-        /* make a copy of this command */
-        uint8_t cmd_len = ce_get_cmd_length(c.cmd);
-        char cmd_cpy[cmd_len + 1];
-        strcpy(cmd_cpy, c.cmd);
+    printf("Parsing cmd: %s\n", cmd_cpy);
+    /* split the string using spaces */
+    const char* dlm = " ";
+    uint8_t args_count = 0;
+    char* tmp = cmd_cpy;
 
-        printf("Parsing cmd: %s\n", cmd_cpy);
-        /* split the string using spaces */
-        const char* dlm = " ";
-        uint8_t args_count = 0;
-        char* tmp = cmd_cpy;
-
-        /* count the number of arguments to be extracted */
-        uint8_t j = 0;
-        while(tmp[j] != '\0') {
-            if(tmp[j] == *dlm) {
-                args_count++;
-            }
-            j++;
+    /* count the number of arguments to be extracted */
+    uint8_t j = 0;
+    while(tmp[j] != '\0') {
+        if(tmp[j] == *dlm) {
+            args_count++;
         }
+        j++;
+    }
 
-        /* handle the last argument, 3 spaces == 4 arguments */
-        args_count++;
+    /* handle the last argument, 3 spaces == 4 arguments */
+    args_count++;
 
-        /* store these tokens somewhere */
-        char** result = malloc(sizeof(char*) * (args_count+1));
+    /* store these tokens somewhere */
+    char** result = malloc(sizeof(char*) * (args_count+1));
 
-        if(result != NULL) {
-             size_t index = 0;
-             char* token = strtok(cmd_cpy, dlm);
-             while (token && index < args_count) {
-                 result[index] = strdup(token);
-                 token = strtok(NULL, dlm);
-                 index++;
-             }
+    if(result != NULL) {
+         size_t index = 0;
+         char* token = strtok(cmd_cpy, dlm);
+         while (token && index < args_count) {
+             result[index] = strdup(token);
+             token = strtok(NULL, dlm);
+             index++;
+         }
 
-             result[index] = NULL;
+         result[index] = NULL;
 
-             /* how many tokens do we have - reconfirm */
-            //size_t tkn_count = ce_get_token_count(result);
-
-             return result;
-        } else {
-            return NULL;
-        }
-
+         return result;
     } else {
-        /* failed to parse a null command*/
         return NULL;
     }
 
