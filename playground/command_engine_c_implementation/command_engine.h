@@ -36,6 +36,6 @@ uint8_t ce_check_valid_time();
 char** ce_parse_command(char* c);
 
 /* send to file system */
-void ce_send_to_fs();
+uint8_t ce_store_command_to_file(char* cmd);
 
 #endif

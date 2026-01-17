@@ -23,11 +23,17 @@ uint16_t ce_get_cmd_length(const char* str) {
 char** ce_parse_command(char* cmd) {
     
     if(ce_check_valid_command(cmd) != 0) {
-        printf("Parsing cmd: %s\n", cmd);
+
+        /* make a copy of this command */
+        uint8_t cmd_len = ce_get_cmd_length(cmd);
+        char cmd_cpy[cmd_len + 1];
+        strcpy(cmd_cpy, cmd);
+
+        printf("Parsing cmd: %s\n", cmd_cpy);
         /* split the string using spaces */
         const char* dlm = " ";
         uint8_t args_count = 0;
-        char* tmp = cmd;
+        char* tmp = cmd_cpy;
 
         /* count the number of arguments to be extracted */
         uint8_t j = 0;
@@ -46,14 +52,18 @@ char** ce_parse_command(char* cmd) {
 
         if(result != NULL) {
              size_t index = 0;
-             char* token = strtok(cmd, dlm);
+             char* token = strtok(cmd_cpy, dlm);
              while (token && index < args_count) {
-                 result[index] = _strdup(token);
+                 result[index] = strdup(token);
                  token = strtok(NULL, dlm);
                  index++;
              }
 
              result[index] = NULL;
+
+             /* how many tokens do we have - reconfirm */
+            //size_t tkn_count = ce_get_token_count(result);
+
              return result;
         } else {
             return NULL;
@@ -83,13 +93,32 @@ size_t ce_get_token_count(char** tokens) {
 //         switch (command) {
 //             case RESTART:
 //                 return "restart";
-
+//
 //             case SLEEP:
 //                 return "sleep";
-
+//
 //             default:
 //                 return "invalid"
-
+//
 //         }
 //     }
 // }
+
+ /* store commands to file */
+ uint8_t ce_store_command_to_file(char* cmd) {
+    FILE * cmd_file = fopen("cmds.txt", "a");
+    if(cmd_file == NULL) return 0;
+
+    int a = fputs(cmd, cmd_file);
+    int b = fputc('\n', cmd_file);
+
+     if((a == EOF) || (b == EOF)) {
+         puts("Failed to write to file");
+         fclose(cmd_file);
+         return 0;
+     }
+
+     puts("Command written to file");
+     fclose(cmd_file);
+     return 1;
+}
