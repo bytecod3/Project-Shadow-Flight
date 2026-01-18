@@ -5,7 +5,7 @@ int main() {
 
     sat_command_t cmd1 = {
         IMMEDIATE,
-        "OBC RESTART"
+        "COMMS ON"
     };
 
     sat_command_t cmd2 = {
@@ -13,25 +13,20 @@ int main() {
             "COMMS RESTART 2026-01-13 15:30:00"
     };
 
-    /* use a modifiable memory location */
-//    char cmd[] = "EPS RESTART 2026-01-13 15:30:00";
-//    char cmd2[] = "COMMS SLEEP 2026-01-13 15:30:00";
+    //char** c = ce_tokenize(cmd1);
+//
+//    // process tokens
+//    ce_process_tokens(c);
+//
+//    /* free the tokens memory */
+//    ce_free_memory(c);
 
-    char** c = ce_tokenize(cmd1);
+    CommandEngine* cmd_engine = command_engine_create();
+    char** tokens = cmd_engine->tokenize(cmd_engine, cmd2);
 
-    /* test -> store command to file */
-    //ce_store_command_to_file(cmd1);
-//    ce_store_command_to_file(cmd2);
+    cmd_engine->process_tokens(cmd_engine, tokens);
 
-    // check valid command
-    ce_check_valid_command(c[1]);
-
-    /* free the tokens memory */
-    for (int i = 0; c[i]; ++i) {
-        free(c[i]);
-    }
-
-    free(c);
+    cmd_engine->free_memory(cmd_engine, tokens);
 
     return 0;
 }

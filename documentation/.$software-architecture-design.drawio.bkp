@@ -1,23 +1,23 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.1.2 Chrome/138.0.7204.243 Electron/37.4.0 Safari/537.36" version="28.1.2">
   <diagram name="Page-1" id="FRkkPbEm9CwAqfSYTeEQ">
-    <mxGraphModel dx="1767" dy="366" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2513" dy="664" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="fF4vOqMIKQlcrct3CXYp-12" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 2;" vertex="1" parent="1">
-          <mxGeometry x="1768" y="1240" width="682" height="88" as="geometry" />
+          <mxGeometry x="921" y="284" width="682" height="88" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-13" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 2;" vertex="1" parent="1">
-          <mxGeometry x="1774" y="1348" width="682" height="88" as="geometry" />
+          <mxGeometry x="927" y="392" width="682" height="88" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-14" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 2;" vertex="1" parent="1">
-          <mxGeometry x="1774" y="1466" width="682" height="88" as="geometry" />
+          <mxGeometry x="927" y="510" width="682" height="88" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-15" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 2;" vertex="1" parent="1">
-          <mxGeometry x="1774" y="1585" width="682" height="88" as="geometry" />
+          <mxGeometry x="927" y="629" width="682" height="88" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-16" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=1 2;" vertex="1" parent="1">
-          <mxGeometry x="1776" y="1691" width="682" height="88" as="geometry" />
+          <mxGeometry x="929" y="735" width="682" height="88" as="geometry" />
         </mxCell>
         <mxCell id="jgiwaZmRZfAXH9g5tH43-168" value="" style="whiteSpace=wrap;html=1;dashed=1;dashPattern=8 8;fillColor=#f9f7ed;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="10" y="1120" width="1170" height="1050" as="geometry" />
@@ -405,55 +405,55 @@
           <mxGeometry x="-208" y="1410" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-2" value="Application layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="1820" y="1254" width="322" height="60" as="geometry" />
+          <mxGeometry x="973" y="298" width="322" height="60" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="fF4vOqMIKQlcrct3CXYp-3" target="fF4vOqMIKQlcrct3CXYp-2">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-3" value="Middleware" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-          <mxGeometry x="1819" y="1362" width="323" height="60" as="geometry" />
+          <mxGeometry x="972" y="406" width="323" height="60" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="fF4vOqMIKQlcrct3CXYp-4" target="fF4vOqMIKQlcrct3CXYp-3">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-4" value="Operating&amp;nbsp;&lt;div&gt;System (FreeRTOS)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="1815" y="1480" width="332" height="60" as="geometry" />
+          <mxGeometry x="968" y="524" width="332" height="60" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="fF4vOqMIKQlcrct3CXYp-5" target="fF4vOqMIKQlcrct3CXYp-4">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-5" value="Hardware&amp;nbsp;&lt;div&gt;Abstraction Layer&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="1816" y="1597" width="331" height="60" as="geometry" />
+          <mxGeometry x="969" y="641" width="331" height="60" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="fF4vOqMIKQlcrct3CXYp-6" target="fF4vOqMIKQlcrct3CXYp-5">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-6" value="Hardware/Physical&lt;div&gt;Layer&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="1814" y="1701" width="334" height="60" as="geometry" />
+          <mxGeometry x="967" y="745" width="334" height="60" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-17" value="Decision making from data&amp;nbsp;&lt;div&gt;from lower layers e.g Should we turn off PAYLOAD&lt;/div&gt;&lt;div&gt;*Runs the main FSM&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="2141" y="1256.5" width="287" height="55" as="geometry" />
+          <mxGeometry x="1294" y="300.5" width="287" height="55" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-18" value="General functions, utilities, helpers etc&lt;div&gt;e.g Raw data filters, State prediction algorithms&lt;/div&gt;&lt;div&gt;*Debugging functions&lt;/div&gt;&lt;div&gt;* libJPEG, FATFS etc&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="2150.5" y="1346" width="269" height="70" as="geometry" />
+          <mxGeometry x="1303.5" y="390" width="269" height="70" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-19" value="Task driven architecture&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="2230" y="1492" width="148" height="26" as="geometry" />
+          <mxGeometry x="1383" y="536" width="148" height="26" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-21" value="STM32 HAL e.g HAL_I2C, HAL_SPI&lt;div&gt;*HAL-driven driver code for each module&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="2185" y="1601" width="235" height="41" as="geometry" />
+          <mxGeometry x="1338" y="645" width="235" height="41" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-22" value="*Actual physical hardware that can change&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-          <mxGeometry x="2184" y="1723" width="248" height="26" as="geometry" />
+          <mxGeometry x="1337" y="767" width="248" height="26" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-24" value="Layered Pattern Design" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
-          <mxGeometry x="2059" y="1125" width="100" height="40" as="geometry" />
+          <mxGeometry x="1212" y="169" width="100" height="40" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-25" value="Revision: #2 -&amp;gt; 9 Sep 2025" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="2048" y="1163" width="139" height="24" as="geometry" />
+          <mxGeometry x="1201" y="207" width="139" height="24" as="geometry" />
         </mxCell>
         <mxCell id="fF4vOqMIKQlcrct3CXYp-26" value="Edwin Mwiti" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="2077" y="1180" width="80" height="30" as="geometry" />
+          <mxGeometry x="1230" y="224" width="80" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

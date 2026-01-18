@@ -5,56 +5,93 @@
 
 #include "command_engine.h"
 
+/**
+ * @brief check for valid sub-system
+ */
+uint8_t ce_check_valid_subsystem(CommandEngine* inst, char* system) {
+    if(inst == NULL) return 0;
+    if(system == NULL) return 0;
+
+    printf("validating subsystem...");
+
+    uint8_t k = 0;
+    uint8_t sys_valid = 0;
+    while (inst->subsystems_tbl[k] != NULL) k++;
+
+    uint8_t indx = 0;
+    uint8_t system_offset = 0;
+
+    /* linear search */
+    for (indx; indx < k; indx++) {
+        if (strcmp(system, inst->subsystems_tbl[indx]) == 0) {
+            sys_valid = 1;
+            system_offset = indx;
+            break;
+        }
+    }
+
+    if (sys_valid) {
+        printf("Subsystem %s OK\n", system);
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 /**
  * @brief check if the command to be processed is valid
  * @param command
  * @return true is command is valid
  */
-uint8_t ce_check_valid_command(char* cmd) {
+uint8_t ce_check_valid_command(CommandEngine* inst, char* cmd) {
+
+    if(cmd == NULL) return 0;
+
+    printf("Validating command...");
+
     /* perform a linear search for this command */
-    printf("Received %s\n", cmd);
     uint8_t l = 0;
-    uint8_t cmd_found = 0;
-    while(commands_table[l] != NULL) {
-        l++;
-    }
+    uint8_t cmd_valid = 0;
+    while(inst->commands_tbl[l] != NULL) l++;
 
     uint8_t cmd_index = 0;
-    for(cmd_index =0; cmd_index < l; cmd_index++) {
-        if(strcmp(cmd, commands_table[cmd_index]) == 0) {
-            cmd_found = 1;
+    uint8_t command_offset = 0;
+    for(cmd_index; cmd_index < l; cmd_index++) {
+        if(strcmp(cmd, inst->commands_tbl[cmd_index]) == 0) {
+            cmd_valid = 1;
+            command_offset = cmd_index;
+            break;
         }
     }
 
-    if(cmd_found) {
-        printf("Received: %s, Found at index %d\n", cmd, cmd_index);
+    if(cmd_valid) {
+        printf("Command %s OK\n",cmd);
+        return 1;
     } else {
-        printf("Received: %s, Command does not exist\n", cmd);
-
+        printf("Command does not exist\n", cmd);
+        return 0;
     }
 
-    return 1;
 }
 
-uint16_t ce_get_cmd_length(const char* str) {
+uint8_t ce_get_cmd_length(CommandEngine* inst, const char* str) {
     uint16_t len = 0;
     while(str[len] != '\0') len++;
     return len;
 }
 
 /* parse received command */
-char** ce_tokenize(sat_command_t c) {
+char** ce_tokenize(CommandEngine* inst, sat_command_t c) {
 
     /* check type of command */
     if (c.cmd_type == IMMEDIATE) {
         puts("Immediate command");
-    } else if(c.cmd_type == SCHEDULED) {\
+    } else if(c.cmd_type == SCHEDULED) {
         puts("scheduled command");
     }
 
     /* make a copy of this command */
-    uint8_t cmd_len = ce_get_cmd_length(c.cmd);
+    uint8_t cmd_len = inst->get_cmd_length(inst, c.cmd);
     char cmd_cpy[cmd_len + 1];
     strcpy(cmd_cpy, c.cmd);
 
@@ -94,11 +131,25 @@ char** ce_tokenize(sat_command_t c) {
     } else {
         return NULL;
     }
+}
+
+/* process a single command */
+void ce_process_tokens(CommandEngine* inst, char** tokens) {
+    uint8_t is_system_valid = inst->check_valid_subsystem(inst, tokens[0]);
+    uint8_t is_command_valid = inst->check_valid_command(inst, tokens[1]);
+
+    if(is_system_valid && is_command_valid) {
+        puts("command check done. Ready to process...");
+
+        // TODO: depending on teh specific subsytem, send to its queue
+
+    }
 
 }
 
+
 /* how many tokens have been extracted */
-size_t ce_get_token_count(char** tokens) {
+size_t ce_get_token_count(CommandEngine* inst, char** tokens) {
     if(tokens == NULL) return 0;
     uint8_t k = 0;
 
@@ -108,6 +159,19 @@ size_t ce_get_token_count(char** tokens) {
 
     return k;
 }
+
+/**
+ * @brief Free command allocation structure
+ * @param cmd
+ * @return
+ */
+ void ce_free_memory(CommandEngine* inst, char** c) {
+     for(int i =0; c[i]; ++i){
+         free(c[i]);
+     }
+
+     free(c);
+ }
 
 // const char* ce_command_get_command_name(const char* command) {
 //     if(ce_check_valid_command(command)) {
@@ -126,7 +190,7 @@ size_t ce_get_token_count(char** tokens) {
 // }
 
  /* store commands to file */
- uint8_t ce_store_command_to_file(char* cmd) {
+ uint8_t ce_store_command_to_file(CommandEngine* inst, char* cmd) {
     FILE * cmd_file = fopen("cmds.txt", "a");
     if(cmd_file == NULL) return 0;
 
@@ -142,4 +206,65 @@ size_t ce_get_token_count(char** tokens) {
      puts("Command written to file");
      fclose(cmd_file);
      return 1;
+}
+
+/**
+ * @brief initialize the command engine struct
+ */
+void command_engine_init(
+        CommandEngine* inst,
+        uint8_t (*_ce_check_valid_subsystem)(CommandEngine* inst, char* system),
+        uint8_t (*_ce_check_valid_command)(CommandEngine* inst, char* cmd),
+        uint8_t (*_ce_get_cmd_length)(CommandEngine* inst, const char* str),
+        char** (*_ce_tokenize)(CommandEngine* inst, sat_command_t c),
+        size_t (*_ce_get_token_count)(CommandEngine* inst, char** tokens),
+        void (*_ce_free_memory)(CommandEngine* inst, char** c),
+        uint8_t (*_ce_store_command_to_file)(CommandEngine* inst, char* cmd),
+        void (*_ce_process_tokens)(CommandEngine* inst, char** c)
+        )
+
+        {
+
+    /* initialize look up tables */
+    inst->subsystems_tbl = subsystems_table;
+    inst->commands_tbl = commands_table;
+
+    /* initialize attributes */
+    inst->max_command_length = 255;
+    inst->max_response_length = 255;
+    inst->max_num_of_commands = 255;
+
+    /* assign arguments to this instance */
+    inst->check_valid_subsystem = _ce_check_valid_subsystem;
+    inst->check_valid_command = _ce_check_valid_command;
+    inst->get_cmd_length = _ce_get_cmd_length;
+    inst->tokenize = _ce_tokenize;
+    inst->get_token_count = _ce_get_token_count;
+    inst->free_memory = _ce_free_memory;
+    inst->store_command_to_file = _ce_store_command_to_file;
+    inst->process_tokens = _ce_process_tokens;
+
+}
+
+
+/**
+ * @brief Create the command engine class
+ */
+CommandEngine* command_engine_create(void) {
+    CommandEngine* inst = (CommandEngine*) malloc(sizeof(CommandEngine));
+    if (inst == NULL) return NULL; // todo: return with log
+
+    command_engine_init(
+            inst,
+            ce_check_valid_subsystem,
+            ce_check_valid_command,
+            ce_get_cmd_length,
+            ce_tokenize,
+            ce_get_token_count,
+            ce_free_memory,
+            ce_store_command_to_file,
+            ce_process_tokens
+            );
+
+    return inst;
 }
