@@ -67,6 +67,7 @@
 #include "math.h"
 #include "defines.h"
 #include "filter_config.h"
+#include "command_engine.h"
 
 /* USER CODE END Includes */
 
@@ -115,6 +116,7 @@ static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USART6_UART_Init(void);
+
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
@@ -372,9 +374,11 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
 
-  osThreadDef(dumm_data, x_task_dummy_data, osPriorityNormal, 0, 1024);			/// create all tasks
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+//  osThreadDef(dumm_data, x_task_dummy_data, osPriorityNormal, 0, 1024);			/// create all tasks
+//  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
+  /* initialize the command engine */
+  command_engine_start();
 
   /* USER CODE END RTOS_THREADS */
 

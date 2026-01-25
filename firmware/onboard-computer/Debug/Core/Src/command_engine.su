@@ -1,0 +1,5 @@
+../Core/Src/command_engine.c:21:9:command_engine_create_queues	16	static
+../Core/Src/command_engine.c:45:9:command_engine_create_tasks	80	static
+../Core/Src/command_engine.c:75:6:uart_receive_command_task	48	static
+../Core/Src/command_engine.c:93:6:uart_command_processor_task	16	static
+../Core/Src/command_engine.c:106:6:command_engine_start	8	static

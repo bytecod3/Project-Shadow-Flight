@@ -1,4 +1,5 @@
 "./Core/Src/ccsds_tm.o"
+"./Core/Src/command_engine.o"
 "./Core/Src/core_FSM.o"
 "./Core/Src/freertos.o"
 "./Core/Src/main.o"

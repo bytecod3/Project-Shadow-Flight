@@ -64,8 +64,8 @@ all: main-build
 main-build: shadow-flight-OBC.elf secondary-outputs
 
 # Tool invocations
-shadow-flight-OBC.elf shadow-flight-OBC.map: $(OBJS) $(USER_OBJS) /home/eduh/projects/Project-Shadow-Flight/firmware/onboard-computer/STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "shadow-flight-OBC.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/eduh/projects/Project-Shadow-Flight/firmware/onboard-computer/STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="shadow-flight-OBC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+shadow-flight-OBC.elf shadow-flight-OBC.map: $(OBJS) $(USER_OBJS) C:\Users\emwit\Desktop\playground\my-repositories\Project-Shadow-Flight\firmware\onboard-computer\STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "shadow-flight-OBC.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\emwit\Desktop\playground\my-repositories\Project-Shadow-Flight\firmware\onboard-computer\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="shadow-flight-OBC.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
