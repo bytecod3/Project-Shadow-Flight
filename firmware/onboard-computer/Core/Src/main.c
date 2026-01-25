@@ -93,9 +93,9 @@ SPI_HandleTypeDef hspi1;
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart6;
+DMA_HandleTypeDef hdma_usart6_rx;
 
 osThreadId defaultTaskHandle;
-
 /* USER CODE BEGIN PV */
 osThreadId x_task_create_tasks_tsk_handle;
 osThreadId x_task_dummy_data_tsk_handle;
@@ -112,11 +112,11 @@ osThreadId x_task_get_task_stats_tsk_handle;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USART6_UART_Init(void);
-
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
@@ -343,6 +343,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_I2C1_Init();
   MX_SPI1_Init();
   MX_USART1_UART_Init();
@@ -578,6 +579,22 @@ static void MX_USART6_UART_Init(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA2_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA2_Stream1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream1_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -599,7 +616,10 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPS_ACTIVATE_Pin|FLASH_CS_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, GPS_ACTIVATE_Pin|FLASH_CS_Pin|SD_CS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(WD_EN_GPIO_Port, WD_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : USER_BTN_Pin */
   GPIO_InitStruct.Pin = USER_BTN_Pin;
@@ -614,8 +634,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(USER_LED_GREEN_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : GPS_ACTIVATE_Pin FLASH_CS_Pin */
-  GPIO_InitStruct.Pin = GPS_ACTIVATE_Pin|FLASH_CS_Pin;
+  /*Configure GPIO pins : GPS_ACTIVATE_Pin FLASH_CS_Pin SD_CS_Pin */
+  GPIO_InitStruct.Pin = GPS_ACTIVATE_Pin|FLASH_CS_Pin|SD_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -635,12 +655,34 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : WD_EN_Pin */
+  GPIO_InitStruct.Pin = WD_EN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(WD_EN_GPIO_Port, &GPIO_InitStruct);
+
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
   /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+
+/*
+ * callback for receiving data via UART DMA
+ */
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
+	rx_dma_indx = Size;
+	rx_dma_count++;
+
+	char status[20];
+	sprintf(status, "Recvd: %d\r\n", rx_dma_indx);
+
+	HAL_UART_Transmit(&huart1, (uint8_t*)rx_dma_buffer, rx_dma_indx, HAL_TX_TIMEOUT);
+
+
+}
 
 /* USER CODE END 4 */
 

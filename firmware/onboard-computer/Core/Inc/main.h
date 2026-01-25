@@ -75,6 +75,8 @@ void Error_Handler(void);
 #define ADCS_BOARD_DETECT_GPIO_Port GPIOB
 #define EPS_BOARD_DETECT_Pin GPIO_PIN_2
 #define EPS_BOARD_DETECT_GPIO_Port GPIOB
+#define WD_EN_Pin GPIO_PIN_14
+#define WD_EN_GPIO_Port GPIOB
 #define WATCHDOG_INT_Pin GPIO_PIN_15
 #define WATCHDOG_INT_GPIO_Port GPIOB
 #define GPS_RX_Pin GPIO_PIN_9
@@ -85,6 +87,8 @@ void Error_Handler(void);
 #define USART_DEBUG_TX_GPIO_Port GPIOA
 #define USART_DBG_RX_Pin GPIO_PIN_12
 #define USART_DBG_RX_GPIO_Port GPIOA
+#define SD_CS_Pin GPIO_PIN_15
+#define SD_CS_GPIO_Port GPIOA
 #define COMMS_BOARD_DETECT_Pin GPIO_PIN_5
 #define COMMS_BOARD_DETECT_GPIO_Port GPIOB
 

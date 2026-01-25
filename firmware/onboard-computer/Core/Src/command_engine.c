@@ -15,6 +15,20 @@ QueueHandle_t uart_response_queue = NULL;
 TaskHandle_t uart_receive_command_task_handle = NULL;
 TaskHandle_t uart_command_processor_task_handle = NULL;
 
+/* initialise DMA variables */
+uint16_t rx_dma_indx = 0;
+uint16_t rx_dma_count = 0;
+
+/* declare buffers accordingly */
+#if RECEIVE_BLOCKING
+	char tx_buffer[MAX_UART_COMMAND_LENGTH];
+	char rx_buffer[MAX_UART_COMMAND_LENGTH];
+	uint8_t ch;
+#elif RECEIVE_DMA
+	char tx_dma_buffer[MAX_UART_DMA_COMMAND_LENGTH];
+	char rx_dma_buffer[MAX_UART_DMA_COMMAND_LENGTH];
+#endif
+
 /*
  * @brief create shared queues
  */
@@ -43,6 +57,9 @@ uint8_t command_engine_create_queues() {
  * todo: check task create status
  */
 uint8_t command_engine_create_tasks() {
+
+	/* initialize the DMA receive callback */
+
 	uint8_t task_create_status = 0;
 
 //#if UART_TESTING_EN
@@ -73,18 +90,42 @@ uint8_t command_engine_create_tasks() {
  * receive command from uart and send to processing
  */
 void uart_receive_command_task(void const* args) {
-	//char rx_buffer[30];
-	char tx_buffer[30];
-	uint8_t d = 89;
+	char* m = "========Shadow Flight Command Engine========\r\n";
+	HAL_UART_Transmit(&huart1, (uint8_t*)m, strlen(m), pdMS_TO_TICKS(100));
+
+	/* initialize DMA receive command */
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart6, (uint8_t*) rx_dma_buffer, MAX_UART_DMA_COMMAND_LENGTH);
+	// todo: disable DMA half interrupt task here
+
+#endif
 
 	for(;;) {
-		//HAL_UART_Receive
+
+#if RECEIVE_BLOCKING
+		/* build the received command string */
+		uint8_t indx = 0;
+		while(indx < MAX_UART_COMMAND_LENGTH) {
+			HAL_UART_Receive(&huart6, &ch ,1 , HAL_RX_TIMEOUT);
+			if(ch == '\n') break;
+
+			rx_buffer[indx++] = ch;
+		}
+
+		/* null terminate the received character */
+		rx_buffer[indx] = '\0';
 
 		/* simulate a response */
-		sprintf(tx_buffer, "%d\r\n", d);
-		HAL_UART_Transmit(&huart6, (uint8_t*)tx_buffer, strlen(tx_buffer), HAL_TX_TIMEOUT);
+		if(indx > 0) {
+			HAL_UART_Transmit(&huart6, (uint8_t*)rx_buffer, strlen(rx_buffer), HAL_TX_TIMEOUT);
+			HAL_UART_Transmit(&huart6, (uint8_t*)"\r\n", 2, 500);
+		}
+#elif RECEIVE_DMA
 
-		vTaskDelay(pdMS_TO_TICKS(4));
+
+
+#endif
+
+		vTaskDelay(pdMS_TO_TICKS(1));
 
 	}
 }
@@ -97,8 +138,6 @@ void uart_command_processor_task(void const* args) {
 	}
 
 }
-
-#endif
 
 /*
  * start the command engine

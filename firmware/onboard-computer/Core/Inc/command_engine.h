@@ -16,12 +16,27 @@
 #include "string.h"
 
 #define UART_TESTING_EN 					(1)			/* set to 0 to disable command testing via UART */
+#define RECEIVE_DMA			(1)
+#define RECEIVE_BLOCKING	(0)
+
 #define COMMAND_ENGINE_TASK_STACK_DEPTH  	(2048)
-#define HAL_TX_TIMEOUT pdMS_TO_TICKS(100)
+
+#define MAX_UART_COMMAND_LENGTH			(100)				/* maximum data for UART blocking buffer */
+#define MAX_UART_DMA_COMMAND_LENGTH		(200)				/* maximum data for UART DMA buffer */
+
+extern uint16_t rx_dma_indx;
+extern uint16_t rx_dma_count;
+
+extern char tx_dma_buffer[];
+extern char rx_dma_buffer[];
+
+#define HAL_TX_TIMEOUT pdMS_TO_TICKS(200)
+#define HAL_RX_TIMEOUT pdMS_TO_TICKS(200)
 
 /* define our UART channel */
 extern UART_HandleTypeDef command_engine_uart; /* to receive commands */
-extern UART_HandleTypeDef huart6; /* to send responses to test PC */
+extern UART_HandleTypeDef huart6; /* to receive commands from PC */
+extern UART_HandleTypeDef huart1; /* temporary debug uart1 -> reserved for GPS */
 
 /* command type */
 extern char command[50];
