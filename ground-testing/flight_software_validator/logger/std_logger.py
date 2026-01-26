@@ -9,13 +9,21 @@ class Logger:
     """represents a logger object to use for debugging """
 
     def __init__(self):
-        pass
+        self.msg = "NULL"
 
 
     def print_log(self, msg):
         """log message on serial console with the timestamp it was created"""
-        tstamp = datetime.strftime("%Y-%m-%dT%H:%M:%S")
-        if len(msg) is 0:
-            print(f"{tstamp} NULL msg")
+        tstamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        self.msg = msg
+        if len(msg) == 0:
+            print(f"{tstamp} NULL")
         else:
             print(f"{tstamp} {msg}")
+            
+def main():
+  logger = Logger()
+
+if __name__ == "__main__":
+  main()
+  
