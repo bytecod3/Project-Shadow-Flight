@@ -5,17 +5,29 @@
 """
 import os
 import json
+from time import sleep
+import wiringpi
+from wiringpi import GPIO
+import threading 
 from logger.std_logger import Logger
 
+wiringpi.wiringPiSetup()
+#wiringpi.pinMode(2, GPIO.OUTPUT)
+#wiringpi.digitalWrite(2,GPIO.HIGH)
+
+# command lengths 
 IMMEDIATE_CMD_LENGTH = 2
 SCHEDULED_CMD_LENGTH = 3
 SCHEDULED_WITH_PARAMETER_LENGTH = 4
 
-
 class CommandEngineTester:
     def __init__(self, command_list_file):
         self.logger = Logger()
-        self.logger.print_log("Command Engine Tester initialized")
+        self.logger.print_log("===================Command Engine Tester initialized===================")
+        
+        self.led_pin = 2
+        self.init_debug_hardware()
+        
         self.cmd_filename = command_list_file
         self.command_list = []
         self.command_tokens = []   
@@ -28,14 +40,22 @@ class CommandEngineTester:
         """ parse the command list file """
         self.parse_command_list_file()
         
-        
-
+    def init_debug_hardware(self):
+      """initilize debug GPIO"""
+      wiringpi.pinMode(self.led_pin, GPIO.OUTPUT)
+      wiringpi.digitalWrite(self.led_pin, GPIO.LOW)
+      pass
+      
+               
     def parse_command_list_file(self):
         """Take a command list txt file and convert commands to JSON/ count the number of strings in the line, 
         if 2->immediate command, if 3->scheduled command, if 4->scheduled command with parameter     
         create a JSON command fomr this. See Firmware commmand structure
         todo: handle immediate command with parameters
         """
+        
+        self.show_activity()
+        
         if not os.path.exists(self.cmd_filename):
             self.print_log("Path does not exist")
         else:
@@ -76,9 +96,23 @@ class CommandEngineTester:
               print(self.json_cmd)
               
               #self.json_file_object_list.append(self.json_cmd)
-
-
-
+              
+    def show_activity(self):
+      """blink LED to show UART sending commands connected"""
+      #while there is data being transmitted over serial, blink 
+      # todo: use a UART RX/TX flag here
+      def blink():
+        wiringpi.digitalWrite(self.led_pin, GPIO.HIGH)
+        sleep(1)
+        wiringpi.digitalWrite(self.led_pin, GPIO.LOW)
+        
+      threading.Thread(target=blink, daemon=True).start()
+      
+    def send_to_serial(self):
+      """send json file to serial"""
+      pass
+      
+    
 class OBCTest:
     def __init__():
         pass
