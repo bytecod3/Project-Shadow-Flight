@@ -673,14 +673,23 @@ static void MX_GPIO_Init(void)
  * callback for receiving data via UART DMA
  */
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
-	rx_dma_indx = Size;
-	rx_dma_count++;
+	/* atm we receive commands from UART6 */
+	if(huart == &huart6) {
+		rx_dma_indx = Size;
+		rx_dma_count++;
 
-	char status[20];
-	sprintf(status, "Recvd: %d\r\n", rx_dma_indx);
+		char status[20];
+		sprintf(status, "Recvd: %d\r\n", rx_dma_indx);
 
-	HAL_UART_Transmit(&huart1, (uint8_t*)rx_dma_buffer, rx_dma_indx, HAL_TX_TIMEOUT);
+		HAL_UART_Transmit(&huart1, (uint8_t*)rx_dma_buffer, rx_dma_indx, HAL_TX_TIMEOUT);
 
+		/* send the received string to command queue */
+		if(xSemaphoreTake(command_queue_semaphore, pdMS_TO_TICKS(0)) == pdPASS) {
+			xQueueSend(&raw_command_queue, rx_dma_buffer, pdMS_TO_TICKS(100));
+			xSemaphoreGive(command_queue_semaphore);
+		}
+
+	}
 
 }
 

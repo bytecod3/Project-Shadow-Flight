@@ -8,7 +8,8 @@
 #include "command_engine.h"
 
 /* declare shared queues */
-QueueHandle_t uart_command_queue = NULL;
+QueueHandle_t raw_command_queue = NULL;
+QueueHandle_t parsed_command_queue = NULL;
 QueueHandle_t uart_response_queue = NULL;
 
 /* declare task handles */
@@ -29,6 +30,19 @@ uint16_t rx_dma_count = 0;
 	char rx_dma_buffer[MAX_UART_DMA_COMMAND_LENGTH];
 #endif
 
+/* Sempahores for access control */
+SemaphoreHandle_t command_queue_semaphore = NULL;
+
+/**
+ * create binary semaphores
+ */
+void command_engine_create_semaphores() {
+	command_queue_semaphore = xSemaphoreCreateBinary();
+	if(command_queue_semaphore == NULL) {
+		/* todo: return sth event and log it */
+	}
+}
+
 /*
  * @brief create shared queues
  */
@@ -36,17 +50,20 @@ uint8_t command_engine_create_queues() {
 	uint8_t queue_create_status = 0;
 
 	// todo use JSON structured command
-	uart_command_queue = xQueueCreate(5, sizeof(command));
+	raw_command_queue = xQueueCreate(5, sizeof(rx_dma_buffer));			/* store the raw dma command buffer */
+	parsed_command_queue = xQueueCreate(5, sizeof(cubesat_command));	/* store the parsed command in cubesat_command format */
 	uart_response_queue = xQueueCreate(5, sizeof(uart_command_response));
 
 	/* check if queue creation OK */
-	if(uart_command_queue == NULL) {
+	if(raw_command_queue == NULL) {
 		queue_create_status |= (1 << 0);
 	}
 
 	if(uart_response_queue == NULL) {
 		queue_create_status |= (1 << 1);
 	}
+
+	// todo: check for parsed command queue creation
 
 	/* 0 -> OK, 1, commandqueue_failed, 2 -> response_queue_failed, 3, all_failed */
 	return queue_create_status;
@@ -121,12 +138,9 @@ void uart_receive_command_task(void const* args) {
 		}
 #elif RECEIVE_DMA
 
-
-
 #endif
 
 		vTaskDelay(pdMS_TO_TICKS(1));
-
 	}
 }
 
@@ -134,6 +148,32 @@ void uart_receive_command_task(void const* args) {
 void uart_command_processor_task(void const* args) {
 
 	for(;;) {
+		vTaskDelay(pdMS_TO_TICKS(1));
+	}
+
+}
+
+/**
+ * @fn void command_engine_start()
+ * @brief
+ *
+ */
+void command_engine_parse_raw_string_task(void* args) {
+	char recvd_raw_command[MAX_COMMAND_LENGTH];
+
+	for(;;) {
+
+		/* receive from raw commands queue */
+		if(xSemaphoreTake(command_queue_semaphore, pdMS_TO_TICKS(0)) == pdPASS) {
+			xQueueReceive(&raw_command_queue, &recvd_raw_command, pdMS_TO_TICKS(100) );
+
+			/* debug */
+			HAL_UART_Transmit(&huart1, (uint8_t*)recvd_raw_command, rx_dma_indx, pdMS_TO_TICKS(100));
+
+			xSemaphoreGive(command_queue_semaphore);
+
+		}
+
 		vTaskDelay(pdMS_TO_TICKS(1));
 	}
 

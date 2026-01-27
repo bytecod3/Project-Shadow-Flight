@@ -28,4 +28,32 @@ This is a queue management layer that ensures maximum efficient communication be
 
 
 
+#### Scratchpad
+shared -> (debuguart)
+shared -> (command processor queue) -> can be read and written at the same time. We want to avoid this -> check semaphore
+
+
+//============= PYTHON SCRIPT PSEUDO CODE ===================
+
+JSON command
+{
+    "type":"immediate",
+    "command":"EPS RESTART"
+}
+
+
+Create Serial connection 
+
+// On success
+Open Serial 
+Open the list of commands (EPS RESTART, COMMS RESET etc)
+
+// for each command convert the list of commands into the above JSON structure -> add timestamp
+// write into a clean new json commands file
+
+once the run test button is pressed, for each of the json strings, write to serial
+
+// debug the response on test PC, response of commands can be logged to file 
+
+
 
