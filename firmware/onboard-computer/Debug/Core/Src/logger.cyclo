@@ -1,0 +1,3 @@
+../Core/Src/logger.c:19:6:print_to_uart	1
+../Core/Src/logger.c:51:6:logger_init	1
+../Core/Src/logger.c:66:9:logger_create	2

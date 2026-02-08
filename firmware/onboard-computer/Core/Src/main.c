@@ -70,6 +70,7 @@
 #include "filter_config.h"
 #include "command_engine.h"
 #include "data_types.h"
+#include "logger.h"
 
 /* USER CODE END Includes */
 
@@ -81,10 +82,18 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+/* initialize internal logger */
+Logger* internal_logger;
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+
+/**
+ * QUEUE DEFINITIONS
+ */
+QueueHandle_t heap_stats_queue = NULL;
 
 /* USER CODE END PM */
 
@@ -122,11 +131,6 @@ static void MX_USART6_UART_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
-
-/**
- * @brief Queue handles
- */
-QueueHandle_t heap_stats_queue;
 
 
 /**
@@ -322,6 +326,13 @@ void x_task_check_fault(void const* argument);
  */
 void x_task_blink_onboard(void const* argument);
 
+/**
+ * @fn void x_task_debug_to_uart(const void*)
+ * @brief This task prints data to UART
+ *
+ * @param argument
+ */
+void x_task_debug_to_uart(void const* argument);
 
 /* USER CODE END PFP */
 
@@ -347,6 +358,9 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+
+  internal_logger = logger_create();
+
 
   /* USER CODE END Init */
 
@@ -709,17 +723,16 @@ static void MX_GPIO_Init(void)
  * @param argument
  */
 void x_task_blink_onboard(void const* argument) {
-	TickType_t start = xTaskGetTickCount();
-	TickType_t now = 0;
+	TickType_t last = 0;
 	static uint8_t led_state = 0;
 
 	for(;;) {
-		now = xTaskGetTickCount();
-
-		if(now - start > ONBOARD_LED_BLINK_INTERVAL) {
+		if( (xTaskGetTickCount() - last) > ONBOARD_LED_BLINK_INTERVAL) {
 			HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, led_state);
 
 			led_state = !led_state;
+
+			last = xTaskGetTickCount();
 		}
 	}
 
@@ -728,7 +741,7 @@ void x_task_blink_onboard(void const* argument) {
 
 /**
  * @fn void x_task_get_heap_memory_stats(const void*)
- * @brief This task fetches remaining heap memory from main memory heap at the time of call
+ * @brief This task fetches remaining heap memory frzom main memory heap at the time of call
  * It also fetches the minimum ever free heap size, to know how low we have ever gone to running out
  * of heap memory
  *
@@ -741,8 +754,6 @@ void x_task_get_heap_memory_stats(const void* args) {
 	heap_statistics_type_t hp_stats;
 	BaseType_t q_send_status;
 
-	char* print_buffer[50];
-
 	for(;;) {
 
 		free_hp = xPortGetFreeHeapSize();
@@ -750,20 +761,27 @@ void x_task_get_heap_memory_stats(const void* args) {
 
 		hp_stats.free_heap = free_hp;
 		hp_stats.minimum_ever_heap = min_ever_hp;
-
-		sprintf(print_buffer, "free heap: %d\r\n, minimum ever heap: %d\r\n", hp_stats.free_heap, hp_stats.minimum_ever_heap);
-
-		HAL_UART_Transmit(&huart1, (uint8_t*)print_buffer, strlen(print_buffer), HAL_UART_PRINT_WAIT_TIME);
-
-		/* update stats queue */
 		q_send_status = xQueueSend(heap_stats_queue, &hp_stats, 0);
+		internal_logger->_log_to_uart(internal_logger, &huart6);
 
 		if(q_send_status == pdPASS) {
 			//todo: print success message
 		} else {
 			//todo: print error
-		}
+			HAL_UART_Transmit(&huart6, (uint8_t*)"COULD NOT SEND TO QUEUE\r\n", strlen("COULD NOT SEND TO QUEUE\r\n"), LOGGER_UART_PRINT_WAIT);
 
+		}
+	}
+}
+
+/**
+ * @fn void x_task_debug_to_uart(const void*)
+ * @brief This task prints data to UART
+ *
+ * @param argument
+ */
+void x_task_debug_to_uart(void const* argument) {
+	for(;;) {
 	}
 }
 
@@ -783,7 +801,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
 
 		/* send the received string to command queue */
 		if(xSemaphoreTake(command_queue_semaphore, pdMS_TO_TICKS(0)) == pdPASS) {
-			xQueueSend(&raw_command_queue, rx_dma_buffer, pdMS_TO_TICKS(100));
+			xQueueSend(raw_command_queue, rx_dma_buffer, pdMS_TO_TICKS(100));
 			xSemaphoreGive(command_queue_semaphore);
 		}
 

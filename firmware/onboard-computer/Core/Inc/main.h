@@ -31,11 +31,19 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "cmsis_os.h"
 
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+
+/**
+ * @brief Queue handles. These are exported because they are shared across different systems
+ *
+ */
+extern QueueHandle_t heap_stats_queue;
+
 
 /* USER CODE END ET */
 
