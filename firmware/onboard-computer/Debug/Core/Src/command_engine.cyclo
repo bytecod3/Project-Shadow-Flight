@@ -4,4 +4,4 @@
 ../Core/Src/command_engine.c:109:6:uart_receive_command_task	1
 ../Core/Src/command_engine.c:148:6:uart_command_processor_task	1
 ../Core/Src/command_engine.c:161:6:command_engine_parse_raw_string_task	2
-../Core/Src/command_engine.c:185:6:command_engine_start	1
+../Core/Src/command_engine.c:183:6:command_engine_start	1

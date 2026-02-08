@@ -107,8 +107,8 @@ uint8_t command_engine_create_tasks() {
  * receive command from uart and send to processing
  */
 void uart_receive_command_task(void const* args) {
-	char* m = "========Shadow Flight Command Engine========\r\n";
-	HAL_UART_Transmit(&huart1, (uint8_t*)m, strlen(m), pdMS_TO_TICKS(100));
+	//char* m = "========Shadow Flight Command Engine========\r\n";
+	//HAL_UART_Transmit(&huart1, (uint8_t*)m, strlen(m), pdMS_TO_TICKS(100));
 
 	/* initialize DMA receive command */
 	HAL_UARTEx_ReceiveToIdle_DMA(&huart6, (uint8_t*) rx_dma_buffer, MAX_UART_DMA_COMMAND_LENGTH);
@@ -171,12 +171,10 @@ void command_engine_parse_raw_string_task(void* args) {
 			HAL_UART_Transmit(&huart1, (uint8_t*)recvd_raw_command, rx_dma_indx, pdMS_TO_TICKS(100));
 
 			xSemaphoreGive(command_queue_semaphore);
-
 		}
 
 		vTaskDelay(pdMS_TO_TICKS(1));
 	}
-
 }
 
 /*

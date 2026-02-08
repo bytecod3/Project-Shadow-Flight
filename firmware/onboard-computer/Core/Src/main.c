@@ -64,10 +64,12 @@
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
 #include "string.h"
+#include "stdlib.h"
 #include "math.h"
 #include "defines.h"
 #include "filter_config.h"
 #include "command_engine.h"
+#include "data_types.h"
 
 /* USER CODE END Includes */
 
@@ -105,7 +107,7 @@ osThreadId x_task_get_watchdog_tsk_handle;
 osThreadId x_task_core_fsm_monitor_tsk_handle;
 osThreadId x_task_get_heap_memory_stats_tsk_handle;
 osThreadId x_task_get_task_stats_tsk_handle;
-
+osThreadId x_task_blink_onboard_tsk_handle;
 
 /* USER CODE END PV */
 
@@ -120,6 +122,12 @@ static void MX_USART6_UART_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
+
+/**
+ * @brief Queue handles
+ */
+QueueHandle_t heap_stats_queue;
+
 
 /**
  * @fn void x_task_dummy_data(const void*)
@@ -306,6 +314,14 @@ void x_task_transmit_telemetry(void const* argument);
  */
 void x_task_check_fault(void const* argument);
 
+/**
+ * @fn void x_task_blink_onboard(const void*)
+ * @brief This task blinks the onboard LED at intervals
+ *
+ * @param argument
+ */
+void x_task_blink_onboard(void const* argument);
+
 
 /* USER CODE END PFP */
 
@@ -365,7 +381,16 @@ int main(void)
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
+  /* create the queues */
+  heap_stats_queue = xQueueCreate(HEAP_STATS_QUEUE_LENGTH, sizeof(heap_statistics_type_t));
+
+  /* check queues created OK */
+  if(heap_stats_queue == NULL) {
+	  // todo: send to logger
+  } else {
+	  // todo: send to logger
+  }
+
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -375,8 +400,16 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
 
-//  osThreadDef(dumm_data, x_task_dummy_data, osPriorityNormal, 0, 1024);			/// create all tasks
+//  osThreadDef(dumm_data, x_task_dummy_data, osPriorityNormal, 0, 1024);
 //  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+  /* fetch heap memory statistics */
+  osThreadDef(heap_stats_task, x_task_get_heap_memory_stats, osPriorityNormal, 0, 1024);
+  x_task_get_heap_memory_stats_tsk_handle = osThreadCreate(osThread(heap_stats_task), NULL);
+
+  /* blink on-board LED for status indication */
+  osThreadDef(onboard_led_blink, x_task_blink_onboard, osPriorityNormal, 0, 1024);
+  x_task_control_onboard_led_tsk_handle = osThreadCreate(osThread(onboard_led_blink), NULL);
 
   /* initialize the command engine */
   command_engine_start();
@@ -613,7 +646,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(USER_LED_GREEN_GPIO_Port, USER_LED_GREEN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, ONBOARD_LED_Pin|USER_LED_GREEN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPS_ACTIVATE_Pin|FLASH_CS_Pin|SD_CS_Pin, GPIO_PIN_RESET);
@@ -621,18 +654,18 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(WD_EN_GPIO_Port, WD_EN_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pins : ONBOARD_LED_Pin USER_LED_GREEN_Pin */
+  GPIO_InitStruct.Pin = ONBOARD_LED_Pin|USER_LED_GREEN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pin : USER_BTN_Pin */
   GPIO_InitStruct.Pin = USER_BTN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(USER_BTN_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : USER_LED_GREEN_Pin */
-  GPIO_InitStruct.Pin = USER_LED_GREEN_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(USER_LED_GREEN_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : GPS_ACTIVATE_Pin FLASH_CS_Pin SD_CS_Pin */
   GPIO_InitStruct.Pin = GPS_ACTIVATE_Pin|FLASH_CS_Pin|SD_CS_Pin;
@@ -668,6 +701,71 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+/**
+ * @fn void x_task_blink_onboard(const void*)
+ * @brief This task blinks the onboard LED at intervals
+ *
+ * @param argument
+ */
+void x_task_blink_onboard(void const* argument) {
+	TickType_t start = xTaskGetTickCount();
+	TickType_t now = 0;
+	static uint8_t led_state = 0;
+
+	for(;;) {
+		now = xTaskGetTickCount();
+
+		if(now - start > ONBOARD_LED_BLINK_INTERVAL) {
+			HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, led_state);
+
+			led_state = !led_state;
+		}
+	}
+
+}
+
+
+/**
+ * @fn void x_task_get_heap_memory_stats(const void*)
+ * @brief This task fetches remaining heap memory from main memory heap at the time of call
+ * It also fetches the minimum ever free heap size, to know how low we have ever gone to running out
+ * of heap memory
+ *
+ * @param args
+ */
+void x_task_get_heap_memory_stats(const void* args) {
+
+	size_t free_hp;
+	size_t min_ever_hp;
+	heap_statistics_type_t hp_stats;
+	BaseType_t q_send_status;
+
+	char* print_buffer[50];
+
+	for(;;) {
+
+		free_hp = xPortGetFreeHeapSize();
+		min_ever_hp = xPortGetMinimumEverFreeHeapSize();
+
+		hp_stats.free_heap = free_hp;
+		hp_stats.minimum_ever_heap = min_ever_hp;
+
+		sprintf(print_buffer, "free heap: %d\r\n, minimum ever heap: %d\r\n", hp_stats.free_heap, hp_stats.minimum_ever_heap);
+
+		HAL_UART_Transmit(&huart1, (uint8_t*)print_buffer, strlen(print_buffer), HAL_UART_PRINT_WAIT_TIME);
+
+		/* update stats queue */
+		q_send_status = xQueueSend(heap_stats_queue, &hp_stats, 0);
+
+		if(q_send_status == pdPASS) {
+			//todo: print success message
+		} else {
+			//todo: print error
+		}
+
+	}
+}
 
 /*
  * callback for receiving data via UART DMA
