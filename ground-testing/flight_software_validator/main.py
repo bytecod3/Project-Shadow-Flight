@@ -61,7 +61,7 @@ class CommandEngineTester:
         else:
             command_file = open(self.cmd_filename)
             
-            line_count = 0
+            line_count = 0 
             for line_count, line in enumerate(command_file.readlines()):
             
               # remove the trailing \n character
