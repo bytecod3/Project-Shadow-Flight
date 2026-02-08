@@ -8,8 +8,8 @@
 ../Core/Src/main.c:649:13:MX_GPIO_Init	1
 ../Core/Src/main.c:725:6:x_task_blink_onboard	2
 ../Core/Src/main.c:750:6:x_task_get_heap_memory_stats	2
-../Core/Src/main.c:783:6:x_task_debug_to_uart	1
-../Core/Src/main.c:791:6:HAL_UARTEx_RxEventCallback	3
-../Core/Src/main.c:821:6:StartDefaultTask	1
-../Core/Src/main.c:840:6:HAL_TIM_PeriodElapsedCallback	2
-../Core/Src/main.c:858:6:Error_Handler	1
+../Core/Src/main.c:782:6:x_task_debug_to_uart	1
+../Core/Src/main.c:790:6:HAL_UARTEx_RxEventCallback	3
+../Core/Src/main.c:820:6:StartDefaultTask	1
+../Core/Src/main.c:839:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:857:6:Error_Handler	1

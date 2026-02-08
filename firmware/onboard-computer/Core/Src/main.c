@@ -764,12 +764,11 @@ void x_task_get_heap_memory_stats(const void* args) {
 		q_send_status = xQueueSend(heap_stats_queue, &hp_stats, 0);
 		internal_logger->_log_to_uart(internal_logger, &huart6);
 
+		/* check for queue send status */
 		if(q_send_status == pdPASS) {
-			//todo: print success message
+			internal_logger->_log_to_uart_msg(internal_logger, &huart6, "Sent to queue\r\n");
 		} else {
 			//todo: print error
-			HAL_UART_Transmit(&huart6, (uint8_t*)"COULD NOT SEND TO QUEUE\r\n", strlen("COULD NOT SEND TO QUEUE\r\n"), LOGGER_UART_PRINT_WAIT);
-
 		}
 	}
 }

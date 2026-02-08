@@ -11,8 +11,10 @@
 #include "stm32f4xx_hal.h"
 #include "defines.h"
 #include "data_types.h"
+#include "string.h"
 
 /* enable disable logging from various subsystems */
+#define ENABLE_LOG						(1) 				///< set to 1 to enable global logging
 #define LOG_OBC							(1)					///< set to 1 to enable debugging from OBC
 #define LOG_EPS							(0)
 #define LOG_COMMS						(0)
@@ -31,6 +33,8 @@ extern UART_HandleTypeDef huart6;
 typedef struct Logger Logger;
 struct Logger {
 	void (*_log_to_uart)(Logger* l, UART_HandleTypeDef* uart_inst);		///< prints to UART
+	void (*_log_to_uart_msg)(Logger* l, UART_HandleTypeDef* uart_inst, const char* msg); ///< print a single message to uart
+
 };
 
 /**
@@ -40,13 +44,24 @@ struct Logger {
 void print_to_uart(Logger* l, UART_HandleTypeDef* uart_inst);
 
 /**
+ * @fn void print_to_uart_msg(Logger*, UART_HandleTypeDef*)
+ * @brief
+ *
+ * @param l Logger isntance
+ * @param uart_inst uart to use for printing
+ * @param msg message to print
+ */
+void print_to_uart_msg(Logger* l, UART_HandleTypeDef* uart_inst, const char* msg);
+
+/**
  * @brief Constructor. This function initializes a logger instance
  * @param l Logger instance pointer
  * @param print_to_uart function pointer to print to uart function
  */
 void logger_init(
 		Logger* l,
-		void (*print_to_uart_func)(Logger* l, UART_HandleTypeDef* uart_inst)
+		void (*print_to_uart_func)(Logger* l, UART_HandleTypeDef* uart_inst),
+		void (*print_to_uart_single)(Logger* l, UART_HandleTypeDef* uart_inst, const char* msg)
 );
 
 

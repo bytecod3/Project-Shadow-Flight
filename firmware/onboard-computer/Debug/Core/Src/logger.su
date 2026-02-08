@@ -1,3 +1,4 @@
-../Core/Src/logger.c:19:6:print_to_uart	224	static
-../Core/Src/logger.c:51:6:logger_init	16	static
-../Core/Src/logger.c:66:9:logger_create	16	static
+../Core/Src/logger.c:19:6:print_to_uart	80	static
+../Core/Src/logger.c:55:6:print_to_uart_msg	24	static
+../Core/Src/logger.c:72:6:logger_init	24	static
+../Core/Src/logger.c:89:9:logger_create	16	static
