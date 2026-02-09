@@ -20,7 +20,7 @@
 #define RECEIVE_DMA			(1)
 #define RECEIVE_BLOCKING	(0)
 
-#define COMMAND_ENGINE_TASK_STACK_DEPTH  	(2048)
+#define COMMAND_ENGINE_TASK_STACK_DEPTH  	(1024)
 
 #define MAX_UART_COMMAND_LENGTH			(100)				/* maximum data for UART blocking buffer */
 #define MAX_UART_DMA_COMMAND_LENGTH		(200)				/* maximum data for UART DMA buffer */

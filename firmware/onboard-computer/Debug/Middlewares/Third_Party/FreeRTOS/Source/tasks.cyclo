@@ -3,6 +3,7 @@
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:824:13:prvInitialiseNewTask	7
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:1077:13:prvAddNewTaskToReadyList	7
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:1162:7:vTaskDelete	9
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:1257:7:vTaskDelayUntil	11
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:1341:7:vTaskDelay	4
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:1478:14:uxTaskPriorityGet	2
 ../Middlewares/Third_Party/FreeRTOS/Source/tasks.c:1500:14:uxTaskPriorityGetFromISR	2

@@ -62,6 +62,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "FreeRTOS.h"
 #include "stdio.h"
 #include "string.h"
 #include "stdlib.h"
@@ -71,6 +72,7 @@
 #include "command_engine.h"
 #include "data_types.h"
 #include "logger.h"
+#include "semphr.h"
 
 /* USER CODE END Includes */
 
@@ -104,6 +106,7 @@ SPI_HandleTypeDef hspi1;
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart6;
+DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart6_rx;
 
 osThreadId defaultTaskHandle;
@@ -422,7 +425,7 @@ int main(void)
   x_task_get_heap_memory_stats_tsk_handle = osThreadCreate(osThread(heap_stats_task), NULL);
 
   /* blink on-board LED for status indication */
-  osThreadDef(onboard_led_blink, x_task_blink_onboard, osPriorityNormal, 0, 1024);
+  osThreadDef(onboard_led_blink, x_task_blink_onboard, osPriorityLow, 0, 1000);
   x_task_control_onboard_led_tsk_handle = osThreadCreate(osThread(onboard_led_blink), NULL);
 
   /* initialize the command engine */
@@ -638,6 +641,9 @@ static void MX_DMA_Init(void)
   /* DMA2_Stream1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream1_IRQn);
+  /* DMA2_Stream2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
 
 }
 
@@ -723,31 +729,29 @@ static void MX_GPIO_Init(void)
  * @param argument
  */
 void x_task_blink_onboard(void const* argument) {
-	TickType_t last = 0;
+	TickType_t x_last_wake_time = xTaskGetTickCount();
 	static uint8_t led_state = 0;
 
 	for(;;) {
-		if( (xTaskGetTickCount() - last) > ONBOARD_LED_BLINK_INTERVAL) {
-			HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, led_state);
 
-			led_state = !led_state;
+		HAL_GPIO_WritePin(ONBOARD_LED_GPIO_Port, ONBOARD_LED_Pin, led_state);
+		led_state = !led_state;
+		vTaskDelayUntil(&x_last_wake_time, pdMS_TO_TICKS(ONBOARD_LED_BLINK_INTERVAL));
 
-			last = xTaskGetTickCount();
-		}
 	}
 
 }
 
-
 /**
  * @fn void x_task_get_heap_memory_stats(const void*)
- * @brief This task fetches remaining heap memory frzom main memory heap at the time of call
+ * @brief This task fetches remaining heap memory from main memory heap at the time of call
  * It also fetches the minimum ever free heap size, to know how low we have ever gone to running out
  * of heap memory
  *
  * @param args
  */
 void x_task_get_heap_memory_stats(const void* args) {
+	TickType_t x_last_woken = xTaskGetTickCount();
 
 	size_t free_hp;
 	size_t min_ever_hp;
@@ -762,13 +766,16 @@ void x_task_get_heap_memory_stats(const void* args) {
 		hp_stats.free_heap = free_hp;
 		hp_stats.minimum_ever_heap = min_ever_hp;
 		q_send_status = xQueueSend(heap_stats_queue, &hp_stats, 0);
-		internal_logger->_log_to_uart(internal_logger, &huart6);
+		//internal_logger->_log_to_uart(internal_logger, &huart6);
+
+		/* add heart-beat checking every defined interval */
+		vTaskDelayUntil(&x_last_woken, pdMS_TO_TICKS(HEAP_CHECK_INTERVAL));
 
 		/* check for queue send status */
 		if(q_send_status == pdPASS) {
-			internal_logger->_log_to_uart_msg(internal_logger, &huart6, "Sent to queue\r\n");
+			//internal_logger->_log_to_uart_msg(internal_logger, &huart6, "Sent to queue\r\n");
 		} else {
-			//todo: print error
+			//internal_logger->_log_to_uart_msg(internal_logger, &huart6, "Queue full\r\n");
 		}
 	}
 }
@@ -788,22 +795,33 @@ void x_task_debug_to_uart(void const* argument) {
  * callback for receiving data via UART DMA
  */
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
-	/* atm we receive commands from UART6 */
-	if(huart == &huart6) {
+	/* We receive commands from UART1 -> connected to a test harness */
+	if(huart == &huart1) {
+		BaseType_t x_higher_priority_task_woken = pdFALSE;
 		rx_dma_indx = Size;
 		rx_dma_count++;
 
 		char status[20];
 		sprintf(status, "Recvd: %d\r\n", rx_dma_indx);
 
-		HAL_UART_Transmit(&huart1, (uint8_t*)rx_dma_buffer, rx_dma_indx, HAL_TX_TIMEOUT);
+		//HAL_UART_Transmit(&huart6, (uint8_t*)rx_dma_buffer, rx_dma_indx, HAL_TX_TIMEOUT);
+
+		internal_logger->_log_to_uart_msg(internal_logger, &huart6, status);
 
 		/* send the received string to command queue */
-		if(xSemaphoreTake(command_queue_semaphore, pdMS_TO_TICKS(0)) == pdPASS) {
-			xQueueSend(raw_command_queue, rx_dma_buffer, pdMS_TO_TICKS(100));
-			xSemaphoreGive(command_queue_semaphore);
+		if(xSemaphoreTakeFromISR(command_queue_semaphore, &x_higher_priority_task_woken) == pdPASS) {
+			xQueueSendToBackFromISR(raw_command_queue, rx_dma_buffer, &x_higher_priority_task_woken);
+			xSemaphoreGiveFromISR(command_queue_semaphore, &x_higher_priority_task_woken);
+		} else {
+			// todo: add a logger statement here
 		}
 
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, (uint8_t*) rx_dma_buffer, MAX_UART_DMA_COMMAND_LENGTH);
+
+		portYIELD_FROM_ISR(x_higher_priority_task_woken);
+
+	} else {
+		internal_logger->_log_to_uart_msg(internal_logger, &huart6, "From a different UART\r\n");
 	}
 
 }

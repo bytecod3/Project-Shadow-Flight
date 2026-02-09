@@ -80,10 +80,10 @@ uint8_t command_engine_create_tasks() {
 	uint8_t task_create_status = 0;
 
 //#if UART_TESTING_EN
-	osThreadDef(uart_receive_command, uart_receive_command_task, osPriorityNormal, 0, COMMAND_ENGINE_TASK_STACK_DEPTH);
+	osThreadDef(uart_receive_command, uart_receive_command_task, osPriorityHigh, 0, COMMAND_ENGINE_TASK_STACK_DEPTH);
 	uart_receive_command_task_handle = osThreadCreate(osThread(uart_receive_command), NULL);
 
-	osThreadDef(uart_command_processor, uart_command_processor_task, osPriorityNormal, 0, COMMAND_ENGINE_TASK_STACK_DEPTH);
+	osThreadDef(uart_command_processor, uart_command_processor_task, osPriorityHigh, 0, COMMAND_ENGINE_TASK_STACK_DEPTH);
 	uart_command_processor_task_handle = osThreadCreate(osThread(uart_command_processor), NULL);
 
 	/* do the check */
@@ -107,11 +107,11 @@ uint8_t command_engine_create_tasks() {
  * receive command from uart and send to processing
  */
 void uart_receive_command_task(void const* args) {
-	//char* m = "========Shadow Flight Command Engine========\r\n";
-	//HAL_UART_Transmit(&huart1, (uint8_t*)m, strlen(m), pdMS_TO_TICKS(100));
+	char* m = "========Shadow Flight Command Engine========\r\n";
+	HAL_UART_Transmit(&huart6, (uint8_t*)m, strlen(m), pdMS_TO_TICKS(100));
 
 	/* initialize DMA receive command */
-	HAL_UARTEx_ReceiveToIdle_DMA(&huart6, (uint8_t*) rx_dma_buffer, MAX_UART_DMA_COMMAND_LENGTH);
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, (uint8_t*) rx_dma_buffer, MAX_UART_DMA_COMMAND_LENGTH);
 	// todo: disable DMA half interrupt task here
 
 #endif
@@ -122,7 +122,7 @@ void uart_receive_command_task(void const* args) {
 		/* build the received command string */
 		uint8_t indx = 0;
 		while(indx < MAX_UART_COMMAND_LENGTH) {
-			HAL_UART_Receive(&huart6, &ch ,1 , HAL_RX_TIMEOUT);
+			HAL_UART_Receive(&huart1, &ch ,1 , HAL_RX_TIMEOUT);
 			if(ch == '\n') break;
 
 			rx_buffer[indx++] = ch;
@@ -133,8 +133,8 @@ void uart_receive_command_task(void const* args) {
 
 		/* simulate a response */
 		if(indx > 0) {
-			HAL_UART_Transmit(&huart6, (uint8_t*)rx_buffer, strlen(rx_buffer), HAL_TX_TIMEOUT);
-			HAL_UART_Transmit(&huart6, (uint8_t*)"\r\n", 2, 500);
+			HAL_UART_Transmit(&huart1, (uint8_t*)rx_buffer, strlen(rx_buffer), HAL_TX_TIMEOUT);
+			HAL_UART_Transmit(&huart1, (uint8_t*)"\r\n", 2, 500);
 		}
 #elif RECEIVE_DMA
 
@@ -165,7 +165,7 @@ void command_engine_parse_raw_string_task(void* args) {
 
 		/* receive from raw commands queue */
 		if(xSemaphoreTake(command_queue_semaphore, pdMS_TO_TICKS(0)) == pdPASS) {
-			xQueueReceive(&raw_command_queue, &recvd_raw_command, pdMS_TO_TICKS(100) );
+			xQueueReceive(raw_command_queue, &recvd_raw_command, pdMS_TO_TICKS(100) );
 
 			/* debug */
 			HAL_UART_Transmit(&huart1, (uint8_t*)recvd_raw_command, rx_dma_indx, pdMS_TO_TICKS(100));

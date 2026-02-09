@@ -13,6 +13,7 @@
 
 #define HAL_UART_PRINT_WAIT_TIME		(200)				///< HUART delay time for printing
 #define ONBOARD_LED_BLINK_INTERVAL		(200)				///< Blink time for on-board LED
+#define HEAP_CHECK_INTERVAL				(1000)				///< Interval to check the heap statistics
 
 #define QUEUE_FETCH_WAIT				(0)					///< Time to wait when fetching data from queue
 
