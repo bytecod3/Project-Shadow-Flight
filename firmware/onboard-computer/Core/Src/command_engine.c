@@ -16,9 +16,10 @@ QueueHandle_t uart_response_queue = NULL;
 TaskHandle_t uart_receive_command_task_handle = NULL;
 TaskHandle_t uart_command_processor_task_handle = NULL;
 
-/* initialise DMA variables */
-uint16_t rx_dma_indx = 0;
-uint16_t rx_dma_count = 0;
+/* initialize DMA variables */
+uint16_t dma_rx_indx = 0;		/* tracks the current DMA write index */
+uint16_t dma_rx_xount = 0;		/* total number of DMA bytes received */
+uint16_t last_dma_index  = 0;
 
 /* declare buffers accordingly */
 #if RECEIVE_BLOCKING
@@ -107,12 +108,8 @@ uint8_t command_engine_create_tasks() {
  * receive command from uart and send to processing
  */
 void uart_receive_command_task(void const* args) {
-	char* m = "========Shadow Flight Command Engine========\r\n";
 	HAL_UART_Transmit(&huart6, (uint8_t*)m, strlen(m), pdMS_TO_TICKS(100));
 
-	/* initialize DMA receive command */
-	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, (uint8_t*) rx_dma_buffer, MAX_UART_DMA_COMMAND_LENGTH);
-	// todo: disable DMA half interrupt task here
 
 #endif
 
@@ -181,6 +178,11 @@ void command_engine_parse_raw_string_task(void* args) {
  * start the command engine
  */
 void command_engine_start() {
+	HAL_UART_Transmit(&huart6, (uint8_t*)"Initializing command engine..\r\n", strlen("Initializing command engine...\r\n"), 200);
+
+	/* initialize DMA receive command */
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, (uint8_t*) rx_dma_buffer, MAX_UART_DMA_COMMAND_LENGTH);
+
 	/* create semaphores and mutexes */
 
 	/* create queues */
@@ -188,6 +190,8 @@ void command_engine_start() {
 
 	/* create tasks */
 	command_engine_create_tasks();
+
+	HAL_UART_Transmit(&huart6, (uint8_t*)"Command engine initialized...\r\n", strlen("Command engine initialized..\r\n"), 200);
 
 }
 

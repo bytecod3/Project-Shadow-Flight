@@ -107,7 +107,6 @@ SPI_HandleTypeDef hspi1;
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart6;
 DMA_HandleTypeDef hdma_usart1_rx;
-DMA_HandleTypeDef hdma_usart6_rx;
 
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
@@ -417,16 +416,16 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
 
-//  osThreadDef(dumm_data, x_task_dummy_data, osPriorityNormal, 0, 1024);
-//  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
-
   /* fetch heap memory statistics */
-  osThreadDef(heap_stats_task, x_task_get_heap_memory_stats, osPriorityNormal, 0, 1024);
-  x_task_get_heap_memory_stats_tsk_handle = osThreadCreate(osThread(heap_stats_task), NULL);
+  /*osThreadDef(heap_stats_task, x_task_get_heap_memory_stats, osPriorityNormal, 0, 1024);
+  x_task_get_heap_memory_stats_tsk_handle = osThreadCreate(osThread(heap_stats_task), NULL);*/
 
   /* blink on-board LED for status indication */
   osThreadDef(onboard_led_blink, x_task_blink_onboard, osPriorityLow, 0, 1000);
   x_task_control_onboard_led_tsk_handle = osThreadCreate(osThread(onboard_led_blink), NULL);
+
+  /* initialize DMA receive command */
+  HAL_UART_Transmit(&huart6, (uint8_t*)"Booting...\r\n", strlen("Booting..\r\n"), 200);
 
   /* initialize the command engine */
   command_engine_start();
@@ -638,9 +637,6 @@ static void MX_DMA_Init(void)
   __HAL_RCC_DMA2_CLK_ENABLE();
 
   /* DMA interrupt init */
-  /* DMA2_Stream1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(DMA2_Stream1_IRQn);
   /* DMA2_Stream2_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
@@ -796,34 +792,25 @@ void x_task_debug_to_uart(void const* argument) {
  */
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
 	/* We receive commands from UART1 -> connected to a test harness */
+	char x[10];
 	if(huart == &huart1) {
-		BaseType_t x_higher_priority_task_woken = pdFALSE;
-		rx_dma_indx = Size;
-		rx_dma_count++;
+		//dma_rx_indx = Size;
 
-		char status[20];
-		sprintf(status, "Recvd: %d\r\n", rx_dma_indx);
+		/* get the new data received todo:split dma_rx buffer to get newest data  */
+		//(dma_rx_indx - last_dma_index);
 
-		//HAL_UART_Transmit(&huart6, (uint8_t*)rx_dma_buffer, rx_dma_indx, HAL_TX_TIMEOUT);
+		/* Notify the command parsing task */
 
-		internal_logger->_log_to_uart_msg(internal_logger, &huart6, status);
+		/* update last write index */
+		//last_dma_index = Size;
 
-		/* send the received string to command queue */
-		if(xSemaphoreTakeFromISR(command_queue_semaphore, &x_higher_priority_task_woken) == pdPASS) {
-			xQueueSendToBackFromISR(raw_command_queue, rx_dma_buffer, &x_higher_priority_task_woken);
-			xSemaphoreGiveFromISR(command_queue_semaphore, &x_higher_priority_task_woken);
-		} else {
-			// todo: add a logger statement here
-		}
+		sprintf(x, "%d\r\n", Size);
+		HAL_UART_Transmit(&huart6, (uint8_t*)x, strlen(x), 100);
 
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, (uint8_t*) rx_dma_buffer, MAX_UART_DMA_COMMAND_LENGTH);
-
-		portYIELD_FROM_ISR(x_higher_priority_task_woken);
-
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_dma_buffer, sizeof(MAX_UART_DMA_COMMAND_LENGTH));
 	} else {
-		internal_logger->_log_to_uart_msg(internal_logger, &huart6, "From a different UART\r\n");
+		HAL_UART_Transmit(&huart6, (uint8_t*)"rx Event Callback not from huart1\r\n", strlen("rx Event Callback not from huart1\r\n"), 100);
 	}
-
 }
 
 /* USER CODE END 4 */

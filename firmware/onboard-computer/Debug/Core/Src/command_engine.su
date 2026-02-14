@@ -1,7 +1,7 @@
-../Core/Src/command_engine.c:39:6:command_engine_create_semaphores	8	static
-../Core/Src/command_engine.c:49:9:command_engine_create_queues	16	static
-../Core/Src/command_engine.c:76:9:command_engine_create_tasks	80	static
-../Core/Src/command_engine.c:109:6:uart_receive_command_task	24	static
-../Core/Src/command_engine.c:148:6:uart_command_processor_task	16	static
-../Core/Src/command_engine.c:161:6:command_engine_parse_raw_string_task	48	static
-../Core/Src/command_engine.c:183:6:command_engine_start	8	static
+../Core/Src/command_engine.c:40:6:command_engine_create_semaphores	8	static
+../Core/Src/command_engine.c:50:9:command_engine_create_queues	16	static
+../Core/Src/command_engine.c:77:9:command_engine_create_tasks	80	static
+../Core/Src/command_engine.c:110:6:uart_receive_command_task	24	static
+../Core/Src/command_engine.c:146:6:uart_command_processor_task	16	static
+../Core/Src/command_engine.c:159:6:command_engine_parse_raw_string_task	48	static
+../Core/Src/command_engine.c:181:6:command_engine_start	8	static
