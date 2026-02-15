@@ -27,25 +27,25 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  00009060  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00019726  00000000  00000000  00009090  2**0
+ 12 .debug_info   00019719  00000000  00000000  00009090  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00003a32  00000000  00000000  000227b6  2**0
+ 13 .debug_abbrev 00003a32  00000000  00000000  000227a9  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00001798  00000000  00000000  000261e8  2**3
+ 14 .debug_aranges 00001798  00000000  00000000  000261e0  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 0000127b  00000000  00000000  00027980  2**0
+ 15 .debug_rnglists 0000127b  00000000  00000000  00027978  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  0001854a  00000000  00000000  00028bfb  2**0
+ 16 .debug_macro  0001854a  00000000  00000000  00028bf3  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0001c23d  00000000  00000000  00041145  2**0
+ 17 .debug_line   0001c23d  00000000  00000000  0004113d  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    0009c180  00000000  00000000  0005d382  2**0
+ 18 .debug_str    0009c181  00000000  00000000  0005d37a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  000f9502  2**0
+ 19 .comment      00000043  00000000  00000000  000f94fb  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000068e0  00000000  00000000  000f9548  2**2
+ 20 .debug_frame  000068e4  00000000  00000000  000f9540  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000007e  00000000  00000000  000ffe28  2**0
+ 21 .debug_line_str 0000007e  00000000  00000000  000ffe24  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -454,7 +454,7 @@ uint8_t command_engine_create_queues() {
 
 	raw_command_queue = xQueueCreate(5, sizeof(cubesat_command_t));			/* store the raw dma command buffer */
  80005c6:	2200      	movs	r2, #0
- 80005c8:	2134      	movs	r1, #52	@ 0x34
+ 80005c8:	2166      	movs	r1, #102	@ 0x66
  80005ca:	2005      	movs	r0, #5
  80005cc:	f004 fa8c 	bl	8004ae8 <xQueueGenericCreate>
  80005d0:	4603      	mov	r3, r0
@@ -462,7 +462,7 @@ uint8_t command_engine_create_queues() {
  80005d4:	6013      	str	r3, [r2, #0]
 	parsed_command_queue = xQueueCreate(5, sizeof(cubesat_command_t));	/* store the parsed command in cubesat_command format */
  80005d6:	2200      	movs	r2, #0
- 80005d8:	2134      	movs	r1, #52	@ 0x34
+ 80005d8:	2166      	movs	r1, #102	@ 0x66
  80005da:	2005      	movs	r0, #5
  80005dc:	f004 fa84 	bl	8004ae8 <xQueueGenericCreate>
  80005e0:	4603      	mov	r3, r0
@@ -607,11 +607,11 @@ uint8_t command_engine_create_tasks() {
 080006c4 <uart_receive_command_task>:
 
 /*
- * receive command from uart and send to processing
+ * receive command from UART  and send to processing
  */
 void uart_receive_command_task(void const* args) {
  80006c4:	b580      	push	{r7, lr}
- 80006c6:	b0a8      	sub	sp, #160	@ 0xa0
+ 80006c6:	b0b6      	sub	sp, #216	@ 0xd8
  80006c8:	af00      	add	r7, sp, #0
  80006ca:	6078      	str	r0, [r7, #4]
 	raw_cubesat_command_t received_cmd;
@@ -621,7 +621,7 @@ void uart_receive_command_task(void const* args) {
 		if(xQueueReceive(raw_command_queue, &received_cmd, pdMS_TO_TICKS(MAX_RAW_CMD_RECEIVE_WAIT)) == pdTRUE) {
  80006cc:	4b13      	ldr	r3, [pc, #76]	@ (800071c <uart_receive_command_task+0x58>)
  80006ce:	681b      	ldr	r3, [r3, #0]
- 80006d0:	f107 016c 	add.w	r1, r7, #108	@ 0x6c
+ 80006d0:	f107 0170 	add.w	r1, r7, #112	@ 0x70
  80006d4:	22c8      	movs	r2, #200	@ 0xc8
  80006d6:	4618      	mov	r0, r3
  80006d8:	f004 fafe 	bl	8004cd8 <xQueueReceive>
@@ -629,20 +629,20 @@ void uart_receive_command_task(void const* args) {
  80006de:	2b01      	cmp	r3, #1
  80006e0:	d117      	bne.n	8000712 <uart_receive_command_task+0x4e>
 			sprintf(cmd_buffer, "length:%d, command:%s\r\n", received_cmd.length, received_cmd.command);
- 80006e2:	f897 306c 	ldrb.w	r3, [r7, #108]	@ 0x6c
+ 80006e2:	f897 3070 	ldrb.w	r3, [r7, #112]	@ 0x70
  80006e6:	461a      	mov	r2, r3
- 80006e8:	f107 036c 	add.w	r3, r7, #108	@ 0x6c
+ 80006e8:	f107 0370 	add.w	r3, r7, #112	@ 0x70
  80006ec:	3301      	adds	r3, #1
- 80006ee:	f107 0008 	add.w	r0, r7, #8
+ 80006ee:	f107 000c 	add.w	r0, r7, #12
  80006f2:	490b      	ldr	r1, [pc, #44]	@ (8000720 <uart_receive_command_task+0x5c>)
  80006f4:	f006 fa16 	bl	8006b24 <siprintf>
 			HAL_UART_Transmit(&huart6, (uint8_t*)cmd_buffer, strlen(cmd_buffer), 100);
- 80006f8:	f107 0308 	add.w	r3, r7, #8
+ 80006f8:	f107 030c 	add.w	r3, r7, #12
  80006fc:	4618      	mov	r0, r3
  80006fe:	f7ff fd6f 	bl	80001e0 <strlen>
  8000702:	4603      	mov	r3, r0
  8000704:	b29a      	uxth	r2, r3
- 8000706:	f107 0108 	add.w	r1, r7, #8
+ 8000706:	f107 010c 	add.w	r1, r7, #12
  800070a:	2364      	movs	r3, #100	@ 0x64
  800070c:	4805      	ldr	r0, [pc, #20]	@ (8000724 <uart_receive_command_task+0x60>)
  800070e:	f002 fe63 	bl	80033d8 <HAL_UART_Transmit>
@@ -1830,7 +1830,7 @@ void x_task_blink_onboard(void const* argument) {
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
  8000db8:	b580      	push	{r7, lr}
- 8000dba:	b090      	sub	sp, #64	@ 0x40
+ 8000dba:	b09e      	sub	sp, #120	@ 0x78
  8000dbc:	af00      	add	r7, sp, #0
  8000dbe:	6078      	str	r0, [r7, #4]
  8000dc0:	460b      	mov	r3, r1
@@ -1845,26 +1845,26 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
 		/* We receive commands from UART1 -> connected to a test harness */
 		BaseType_t pxHigherPriorityTaskWoken = pdTRUE;
  8000dcc:	2301      	movs	r3, #1
- 8000dce:	63fb      	str	r3, [r7, #60]	@ 0x3c
+ 8000dce:	677b      	str	r3, [r7, #116]	@ 0x74
 		raw_cubesat_command_t cmd;
 		cmd.length = Size;
  8000dd0:	887b      	ldrh	r3, [r7, #2]
  8000dd2:	b2db      	uxtb	r3, r3
- 8000dd4:	723b      	strb	r3, [r7, #8]
+ 8000dd4:	733b      	strb	r3, [r7, #12]
 
 		memcpy(cmd.command, rx_dma_buffer, Size);
  8000dd6:	887a      	ldrh	r2, [r7, #2]
- 8000dd8:	f107 0308 	add.w	r3, r7, #8
+ 8000dd8:	f107 030c 	add.w	r3, r7, #12
  8000ddc:	3301      	adds	r3, #1
  8000dde:	491b      	ldr	r1, [pc, #108]	@ (8000e4c <HAL_UARTEx_RxEventCallback+0x94>)
  8000de0:	4618      	mov	r0, r3
  8000de2:	f005 ff05 	bl	8006bf0 <memcpy>
 		cmd.command[Size] = '\0';
  8000de6:	887b      	ldrh	r3, [r7, #2]
- 8000de8:	3340      	adds	r3, #64	@ 0x40
+ 8000de8:	3378      	adds	r3, #120	@ 0x78
  8000dea:	443b      	add	r3, r7
  8000dec:	2200      	movs	r2, #0
- 8000dee:	f803 2c37 	strb.w	r2, [r3, #-55]
+ 8000dee:	f803 2c6b 	strb.w	r2, [r3, #-107]
 
 		if(Size > 0) { /* only send if there is actual data available */
  8000df2:	887b      	ldrh	r3, [r7, #2]
@@ -1873,8 +1873,8 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
 			xQueueSendFromISR(raw_command_queue, &cmd, &pxHigherPriorityTaskWoken);
  8000df8:	4b15      	ldr	r3, [pc, #84]	@ (8000e50 <HAL_UARTEx_RxEventCallback+0x98>)
  8000dfa:	6818      	ldr	r0, [r3, #0]
- 8000dfc:	f107 023c 	add.w	r2, r7, #60	@ 0x3c
- 8000e00:	f107 0108 	add.w	r1, r7, #8
+ 8000dfc:	f107 0274 	add.w	r2, r7, #116	@ 0x74
+ 8000e00:	f107 010c 	add.w	r1, r7, #12
  8000e04:	2300      	movs	r3, #0
  8000e06:	f003 fec9 	bl	8004b9c <xQueueGenericSendFromISR>
 		}
@@ -1898,7 +1898,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
  8000e26:	601a      	str	r2, [r3, #0]
 
 		portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
- 8000e28:	6bfb      	ldr	r3, [r7, #60]	@ 0x3c
+ 8000e28:	6f7b      	ldr	r3, [r7, #116]	@ 0x74
  8000e2a:	2b00      	cmp	r3, #0
  8000e2c:	d007      	beq.n	8000e3e <HAL_UARTEx_RxEventCallback+0x86>
  8000e2e:	4b09      	ldr	r3, [pc, #36]	@ (8000e54 <HAL_UARTEx_RxEventCallback+0x9c>)
@@ -1909,7 +1909,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
 	}
 }
  8000e3e:	bf00      	nop
- 8000e40:	3740      	adds	r7, #64	@ 0x40
+ 8000e40:	3778      	adds	r7, #120	@ 0x78
  8000e42:	46bd      	mov	sp, r7
  8000e44:	bd80      	pop	{r7, pc}
  8000e46:	bf00      	nop

@@ -22,10 +22,10 @@
 
 #define COMMAND_ENGINE_TASK_STACK_DEPTH  	(1024)
 
-#define MAX_UART_COMMAND_LENGTH			(100)				/* maximum data for UART blocking buffer */
-#define MAX_UART_DMA_COMMAND_LENGTH		(200)				/* maximum data for UART DMA buffer */
-#define MAX_COMMAND_LENGTH	(50)							/* long can a parsed command be ? */
-#define MAX_RAW_CMD_RECEIVE_WAIT		(200)				/* how long to wait for a command to be available in the raw command queue */
+#define MAX_UART_COMMAND_LENGTH				(100)				/* maximum data for UART blocking buffer */
+#define MAX_UART_DMA_COMMAND_LENGTH			(200)				/* maximum data for UART DMA buffer */
+#define MAX_COMMAND_LENGTH					(100)				/* long can a parsed command be ? */
+#define MAX_RAW_CMD_RECEIVE_WAIT			(200)				/* how long to wait for a command to be available in the raw command queue */
 
 extern uint16_t rx_dma_indx;
 extern uint16_t rx_dma_count;

@@ -102,7 +102,7 @@ uint8_t command_engine_create_tasks() {
 }
 
 /*
- * receive command from uart and send to processing
+ * receive command from UART  and send to processing
  */
 void uart_receive_command_task(void const* args) {
 	raw_cubesat_command_t received_cmd;
