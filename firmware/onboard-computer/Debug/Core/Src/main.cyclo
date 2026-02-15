@@ -9,7 +9,8 @@
 ../Core/Src/main.c:727:6:x_task_blink_onboard	1
 ../Core/Src/main.c:749:6:x_task_get_heap_memory_stats	1
 ../Core/Src/main.c:785:6:x_task_debug_to_uart	1
-../Core/Src/main.c:793:6:HAL_UARTEx_RxEventCallback	2
-../Core/Src/main.c:825:6:StartDefaultTask	1
-../Core/Src/main.c:844:6:HAL_TIM_PeriodElapsedCallback	2
-../Core/Src/main.c:862:6:Error_Handler	1
+../Core/Src/main.c:796:6:x_task_get_watchdog	1
+../Core/Src/main.c:804:6:HAL_UARTEx_RxEventCallback	4
+../Core/Src/main.c:838:6:StartDefaultTask	1
+../Core/Src/main.c:857:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:875:6:Error_Handler	1

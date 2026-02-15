@@ -24,7 +24,8 @@
 
 #define MAX_UART_COMMAND_LENGTH			(100)				/* maximum data for UART blocking buffer */
 #define MAX_UART_DMA_COMMAND_LENGTH		(200)				/* maximum data for UART DMA buffer */
-#define MAX_COMMAND_LENGTH	(30)							/* long can a parsed command be ? */
+#define MAX_COMMAND_LENGTH	(50)							/* long can a parsed command be ? */
+#define MAX_RAW_CMD_RECEIVE_WAIT		(200)				/* how long to wait for a command to be available in the raw command queue */
 
 extern uint16_t rx_dma_indx;
 extern uint16_t rx_dma_count;
@@ -50,11 +51,18 @@ typedef enum {
 	SCHEDULED = 1
 } command_type_t;
 
-typedef struct {
+/* defines a telemetry command type */
+typedef struct{
 	command_type_t cmd_type;
+	uint8_t length;
 	char command[MAX_COMMAND_LENGTH];
-} cubesat_command;
+} cubesat_command_t;
 
+/* defines a raw cubesat command */
+typedef struct _raw_cubesat_command {
+	uint8_t length;
+	char command[MAX_COMMAND_LENGTH];
+} raw_cubesat_command_t;
 
 /* queue create status enum */
 enum QUEUE_CREATE_STATUS {
@@ -64,18 +72,16 @@ enum QUEUE_CREATE_STATUS {
 	ALL_QUEUES_FAILED = 3
 };
 
-#if UART_TESTING_EN
-	/* queues */
-	extern QueueHandle_t raw_command_queue;
-	extern QueueHandle_t parsed_command_queue;
-	extern QueueHandle_t uart_response_queue;
+/* queues */
+extern QueueHandle_t raw_command_queue;
+extern QueueHandle_t parsed_command_queue;
+extern QueueHandle_t uart_response_queue;
 
-	/* tasks */
-	extern TaskHandle_t uart_receive_command_task_handle;
-	extern TaskHandle_t uart_command_processor_task_handle;
-#endif
+/* tasks */
+extern TaskHandle_t uart_receive_command_task_handle;
+extern TaskHandle_t uart_command_processor_task_handle;
 
-/* sempahores for access control */
+/* semaphores for access control */
 extern SemaphoreHandle_t command_queue_semaphore;
 
 extern TaskHandle_t command_engine_processor_task_handle;

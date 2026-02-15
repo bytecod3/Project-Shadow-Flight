@@ -10,6 +10,8 @@
 
 #include "stdio.h"
 #include "stdlib.h"
+#include "stdint.h"
+#include "defines.h"
 
 /* general defines */
 #define HEAP_STATS_QUEUE_LENGTH		(10)

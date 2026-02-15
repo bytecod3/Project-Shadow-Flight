@@ -50,9 +50,8 @@ void command_engine_create_semaphores() {
 uint8_t command_engine_create_queues() {
 	uint8_t queue_create_status = 0;
 
-	// todo use JSON structured command
-	raw_command_queue = xQueueCreate(5, sizeof(rx_dma_buffer));			/* store the raw dma command buffer */
-	parsed_command_queue = xQueueCreate(5, sizeof(cubesat_command));	/* store the parsed command in cubesat_command format */
+	raw_command_queue = xQueueCreate(5, sizeof(cubesat_command_t));			/* store the raw dma command buffer */
+	parsed_command_queue = xQueueCreate(5, sizeof(cubesat_command_t));	/* store the parsed command in cubesat_command format */
 	uart_response_queue = xQueueCreate(5, sizeof(uart_command_response));
 
 	/* check if queue creation OK */
@@ -80,7 +79,7 @@ uint8_t command_engine_create_tasks() {
 
 	uint8_t task_create_status = 0;
 
-//#if UART_TESTING_EN
+#if UART_TESTING_EN
 	osThreadDef(uart_receive_command, uart_receive_command_task, osPriorityHigh, 0, COMMAND_ENGINE_TASK_STACK_DEPTH);
 	uart_receive_command_task_handle = osThreadCreate(osThread(uart_receive_command), NULL);
 
@@ -96,46 +95,24 @@ uint8_t command_engine_create_tasks() {
 		task_create_status |= (1 << 1);
 	}
 
-//#endif
+#endif
 
 	return task_create_status;
 
 }
 
-#if UART_TESTING_EN
-
 /*
  * receive command from uart and send to processing
  */
 void uart_receive_command_task(void const* args) {
-	HAL_UART_Transmit(&huart6, (uint8_t*)m, strlen(m), pdMS_TO_TICKS(100));
-
-
-#endif
+	raw_cubesat_command_t received_cmd;
+	char cmd_buffer[100];
 
 	for(;;) {
-
-#if RECEIVE_BLOCKING
-		/* build the received command string */
-		uint8_t indx = 0;
-		while(indx < MAX_UART_COMMAND_LENGTH) {
-			HAL_UART_Receive(&huart1, &ch ,1 , HAL_RX_TIMEOUT);
-			if(ch == '\n') break;
-
-			rx_buffer[indx++] = ch;
+		if(xQueueReceive(raw_command_queue, &received_cmd, pdMS_TO_TICKS(MAX_RAW_CMD_RECEIVE_WAIT)) == pdTRUE) {
+			sprintf(cmd_buffer, "length:%d, command:%s\r\n", received_cmd.length, received_cmd.command);
+			HAL_UART_Transmit(&huart6, (uint8_t*)cmd_buffer, strlen(cmd_buffer), 100);
 		}
-
-		/* null terminate the received character */
-		rx_buffer[indx] = '\0';
-
-		/* simulate a response */
-		if(indx > 0) {
-			HAL_UART_Transmit(&huart1, (uint8_t*)rx_buffer, strlen(rx_buffer), HAL_TX_TIMEOUT);
-			HAL_UART_Transmit(&huart1, (uint8_t*)"\r\n", 2, 500);
-		}
-#elif RECEIVE_DMA
-
-#endif
 
 		vTaskDelay(pdMS_TO_TICKS(1));
 	}
@@ -182,6 +159,7 @@ void command_engine_start() {
 
 	/* initialize DMA receive command */
 	HAL_UARTEx_ReceiveToIdle_DMA(&huart1, (uint8_t*) rx_dma_buffer, MAX_UART_DMA_COMMAND_LENGTH);
+	__HAL_DMA_DISABLE_IT(huart1.hdmarx, DMA_IT_HT);
 
 	/* create semaphores and mutexes */
 

@@ -168,7 +168,7 @@ void x_task_control_onboard_led(void const* argument);
 void x_task_control_onboard_buzzer(void const* argument);
 
 /**
- * @fn void x_task_get_watchdog(const void*)
+ * @fn void x_task_get_watchdog(void const*)
  * @brief
  *
  * @param argument
@@ -425,7 +425,7 @@ int main(void)
   x_task_control_onboard_led_tsk_handle = osThreadCreate(osThread(onboard_led_blink), NULL);
 
   /* initialize DMA receive command */
-  HAL_UART_Transmit(&huart6, (uint8_t*)"Booting...\r\n", strlen("Booting..\r\n"), 200);
+  HAL_UART_Transmit(&huart6, (uint8_t*)"Booting on-board computer...\r\n", strlen("Booting..\r\n"), 200);
 
   /* initialize the command engine */
   command_engine_start();
@@ -787,29 +787,42 @@ void x_task_debug_to_uart(void const* argument) {
 	}
 }
 
+/**
+ * @fn void x_task_get_watchdog(void const*)
+ * @brief
+ *
+ * @param argument
+ */
+void x_task_get_watchdog(void const* argument) {
+
+}
+
 /*
  * callback for receiving data via UART DMA
  */
+
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size) {
-	/* We receive commands from UART1 -> connected to a test harness */
-	char x[10];
+
+
 	if(huart == &huart1) {
-		//dma_rx_indx = Size;
+		/* We receive commands from UART1 -> connected to a test harness */
+		BaseType_t pxHigherPriorityTaskWoken = pdTRUE;
+		raw_cubesat_command_t cmd;
+		cmd.length = Size;
 
-		/* get the new data received todo:split dma_rx buffer to get newest data  */
-		//(dma_rx_indx - last_dma_index);
+		memcpy(cmd.command, rx_dma_buffer, Size);
+		cmd.command[Size] = '\0';
 
-		/* Notify the command parsing task */
+		if(Size > 0) { /* only send if there is actual data available */
+			xQueueSendFromISR(raw_command_queue, &cmd, &pxHigherPriorityTaskWoken);
+		}
 
-		/* update last write index */
-		//last_dma_index = Size;
+		/* restart DMA receiver */
+		//__HAL_UART_CLEAR_IDLEFLAG(&huart1); /* clear idle flag manually */
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, (uint8_t*)rx_dma_buffer, MAX_UART_DMA_COMMAND_LENGTH);
+		__HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
 
-		sprintf(x, "%d\r\n", Size);
-		HAL_UART_Transmit(&huart6, (uint8_t*)x, strlen(x), 100);
-
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart1, rx_dma_buffer, sizeof(MAX_UART_DMA_COMMAND_LENGTH));
-	} else {
-		HAL_UART_Transmit(&huart6, (uint8_t*)"rx Event Callback not from huart1\r\n", strlen("rx Event Callback not from huart1\r\n"), 100);
+		portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
 	}
 }
 
