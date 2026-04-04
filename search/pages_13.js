@@ -1,6 +1,28 @@
 var searchData=
 [
-  ['videos_20and_20resource_20materials_0',['Relevent videos and resource materials',['../index.html#autotoc_md38',1,'']]],
-  ['videos_20for_20visual_20consumers_1',['Design Videos for visual consumers',['../index.html#autotoc_md3',1,'']]],
-  ['visual_20consumers_2',['Design Videos for visual consumers',['../index.html#autotoc_md3',1,'']]]
+  ['packet_20placement_0',['Packet Placement',['../index.html#autotoc_md68',1,'']]],
+  ['panel_20sizing_20data_1',['Battery and solar panel sizing data',['../index.html#autotoc_md32',1,'']]],
+  ['payload_20and_20mission_20design_2',['5. Payload and Mission Design',['../index.html#autotoc_md33',1,'']]],
+  ['payload_20communication_20interface_3',['Payload communication interface',['../index.html#autotoc_md35',1,'']]],
+  ['payload_20pcb_4',['Payload PCB',['../index.html#autotoc_md36',1,'']]],
+  ['payload_20system_20requirements_5',['Payload system requirements',['../index.html#autotoc_md34',1,'']]],
+  ['pc_20104_20isa_20bus_6',['The PC/104 ISA Bus',['../index.html#autotoc_md14',1,'']]],
+  ['pcb_7',['Payload PCB',['../index.html#autotoc_md36',1,'']]],
+  ['pdu_8',['PDU',['../index.html#autotoc_md42',1,'CCSDS protocol data unit (PDU)'],['../index.html#autotoc_md45',1,'Protocol data frame (PDU)']]],
+  ['pin_20definition_9',['My Pin definition',['../index.html#autotoc_md18',1,'']]],
+  ['placement_10',['Packet Placement',['../index.html#autotoc_md68',1,'']]],
+  ['power_11',['d) Mission analysis in regards to power',['../index.html#autotoc_md25',1,'']]],
+  ['power_20consumption_20of_20different_20bus_20components_12',['a) Power consumption of different bus components',['../index.html#autotoc_md22',1,'']]],
+  ['power_20distribution_20schemes_13',['Power Distribution Schemes',['../index.html#autotoc_md28',1,'']]],
+  ['power_20generation_14',['b) Power generation',['../index.html#autotoc_md23',1,'']]],
+  ['power_20supply_20control_15',['Power supply control',['../index.html#autotoc_md29',1,'']]],
+  ['power_20system_20eps_16',['4. Electrical Power System (EPS)',['../index.html#autotoc_md20',1,'']]],
+  ['primary_20header_17',['1. Primary header',['../index.html#autotoc_md47',1,'']]],
+  ['procedure_18',['Encoding Procedure',['../index.html#autotoc_md79',1,'']]],
+  ['project_20shadow_20flight_20a_201u_20amateur_20cubesat_19',['Project Shadow Flight - A 1U amateur Cubesat',['../index.html',1,'']]],
+  ['protocol_20',['Protocol',['../index.html#autotoc_md40',1,'CCSDS Telemetry(TM) Space Data Link Protocol'],['../index.html#autotoc_md39',1,'Communication Protocol'],['../index.html#autotoc_md41',1,'What is CCSDS Space Data Link Protocol']]],
+  ['protocol_20data_20frame_20pdu_21',['Protocol data frame (PDU)',['../index.html#autotoc_md45',1,'']]],
+  ['protocol_20data_20unit_20pdu_22',['CCSDS protocol data unit (PDU)',['../index.html#autotoc_md42',1,'']]],
+  ['protocol_20for_20sensors_23',['Communication protocol for sensors',['../index.html#autotoc_md13',1,'']]],
+  ['purpose_24',['Purpose',['../index.html#autotoc_md56',1,'']]]
 ];

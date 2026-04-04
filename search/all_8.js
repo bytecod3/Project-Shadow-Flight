@@ -18,8 +18,6 @@ var searchData=
   ['determination_20and_20control_15',['3. Attitude Determination and Control',['../index.html#autotoc_md19',1,'']]],
   ['different_20bus_20components_16',['a) Power consumption of different bus components',['../index.html#autotoc_md22',1,'']]],
   ['distribution_20schemes_17',['Power Distribution Schemes',['../index.html#autotoc_md28',1,'']]],
-  ['docs_20images_20pc104_20dwg_20500_20gif_20alt_20shadow_20flight_20obc_20width_20400_20height_20400_18',['&lt;img src=&quot;./user-docs/images/pc104-dwg-500.gif&quot; alt=&quot;Shadow flight OBC&quot; width=&quot;400&quot; height=&quot;400&quot;/&gt;',['../index.html#autotoc_md16',1,'']]],
-  ['documentation_19',['Web documentation',['../index.html#autotoc_md1',1,'']]],
-  ['documents_20',['Related documents',['../index.html#autotoc_md82',1,'']]],
-  ['dwg_20500_20gif_20alt_20shadow_20flight_20obc_20width_20400_20height_20400_21',['&lt;img src=&quot;./user-docs/images/pc104-dwg-500.gif&quot; alt=&quot;Shadow flight OBC&quot; width=&quot;400&quot; height=&quot;400&quot;/&gt;',['../index.html#autotoc_md16',1,'']]]
+  ['documentation_18',['Web documentation',['../index.html#autotoc_md1',1,'']]],
+  ['documents_19',['Related documents',['../index.html#autotoc_md82',1,'']]]
 ];

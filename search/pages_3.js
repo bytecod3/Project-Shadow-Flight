@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['flight_20a_201u_20amateur_20cubesat_0',['Project Shadow Flight - A 1U amateur Cubesat',['../index.html',1,'']]]
+  ['4_20electrical_20power_20system_20eps_0',['4. Electrical Power System (EPS)',['../index.html#autotoc_md20',1,'']]]
 ];

@@ -32,22 +32,22 @@ var NAVTREE =
       ] ],
       [ "Motivation", "index.html#autotoc_md3", null ],
       [ "Mission statement", "index.html#autotoc_md4", null ],
-      [ "Onboard Computer", "index.html#autotoc_md6", [
+      [ "1. Onboard Computer", "index.html#autotoc_md6", [
         [ "Introduction", "index.html#autotoc_md7", null ],
         [ "Functional requirements", "index.html#autotoc_md8", null ],
         [ "Components of the OBC", "index.html#autotoc_md9", null ]
       ] ],
-      [ "Sensor Board", "index.html#autotoc_md10", [
+      [ "2. Sensor Board", "index.html#autotoc_md10", [
         [ "Introduction", "index.html#autotoc_md11", null ],
         [ "Functional requirements", "index.html#autotoc_md12", null ],
         [ "Communication protocol for sensors", "index.html#autotoc_md13", null ],
         [ "The PC/104 ISA Bus", "index.html#autotoc_md14", null ]
       ] ],
-      [ "", "index.html#autotoc_md16", [
+      [ "<img src=\"./user-docs/images/pc104-dwg-500.gif\" alt=\"Shadow flight OBC\" width=\"400\" height=\"400\" class=\"inline\"/>", "index.html#autotoc_md16", [
         [ "My Pin definition", "index.html#autotoc_md18", null ]
       ] ],
-      [ "Attitude Determination and Control", "index.html#autotoc_md19", null ],
-      [ "Electrical Power System (EPS)", "index.html#autotoc_md20", [
+      [ "3. Attitude Determination and Control", "index.html#autotoc_md19", null ],
+      [ "4. Electrical Power System (EPS)", "index.html#autotoc_md20", [
         [ "Introduction", "index.html#autotoc_md21", null ],
         [ "a) Power consumption of different bus components", "index.html#autotoc_md22", null ],
         [ "b) Power generation", "index.html#autotoc_md23", null ],
@@ -64,7 +64,7 @@ var NAVTREE =
         ] ]
       ] ]
     ] ],
-    [ "Payload and Mission Design", "index.html#autotoc_md33", [
+    [ "5. Payload and Mission Design", "index.html#autotoc_md33", [
       [ "Payload PCB", "index.html#autotoc_md36", [
         [ "Payload system requirements", "index.html#autotoc_md34", null ],
         [ "Payload communication interface", "index.html#autotoc_md35", [
@@ -80,7 +80,7 @@ var NAVTREE =
         [ "Field descriptions", "index.html#autotoc_md43", null ],
         [ "How it is implemented", "index.html#autotoc_md44", null ],
         [ "Protocol data frame (PDU)", "index.html#autotoc_md45", [
-          [ "Primary header", "index.html#autotoc_md47", null ],
+          [ "1. Primary header", "index.html#autotoc_md47", null ],
           [ "Transfer Frame Version Number", "index.html#autotoc_md48", null ],
           [ "Spacecraft Identifier (SCID)", "index.html#autotoc_md49", null ]
         ] ],
@@ -135,3 +135,4 @@ var NAVTREEINDEX =
 
 var SYNCONMSG = 'click to disable panel synchronization';
 var SYNCOFFMSG = 'click to enable panel synchronization';
+var LISTOFALLMEMBERS = 'List of all members';
