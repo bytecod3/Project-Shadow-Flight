@@ -1,0 +1,41 @@
+{"type": "immediate", "command": "EPS RESTART"}
+{"type": "immediate", "command": "EPS MCU_RESET"}
+{"type": "scheduled", "command": "COMMS RESTART 2026-01-26T14:45:00Z"}
+{"type": "immediate", "command": "EPS RESTART"}
+{"type": "immediate", "command": "EPS MCU_RESET"}
+{"type": "immediate", "command": "EPS ENTER_SAFE_MODE"}
+{"type": "scheduled", "command": "EPS SET_POWER_LIMIT 8.0"}
+{"type": "scheduled", "command": "EPS ENABLE_RAIL 5V"}
+{"type": "scheduled", "command": "EPS DISABLE_RAIL 12V"}
+{"type": "invalid", "command": ""}
+{"type": "immediate", "command": "OBC REBOOT"}
+{"type": "immediate", "command": "OBC WATCHDOG_RESET"}
+{"type": "scheduled", "command": "OBC SET_MODE SAFE"}
+{"type": "scheduled", "command": "OBC SET_MODE NOMINAL"}
+{"type": "scheduled", "command": "OBC TIME_SYNC 2026-01-26T14:45:00Z"}
+{"type": "invalid", "command": ""}
+{"type": "scheduled", "command": "COMMS RESTART 2026-01-26T14:53:23Z"}
+{"type": "scheduled", "command": "COMMS SET_BAUDRATE 9600"}
+{"type": "scheduled", "command": "COMMS SET_MODE BEACON"}
+{"type": "scheduled", "command": "COMMS SET_MODE PACKET"}
+{"type": "immediate", "command": "COMMS ANT_DEPLOY"}
+{"type": "immediate", "command": "COMMS TX_TEST"}
+{"type": "immediate", "command": "COMMS RX_TEST"}
+{"type": "invalid", "command": ""}
+{"type": "immediate", "command": "ADCU INIT"}
+{"type": "immediate", "command": "ADCU CALIBRATE_GYRO"}
+{"type": "immediate", "command": "ADCU CALIBRATE_MAG"}
+{"type": "scheduled", "command": "ADCU SET_MODE DETUMBLE"}
+{"type": "scheduled_param", "command": "ADCU SET_MODE SUN_POINTING 2026-01-26T15:02:10Z"}
+{"type": "scheduled", "command": "ADCU SET_MODE NADIR_POINTING"}
+{"type": "invalid", "command": ""}
+{"type": "immediate", "command": "PAYLOAD POWER_ON"}
+{"type": "immediate", "command": "PAYLOAD POWER_OFF"}
+{"type": "immediate", "command": "PAYLOAD RESET"}
+{"type": "scheduled", "command": "PAYLOAD SET_MODE IDLE"}
+{"type": "scheduled_param", "command": "PAYLOAD SET_MODE ACQUIRE 2026-01-26T15:10:45Z"}
+{"type": "immediate", "command": "PAYLOAD DATA_DUMP"}
+{"type": "invalid", "command": ""}
+{"type": "immediate", "command": "SYS STATUS_REQUEST"}
+{"type": "immediate", "command": "SYS HEARTBEAT"}
+{"type": "scheduled", "command": "SYS TIME_BROADCAST 2026-01-26T15:20:00Z"}
