@@ -379,7 +379,7 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T3_TRGO;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.NbrOfConversion = 2;
-  hadc1.Init.DMAContinuousRequests = DISABLE;
+  hadc1.Init.DMAContinuousRequests = ENABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
@@ -732,10 +732,10 @@ static void MX_GPIO_Init(void)
  */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
-//  if(hadc->Instance == ADC1) {
+  if(hadc->Instance == ADC1) {
 	  HAL_GPIO_TogglePin(D2_LED_GPIO_Port, D2_LED_Pin);
 	  update_event = 1;					/* update global event */
-//  }
+  }
 }
 
 /**
@@ -749,7 +749,6 @@ float get_core_temperature(void){
 		return core_temperature;
 	}
 
-	return 0.0;
 }
 
 /**
@@ -773,7 +772,7 @@ void get_payload_statistics_task(void const* argument) {
 
 		//HAL_UART_Transmit(&huart2, (uint8_t*)"STATS TASK", strlen("STATS TASK"), 100);
 
-		vTaskDelay(pdMS_TO_TICKS(1000));
+		vTaskDelay(pdMS_TO_TICKS(5));
 	}
 }
 
