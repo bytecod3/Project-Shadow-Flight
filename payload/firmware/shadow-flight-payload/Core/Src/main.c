@@ -27,11 +27,15 @@
 #include <string.h>
 #include <stdarg.h>    // for va_list and va_arg functions
 #include "utils.h"
+#include "data_types.h"
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+
+PAYLOAD_rtos_memory_stats_type_t paylod_mem_stats;
+PAYLOAD_sensor_data_t payload_sensor_data;
 
 /* USER CODE END PTD */
 
@@ -75,8 +79,8 @@ UART_HandleTypeDef huart2;
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
 
-
-osThreadId get_payload_statistics_task_handle;
+osThreadId get_payload_sensor_data_handle // TODO: CONTINUE
+osThreadId get_payload_rtos_memory_task_handle;
 
 /* USER CODE END PV */
 
@@ -98,13 +102,21 @@ void StartDefaultTask(void const * argument);
 /**
  * @brief Task to collect payload statistics
  */
-void get_payload_statistics_task(void const* argument);
+void get_payload_rtos_memory_task(void const* argument);
+
+/**
+ * @brief get the payload board sensor data
+ */
+void get_payload_sensor_data_task(void const* argument);
 
 /**
  * @brief Get the core temperature for IC
  */
 float get_core_temperature(void);
 
+/**
+ * @brief custom print function
+ */
 void myprintf(const char* fmt, ...);
 
 /* USER CODE END PFP */
@@ -278,6 +290,9 @@ int main(void)
   osThreadDef(get_payload_statistics_task_name, get_payload_statistics_task, osPriorityNormal, 0, 1024);
   get_payload_statistics_task_handle = osThreadCreate(osThread(get_payload_statistics_task_name), NULL);
 
+  osThreadId(get_sensor_data_name, get_payload_sensor_data_task, osPriorityLow, 0, 1024);
+  get_payload_sensor_data_handle = osThreadCreate(osThread(get_sensor_data_name), NULL);
+
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */
@@ -379,7 +394,7 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T3_TRGO;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.NbrOfConversion = 2;
-  hadc1.Init.DMAContinuousRequests = ENABLE;
+  hadc1.Init.DMAContinuousRequests = DISABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
@@ -588,7 +603,7 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 0;
+  htim3.Init.Prescaler = 11;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 59999;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -754,7 +769,7 @@ float get_core_temperature(void){
 /**
  * @brief Task to collect pay-load statistics
  */
-void get_payload_statistics_task(void const* argument) {
+void get_payload_sensor_data_task(void const* argument) {
 
 	for(;;) {
 
@@ -770,8 +785,19 @@ void get_payload_statistics_task(void const* argument) {
 		HAL_UART_Transmit(&huart2, (uint8_t*)m, strlen(m), 100);
 		update_event = 0;
 
-		//HAL_UART_Transmit(&huart2, (uint8_t*)"STATS TASK", strlen("STATS TASK"), 100);
+		vTaskDelay(pdMS_TO_TICKS(5));
+	}
+}
 
+void get_payload_rtos_memory_task(void const* argument) {
+
+	for(;;) {
+
+		/* get free heap */
+
+		/* get SD card free memory */
+
+		/* get board temperature */
 		vTaskDelay(pdMS_TO_TICKS(5));
 	}
 }
