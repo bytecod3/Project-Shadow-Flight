@@ -80,8 +80,9 @@ UART_HandleTypeDef huart2;
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
 
-TaskHandle_t get_payload_rtos_memory_task_handle; // TODO: CONTINUE
+TaskHandle_t get_payload_rtos_memory_task_handle;
 TaskHandle_t get_payload_sensor_data_task_handle;
+TaskHandle_t message_dispatcher_task_handle;
 
 /* USER CODE END PV */
 
@@ -116,14 +117,23 @@ void get_payload_sensor_data_task(void const* argument);
 float get_core_temperature(void);
 
 /**
+ * @brief task to print messages from the tasks
+ */
+void message_dispatcher_task(void const* argument);
+
+/**
  * @brief custom print function
  */
 void myprintf(const char* fmt, ...);
 
+/* define Mutex handle  */
+SemaphoreHandle_t message_queue_mutex;
+#define MESSAGE_QUEUE_MUTEX_WAIT_TIME   (1000)
 
 /* define Queue handles */
 QueueHandle_t payload_memory_stats_queue_handle;
 QueueHandle_t payload_sensor_data_queue_handle;
+QueueHandle_t message_dispatcher_queue_handle;
 
 /* USER CODE END PFP */
 
@@ -270,7 +280,14 @@ int main(void)
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
+
+  message_queue_mutex = xSemaphoreCreateMutex();
+  if(message_queue_mutex == NULL) {
+	  // print failed to create mutex message
+  } else {
+	  // print mutex created OKay message
+  }
+
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -284,6 +301,7 @@ int main(void)
   /* USER CODE BEGIN RTOS_QUEUES */
   payload_memory_stats_queue_handle = xQueueCreate(PAYLOAD_MEMORY_QUEUE_LENGTH, sizeof(PAYLOAD_rtos_memory_stats_type_t));
   payload_sensor_data_queue_handle = xQueueCreate(PAYLOAD_SENSOR_DATA_QUEUE_LENGTH, sizeof(PAYLOAD_sensor_data_t));
+  message_dispatcher_queue_handle = xQueueCreate(10, sizeof(char) * 100); // hold 100 characters
 
   /* check for successful queue creation */
   if(payload_memory_stats_queue_handle != NULL) {
@@ -318,6 +336,9 @@ int main(void)
 
   osThreadDef(get_payload_sensor_data_name, get_payload_sensor_data_task, osPriorityLow, 0, 1024);
   get_payload_sensor_data_task_handle = osThreadCreate(osThread(get_payload_sensor_data_name), NULL);
+
+  osThreadDef(message_dispatcher_task_name, message_dispatcher_task, osPriorityNormal, 0, 2000);
+  message_dispatcher_task_handle = osThreadCreate(osThread(message_dispatcher_task_name), NULL);
 
   /* USER CODE END RTOS_THREADS */
 
@@ -798,11 +819,32 @@ float get_core_temperature(void){
 void get_payload_sensor_data_task(void const* argument) {
 
 	PAYLOAD_sensor_data_t sensor_data = {0};
+	char* stat = "";
 
 	for(;;) {
 
 		/* get board temperature */
 		float core_temp = get_core_temperature();
+
+		sensor_data.core_temperature = core_temp;
+
+		BaseType_t s_status = xQueueSend(
+				payload_sensor_data_queue_handle,
+				&core_temp,
+				0
+				);
+
+		if(s_status != pdPASS) {
+			stat = "[-] Could not send data to payload_sensor_data_queue_handle"; // todo make queue name dynamic
+		} else {
+			stat = "[+] Data sent to payload_sensor_data_queue_handle";
+		}
+
+		xSemaphoreTake(message_queue_mutex, MESSAGE_QUEUE_MUTEX_WAIT_TIME);
+		{
+			xQueueSend(message_dispatcher_queue_handle, &stat, 0);
+		}
+		xSemaphoreGive(message_queue_mutex);
 
 		char m[30];
 		sprintf(m, "Core temp: %.2f\r\n", core_temp);
@@ -819,6 +861,7 @@ void get_payload_sensor_data_task(void const* argument) {
 void get_payload_rtos_memory_task(void const* argument) {
 
 	PAYLOAD_rtos_memory_stats_type_t mem_stats = {0};
+	char* stat = "";
 
 	TickType_t x_last_wake_time;
 	x_last_wake_time = xTaskGetTickCount();
@@ -836,10 +879,40 @@ void get_payload_rtos_memory_task(void const* argument) {
 				&mem_stats, 0);
 
 		if(s_status != pdPASS) {
-			// send to messager
+			stat = "[-]Could not send message to payload_memory_stats_queue_handle";
+		} else {
+			stat = "[+]message sent to payload_memory_stats_queue_handle";
 		}
 
+		xSemaphoreTake(message_queue_mutex, MESSAGE_QUEUE_MUTEX_WAIT_TIME);
+		{
+			xQueueSend(message_dispatcher_queue_handle, &stat, 0);
+		}
+
+		xSemaphoreGive(message_queue_mutex);
+
 		vTaskDelayUntil(&x_last_wake_time, pdMS_TO_TICKS(MEMORY_CHECK_FREQ));
+	}
+}
+
+
+/**
+ * @brief Print messages from a shared Queue
+ */
+void message_dispatcher_task(void const* argument) {
+
+	char recv_buffer[100];
+
+	memset(recv_buffer, 0, sizeof(recv_buffer));
+
+	for(;;){
+		xSemaphoreTake(message_queue_mutex, MESSAGE_QUEUE_MUTEX_WAIT_TIME);
+		{
+			xQueueReceive(message_dispatcher_queue_handle, &recv_buffer, 0);
+			myprintf(recv_buffer);
+		}
+		xSemaphoreGive(message_queue_mutex);
+
 	}
 }
 
