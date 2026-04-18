@@ -1,20 +1,24 @@
 #ifndef DAT_TYPES_H
 #define DATA_TYPES_H
 
-#include "data_types.h"
 #include <stdint.h>
 #include <stdio.h>
 
-/* store the memory type data */
-typedef struct {
-	size_t free_heap;
-	size_t min_ever_free_heap;
-	size_t total_heap;
+#define PAYLOAD_MEMORY_QUEUE_LENGTH 		(5)
+#define PAYLOAD_SENSOR_DATA_QUEUE_LENGTH	(5)
+#define KILOBYTE_SIZE (1024.0F)		/* divisor for converting bytes to Kilobytes  */
+#define MEMORY_CHECK_FREQ (5000)  	/* after how long should we sample the memory stats */
+
+/* store the memory data in KB */
+typedef struct payload_stats{
+	float free_heap;
+	float min_ever_free_heap;
+	float total_heap;
 
 } PAYLOAD_rtos_memory_stats_type_t;
 
 /* store the board sensor data */
-typedef struct {
+typedef struct sensor_data {
 	float core_temperature;
 	float ntc_onboard_temperature;
 } PAYLOAD_sensor_data_t ;

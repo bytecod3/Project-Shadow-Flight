@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>    // for va_list and va_arg functions
+#include "task.h"
 #include "utils.h"
 #include "data_types.h"
 
@@ -79,8 +80,8 @@ UART_HandleTypeDef huart2;
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
 
-osThreadId get_payload_sensor_data_handle // TODO: CONTINUE
-osThreadId get_payload_rtos_memory_task_handle;
+TaskHandle_t get_payload_rtos_memory_task_handle; // TODO: CONTINUE
+TaskHandle_t get_payload_sensor_data_task_handle;
 
 /* USER CODE END PV */
 
@@ -118,6 +119,11 @@ float get_core_temperature(void);
  * @brief custom print function
  */
 void myprintf(const char* fmt, ...);
+
+
+/* define Queue handles */
+QueueHandle_t payload_memory_stats_queue_handle;
+QueueHandle_t payload_sensor_data_queue_handle;
 
 /* USER CODE END PFP */
 
@@ -276,7 +282,27 @@ int main(void)
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
+  payload_memory_stats_queue_handle = xQueueCreate(PAYLOAD_MEMORY_QUEUE_LENGTH, sizeof(PAYLOAD_rtos_memory_stats_type_t));
+  payload_sensor_data_queue_handle = xQueueCreate(PAYLOAD_SENSOR_DATA_QUEUE_LENGTH, sizeof(PAYLOAD_sensor_data_t));
+
+  /* check for successful queue creation */
+  if(payload_memory_stats_queue_handle != NULL) {
+	  // queue create OK
+	  // update system statistics byte
+	  // send to messager
+  } else {
+	  // queue create failed
+	  // send to message
+  }
+
+  if(payload_sensor_data_queue_handle != NULL) {
+	  // queue create ok
+	  // send to messager
+  } else {
+	  // queue create failed
+	  // send to messager
+  }
+
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -287,11 +313,11 @@ int main(void)
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
 
-  osThreadDef(get_payload_statistics_task_name, get_payload_statistics_task, osPriorityNormal, 0, 1024);
-  get_payload_statistics_task_handle = osThreadCreate(osThread(get_payload_statistics_task_name), NULL);
+  osThreadDef(get_payload_statistics_task_name, get_payload_rtos_memory_task, osPriorityNormal, 0, 1024);
+  get_payload_rtos_memory_task_handle = osThreadCreate(osThread(get_payload_statistics_task_name), NULL);
 
-  osThreadId(get_sensor_data_name, get_payload_sensor_data_task, osPriorityLow, 0, 1024);
-  get_payload_sensor_data_handle = osThreadCreate(osThread(get_sensor_data_name), NULL);
+  osThreadDef(get_payload_sensor_data_name, get_payload_sensor_data_task, osPriorityLow, 0, 1024);
+  get_payload_sensor_data_task_handle = osThreadCreate(osThread(get_payload_sensor_data_name), NULL);
 
   /* USER CODE END RTOS_THREADS */
 
@@ -767,15 +793,13 @@ float get_core_temperature(void){
 }
 
 /**
- * @brief Task to collect pay-load statistics
+ * @brief Task to collect pay-load sensor data
  */
 void get_payload_sensor_data_task(void const* argument) {
 
+	PAYLOAD_sensor_data_t sensor_data = {0};
+
 	for(;;) {
-
-		/* get free heap */
-
-		/* get SD card free memory */
 
 		/* get board temperature */
 		float core_temp = get_core_temperature();
@@ -789,16 +813,33 @@ void get_payload_sensor_data_task(void const* argument) {
 	}
 }
 
+/**
+ * @brief Task to collect payload memory statistics
+ */
 void get_payload_rtos_memory_task(void const* argument) {
 
+	PAYLOAD_rtos_memory_stats_type_t mem_stats = {0};
+
+	TickType_t x_last_wake_time;
+	x_last_wake_time = xTaskGetTickCount();
+
 	for(;;) {
+		float fr_hp_kb = (float)(xPortGetFreeHeapSize()) / KILOBYTE_SIZE;   /* return the number of free bytes in the heap mem */
+		float min_ever_kb  = (float)(xPortGetMinimumEverFreeHeapSize()) / KILOBYTE_SIZE;				/* return number of unallocated heap mem */
 
-		/* get free heap */
+		mem_stats.free_heap = fr_hp_kb;
+		mem_stats.min_ever_free_heap = min_ever_kb;
 
-		/* get SD card free memory */
+		/* update queue */
+		BaseType_t s_status = xQueueSend(
+				payload_memory_stats_queue_handle,
+				&mem_stats, 0);
 
-		/* get board temperature */
-		vTaskDelay(pdMS_TO_TICKS(5));
+		if(s_status != pdPASS) {
+			// send to messager
+		}
+
+		vTaskDelayUntil(&x_last_wake_time, pdMS_TO_TICKS(MEMORY_CHECK_FREQ));
 	}
 }
 
