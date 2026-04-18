@@ -194,7 +194,21 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
-  myprintf("\r\n SD card test\r\n");
+  char board_id_msg[200];
+
+  char* version = "Version: v1.0\r\n";
+  char* dev = "Developer: Edwin Mwiti\r\n";
+  char* subsys = "Subsystem: PAYLOAD\r\n";
+  char* proj = "Project Shadow Flight\r\n";
+
+  sprintf(board_id_msg,
+		  "===================================\r\n%s%s%s%s===================================\r\n\n",
+		  proj,
+		  subsys,
+		  dev,
+		  version);
+
+  myprintf(board_id_msg);
   HAL_Delay(1000);			// let the SD card settle
 
   // some variables for FatFS
@@ -282,10 +296,10 @@ int main(void)
   /* USER CODE BEGIN RTOS_MUTEX */
 
   message_queue_mutex = xSemaphoreCreateMutex();
-  if(message_queue_mutex == NULL) {
-	  // print failed to create mutex message
+  if(message_queue_mutex != NULL) {
+	  myprintf("[+] Message Queue mutex created ok\r\n");
   } else {
-	  // print mutex created OKay message
+	  myprintf("[-] Could not create message queue mutex\r\n");
   }
 
   /* USER CODE END RTOS_MUTEX */
@@ -305,21 +319,35 @@ int main(void)
 
   /* check for successful queue creation */
   if(payload_memory_stats_queue_handle != NULL) {
-	  // queue create OK
+	  // queue create OK // TODO log to file
+	  myprintf("[+] payload_memory_stats_queue_handle create OK\r\n");
 	  // update system statistics byte
 	  // send to messager
   } else {
 	  // queue create failed
+	  myprintf("[+] payload_memory_stats_queue_handle failed to create\r\n");
 	  // send to message
   }
 
   if(payload_sensor_data_queue_handle != NULL) {
 	  // queue create ok
+	  myprintf("[+] payload_sensor_data_queue_handle created OK\r\n");
 	  // send to messager
   } else {
 	  // queue create failed
+	  myprintf("[+] payload_sensor_data_queue_handle failed to create\r\n");
 	  // send to messager
   }
+
+  if(message_dispatcher_queue_handle != NULL) {
+  	  // queue create ok
+  	  myprintf("[+] message_dispatcher_queue_handle created OK\r\n");
+  	  // send to messager
+    } else {
+  	  // queue create failed
+  	  myprintf("[+] message_dispatcher_queue_handle failed to create\r\n");
+  	  // send to messager
+    }
 
   /* USER CODE END RTOS_QUEUES */
 
@@ -846,9 +874,9 @@ void get_payload_sensor_data_task(void const* argument) {
 		}
 		xSemaphoreGive(message_queue_mutex);
 
-		char m[30];
-		sprintf(m, "Core temp: %.2f\r\n", core_temp);
-		HAL_UART_Transmit(&huart2, (uint8_t*)m, strlen(m), 100);
+//		char m[30];
+//		sprintf(m, "Core temp: %.2f\r\n", core_temp);
+//		HAL_UART_Transmit(&huart2, (uint8_t*)m, strlen(m), 100);
 		update_event = 0;
 
 		vTaskDelay(pdMS_TO_TICKS(5));
@@ -862,6 +890,7 @@ void get_payload_rtos_memory_task(void const* argument) {
 
 	PAYLOAD_rtos_memory_stats_type_t mem_stats = {0};
 	char* stat = "";
+	char buff[100];
 
 	TickType_t x_last_wake_time;
 	x_last_wake_time = xTaskGetTickCount();
@@ -883,6 +912,8 @@ void get_payload_rtos_memory_task(void const* argument) {
 		} else {
 			stat = "[+]message sent to payload_memory_stats_queue_handle";
 		}
+
+		snprintf(buff, sizeof(buff), "%s", stat);
 
 		xSemaphoreTake(message_queue_mutex, MESSAGE_QUEUE_MUTEX_WAIT_TIME);
 		{
@@ -908,12 +939,14 @@ void message_dispatcher_task(void const* argument) {
 	for(;;){
 		xSemaphoreTake(message_queue_mutex, MESSAGE_QUEUE_MUTEX_WAIT_TIME);
 		{
-			xQueueReceive(message_dispatcher_queue_handle, &recv_buffer, 0);
+			xQueueReceive(message_dispatcher_queue_handle, recv_buffer, 0);
 			myprintf(recv_buffer);
 		}
 		xSemaphoreGive(message_queue_mutex);
 
 	}
+
+	vTaskDelay(pdMS_TO_TICKS(10));
 }
 
 /* USER CODE END 4 */
