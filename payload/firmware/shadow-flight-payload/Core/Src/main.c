@@ -83,6 +83,7 @@ osThreadId defaultTaskHandle;
 TaskHandle_t get_payload_rtos_memory_task_handle;
 TaskHandle_t get_payload_sensor_data_task_handle;
 TaskHandle_t message_dispatcher_task_handle;
+TaskHandle_t payload_data_consumer_task_handle;
 
 /* USER CODE END PV */
 
@@ -117,6 +118,11 @@ void get_payload_sensor_data_task(void const* argument);
 float get_core_temperature(void);
 
 /**
+ * @brief receive the core temperature data
+ */
+void payload_data_consumer(void const* argument);
+
+/**
  * @brief task to print messages from the tasks
  */
 void message_dispatcher_task(void const* argument);
@@ -126,31 +132,120 @@ void message_dispatcher_task(void const* argument);
  */
 void myprintf(const char* fmt, ...);
 
+/*
+ * @brief Function to initialize SD card
+ */
+void setup_SD_card(void);
+
 /* define Mutex handle  */
-SemaphoreHandle_t message_queue_mutex;
-#define MESSAGE_QUEUE_MUTEX_WAIT_TIME   (1000)
+SemaphoreHandle_t printf_mutex;
+#define PRINTF_MUTEX_WAIT_TIME   (1000)
 
 /* define Queue handles */
 QueueHandle_t payload_memory_stats_queue_handle;
 QueueHandle_t payload_sensor_data_queue_handle;
 QueueHandle_t message_dispatcher_queue_handle;
+QueueHandle_t combined_payload_data_queue_handle;
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 void myprintf(const char* fmt, ...) {
-	static char buffer[256];
-	va_list args;
-	va_start(args, fmt);
-	vsnprintf(buffer, sizeof(buffer), fmt, args);
-	va_end(args);
+	xSemaphoreTake(printf_mutex, portMAX_DELAY);
+	{
+		static char buffer[350];
+		va_list args;
+		va_start(args, fmt);
+		vsnprintf(buffer, sizeof(buffer), fmt, args);
+		va_end(args);
 
-	int len = strlen(buffer);
-	HAL_UART_Transmit(&huart2, (uint8_t*)buffer, len, -1);
+		int len = strlen(buffer);
+		HAL_UART_Transmit(&huart2, (uint8_t*)buffer, len, 200); // TODO define delay in header
+
+	}
+	xSemaphoreGive(printf_mutex);
+
 }
 
 const TCHAR* image_dump_file = "psf_img_dump.txt";    /* image dump file */
+
+void setup_SD_card(void) {
+	// some variables for FatFS
+	  FATFS FatFs;		// fatfs handle
+	  FIL fil;			// file handle
+	  FRESULT fres;		// result after operations
+
+
+	  // open the file system
+	  fres = f_mount(&FatFs, "", 1);		// 1= mount now
+
+	  int retry_count = 0;
+	  if(fres != FR_OK) {
+		  myprintf("f_mount error (%i)\r\n", fres);
+		  while(retry_count < 50){
+			fres = f_mount(&FatFs, "", 1);
+			if(fres == FR_OK) break;
+
+			myprintf("Retrying to mount SD...\r\n");
+			retry_count++;
+		  }
+	  }
+
+	  // get some SD card statistics
+	  DWORD free_clusters, free_sectors, total_sectors;
+	  FATFS* get_free_fs;
+
+	  fres = f_getfree("", &free_clusters, &get_free_fs);
+	  if(fres != FR_OK) {
+		  myprintf("f_get free error (%i)\r\n", fres); // TODO log this
+		  //while(1);
+	  }
+
+	  // formula from CHANS documentation
+	  total_sectors = (get_free_fs->n_fatent - 2) * get_free_fs->csize;
+	  free_sectors = free_clusters * get_free_fs->csize;
+
+	  myprintf(
+			  "SD Card stats: \r\n%lu KiB total drive space. \r\n%lu KiB available. \r\n",
+			  total_sectors / 2,
+			  free_sectors / 2
+			  );
+
+	  char mem[200] = {0};
+	  struct memory_stats mem_stats = get_sd_size(total_sectors / 2, free_sectors / 2);
+	  sprintf(mem, "Drive space: Total: %lu MB, Free: %lu MB \r\n", mem_stats.ttl_space_MB, mem_stats.free_space_MB);
+
+
+	  // try to open file on SD card
+	  fres = f_open(&fil, image_dump_file, FA_READ);
+	  int f_open_retry_count = 0;
+	  if(fres != FR_OK) {
+		  myprintf("f_open error (%i)\r\n", fres);
+
+		  while(f_open_retry_count < 50) {
+			fres = f_open(&fil, image_dump_file, FA_READ);
+			  if (fres != FR_OK) break;
+			  myprintf("Retrying to open image dump file...\r\n");
+			  f_open_retry_count++;
+
+		  }
+
+	  }
+
+	  // read 30 bytes from file on SD card
+	  BYTE readBuf[30];
+
+	  TCHAR* rres = f_gets((TCHAR*) readBuf, 30, &fil);
+	  if(rres != 0) {
+		  myprintf("Read string from file, CONTENTS: %s\r\b\n", readBuf);
+	  } else {
+		  myprintf("f_gets error (%i)\r\n", fres);
+	  }
+
+	  // close file
+	  f_close(&fil);
+}
 
 /* USER CODE END 0 */
 
@@ -208,85 +303,11 @@ int main(void)
 		  dev,
 		  version);
 
-  myprintf(board_id_msg);
-  HAL_Delay(1000);			// let the SD card settle
-
-  // some variables for FatFS
-  FATFS FatFs;		// fatfs handle
-  FIL fil;			// file handle
-  FRESULT fres;		// result after operations
+  HAL_UART_Transmit(&huart2, (uint8_t*)board_id_msg, strlen(board_id_msg), 100);		/* scheduler has not started yet here */
+  HAL_Delay(1000);
 
 
-  // open the file system
-  fres = f_mount(&FatFs, "", 1);		// 1= mount now
-
-  int retry_count = 0;
-  if(fres != FR_OK) {
-	  myprintf("f_mount error (%i)\r\n", fres);
-	  while(retry_count < 50){
-		fres = f_mount(&FatFs, "", 1);
-		if(fres == FR_OK) break;
-
-		myprintf("Retrying to mount SD...\r\n");
-		retry_count++;
-	  }
-  }
-
-  // get some SD card statistics
-  DWORD free_clusters, free_sectors, total_sectors;
-  FATFS* get_free_fs;
-
-  fres = f_getfree("", &free_clusters, &get_free_fs);
-  if(fres != FR_OK) {
-	  myprintf("f_get free error (%i)\r\n", fres); // TODO log this
-	  //while(1);
-  }
-
-  // formula from CHANS documentation
-  total_sectors = (get_free_fs->n_fatent - 2) * get_free_fs->csize;
-  free_sectors = free_clusters * get_free_fs->csize;
-
-  myprintf(
-		  "SD Card stats: \r\n%lu KiB total drive space. \r\n%lu KiB available. \r\n",
-		  total_sectors / 2,
-		  free_sectors / 2
-		  );
-
-  char mem[200] = {0};
-  struct memory_stats mem_stats = get_sd_size(total_sectors / 2, free_sectors / 2);
-  sprintf(mem, "Drive space: Total: %lu MB, Free: %lu MB \r\n", mem_stats.ttl_space_MB, mem_stats.free_space_MB);
-
-
-  // try to open file on SD card
-  fres = f_open(&fil, image_dump_file, FA_READ);
-  int f_open_retry_count = 0;
-  if(fres != FR_OK) {
-	  myprintf("f_open error (%i)\r\n", fres);
-
-	  while(f_open_retry_count < 50) {
-		fres = f_open(&fil, image_dump_file, FA_READ);
-		  if (fres != FR_OK) break;
-		  myprintf("Retrying to open image dump file...\r\n");
-		  f_open_retry_count++;
-
-	  }
-
-  }
-
-  // read 30 bytes from file on SD card
-  BYTE readBuf[30];
-
-  TCHAR* rres = f_gets((TCHAR*) readBuf, 30, &fil);
-  if(rres != 0) {
-	  myprintf("Read string from file, CONTENTS: %s\r\b\n", readBuf);
-  } else {
-	  myprintf("f_gets error (%i)\r\n", fres);
-  }
-
-  // close file
-  f_close(&fil);
-
-  /* core temperature measurement */
+  /* core temperature measurement ADC start settings */
   HAL_TIM_Base_Start(&htim3);						/* start timer 3 */
   //HAL_ADCEx_Calibration_Start(&hadc1);				/* start ADC calibration  */
   HAL_ADC_Start_DMA(&hadc1, (uint32_t*)AD_RES, 2); /* start ADC conversion */
@@ -295,12 +316,22 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_MUTEX */
 
-  message_queue_mutex = xSemaphoreCreateMutex();
-  if(message_queue_mutex != NULL) {
-	  myprintf("[+] Message Queue mutex created ok\r\n");
+  printf_mutex = xSemaphoreCreateMutex();
+  if(printf_mutex != NULL) {
+	  HAL_UART_Transmit(&huart2,
+			  (uint8_t*)"[+] Message Queue mutex created ok\r\n",
+			  strlen("[+] Message Queue mutex created ok\r\n"),
+			  100
+			  );
   } else {
-	  myprintf("[-] Could not create message queue mutex\r\n");
+	  HAL_UART_Transmit(&huart2,
+		  (uint8_t*)"[-] Could not create message queue mutex\r\n",
+		  strlen("[-] Could not create message queue mutex\r\n"),
+		  100
+		  );
   }
+
+  setup_SD_card();
 
   /* USER CODE END RTOS_MUTEX */
 
@@ -316,6 +347,7 @@ int main(void)
   payload_memory_stats_queue_handle = xQueueCreate(PAYLOAD_MEMORY_QUEUE_LENGTH, sizeof(PAYLOAD_rtos_memory_stats_type_t));
   payload_sensor_data_queue_handle = xQueueCreate(PAYLOAD_SENSOR_DATA_QUEUE_LENGTH, sizeof(PAYLOAD_sensor_data_t));
   message_dispatcher_queue_handle = xQueueCreate(10, sizeof(char) * 100); // hold 100 characters
+  combined_payload_data_queue_handle = xQueueCreate(10, sizeof(PAYLOAD_combined_data_t));
 
   /* check for successful queue creation */
   if(payload_memory_stats_queue_handle != NULL) {
@@ -359,14 +391,23 @@ int main(void)
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
 
-  osThreadDef(get_payload_statistics_task_name, get_payload_rtos_memory_task, osPriorityNormal, 0, 1024);
+  osThreadDef(get_payload_statistics_task_name, get_payload_rtos_memory_task, osPriorityNormal, 0, 500);
   get_payload_rtos_memory_task_handle = osThreadCreate(osThread(get_payload_statistics_task_name), NULL);
 
-  osThreadDef(get_payload_sensor_data_name, get_payload_sensor_data_task, osPriorityLow, 0, 1024);
+  osThreadDef(get_payload_sensor_data_name, get_payload_sensor_data_task, osPriorityNormal, 0, 500);
   get_payload_sensor_data_task_handle = osThreadCreate(osThread(get_payload_sensor_data_name), NULL);
 
-  osThreadDef(message_dispatcher_task_name, message_dispatcher_task, osPriorityNormal, 0, 2000);
+  osThreadDef(message_dispatcher_task_name, message_dispatcher_task, osPriorityBelowNormal, 0, 500);
   message_dispatcher_task_handle = osThreadCreate(osThread(message_dispatcher_task_name), NULL);
+
+  osThreadDef(payload_data_consumer_name, payload_data_consumer, osPriorityAboveNormal, 0, 500);
+  payload_data_consumer_task_handle = osThreadCreate(osThread(payload_data_consumer_name), NULL);
+
+  if(payload_data_consumer_task_handle == NULL) {
+	  myprintf("[-] payload_data_consumer task creation failed \r\n");
+  } else {
+	  myprintf("[-] payload_data_consumer task creation OK \r\n");
+  }
 
   /* USER CODE END RTOS_THREADS */
 
@@ -382,10 +423,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_GPIO_WritePin(D2_LED_GPIO_Port, D2_LED_Pin, GPIO_PIN_RESET);
-	  HAL_Delay(1000);
-	  HAL_GPIO_WritePin(D2_LED_GPIO_Port, D2_LED_Pin, GPIO_PIN_SET);
-	  HAL_Delay(1000);
 
   }
   /* USER CODE END 3 */
@@ -832,12 +869,15 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
  * @brief Get the core temperature for IC
  */
 float get_core_temperature(void){
+
 	if(update_event) {
 		v_ref = (float) ((V_REF_INT * 4095) / AD_RES[0]);
 		v_sense = (float) (AD_RES[1] * v_ref) / 4095.0;
 		core_temperature = (((V_AT_25C - v_sense) * 1000.0) / AVG_SLOPE) + 25.0;
 		return core_temperature;
 	}
+
+	return core_temperature;
 
 }
 
@@ -848,38 +888,32 @@ void get_payload_sensor_data_task(void const* argument) {
 
 	PAYLOAD_sensor_data_t sensor_data = {0};
 	char* stat = "";
+	char buff[100];
 
 	for(;;) {
 
 		/* get board temperature */
 		float core_temp = get_core_temperature();
-
 		sensor_data.core_temperature = core_temp;
 
 		BaseType_t s_status = xQueueSend(
 				payload_sensor_data_queue_handle,
-				&core_temp,
-				0
+				&sensor_data,
+				pdMS_TO_TICKS(100)
 				);
 
 		if(s_status != pdPASS) {
-			stat = "[-] Could not send data to payload_sensor_data_queue_handle"; // todo make queue name dynamic
+			stat = "[-] Could not send data to payload_sensor_data_queue_handle\r\n"; // todo make queue name dynamic
 		} else {
-			stat = "[+] Data sent to payload_sensor_data_queue_handle";
+			stat = "[+] Data sent to payload_sensor_data_queue_handle\r\n";
 		}
 
-		xSemaphoreTake(message_queue_mutex, MESSAGE_QUEUE_MUTEX_WAIT_TIME);
-		{
-			xQueueSend(message_dispatcher_queue_handle, &stat, 0);
-		}
-		xSemaphoreGive(message_queue_mutex);
 
-//		char m[30];
-//		sprintf(m, "Core temp: %.2f\r\n", core_temp);
-//		HAL_UART_Transmit(&huart2, (uint8_t*)m, strlen(m), 100);
+		snprintf(buff, sizeof(buff), "%s", stat);
+		xQueueSend(message_dispatcher_queue_handle, buff, pdMS_TO_TICKS(10));
 		update_event = 0;
 
-		vTaskDelay(pdMS_TO_TICKS(5));
+		vTaskDelay(pdMS_TO_TICKS(100));
 	}
 }
 
@@ -905,24 +939,83 @@ void get_payload_rtos_memory_task(void const* argument) {
 		/* update queue */
 		BaseType_t s_status = xQueueSend(
 				payload_memory_stats_queue_handle,
-				&mem_stats, 0);
+				&mem_stats, pdMS_TO_TICKS(10));
 
 		if(s_status != pdPASS) {
-			stat = "[-]Could not send message to payload_memory_stats_queue_handle";
+			stat = "[-]Could not send message to payload_memory_stats_queue_handle\r\n";
 		} else {
-			stat = "[+]message sent to payload_memory_stats_queue_handle";
+			stat = "[+]message sent to payload_memory_stats_queue_handle\r\n";
 		}
 
 		snprintf(buff, sizeof(buff), "%s", stat);
 
-		xSemaphoreTake(message_queue_mutex, MESSAGE_QUEUE_MUTEX_WAIT_TIME);
-		{
-			xQueueSend(message_dispatcher_queue_handle, &stat, 0);
+		xQueueSend(message_dispatcher_queue_handle, buff, pdMS_TO_TICKS(10));
+		vTaskDelayUntil(&x_last_wake_time, pdMS_TO_TICKS(MEMORY_CHECK_FREQ));
+	}
+}
+
+/**
+ * @brief receive the core temperature data
+ */
+void payload_data_consumer(void const* argument){
+	PAYLOAD_combined_data_t payload_comb_data;
+	PAYLOAD_rtos_memory_stats_type_t mem_data;
+	PAYLOAD_sensor_data_t sens_data;
+
+	char* stat_a = "";
+	char* stat_b = "";
+
+	char buff[100];
+	char recv_data_buff[300];
+
+	for(;;) {
+
+		myprintf("In payload consumer task");
+
+		/* receive sensor data */
+		if(xQueueReceive(payload_sensor_data_queue_handle, &sens_data, 0) != pdPASS) {
+			stat_b = "Failed to receive from payload_sensor_data_queue_handle\r\n";
+		} else {
+			stat_b = "Received data from payload_sensor_data_queue_handle\r\n";
 		}
 
-		xSemaphoreGive(message_queue_mutex);
+		snprintf(buff, sizeof(buff), "%s", stat_b);
+		xQueueSend(message_dispatcher_queue_handle, buff, pdMS_TO_TICKS(10));
 
-		vTaskDelayUntil(&x_last_wake_time, pdMS_TO_TICKS(MEMORY_CHECK_FREQ));
+		/* receive memory data */
+		if(xQueueReceive(payload_memory_stats_queue_handle, &mem_data, 0) != pdPASS) {
+			stat_a = "Failed to receive from memory stats queue\r\n\r\n";
+		} else {
+			stat_a = "Received data from memory stats queue\r\n";
+		}
+
+		snprintf(buff, sizeof(buff), "%s", stat_a);
+		xQueueSend(message_dispatcher_queue_handle ,buff, pdMS_TO_TICKS(10));
+
+		memset(buff, 0, sizeof(buff) );
+
+		payload_comb_data.mem_data.free_heap = mem_data.free_heap;
+		payload_comb_data.mem_data.min_ever_free_heap = mem_data.min_ever_free_heap;
+		payload_comb_data.mem_data.total_heap = mem_data.total_heap;
+
+		payload_comb_data.sensor_data.core_temperature = sens_data.core_temperature;
+		payload_comb_data.sensor_data.ntc_onboard_temperature = sens_data.ntc_onboard_temperature;
+
+		/* display data */
+		snprintf(recv_data_buff,
+				sizeof(recv_data_buff),
+				"free heap: %.2f\r\nmin_ever_free_hp: %.2f\r\n,total_heap:%.2f\r\ncore temperature: %.2f\r\nntc_onboard_temperature:%.2f\r\n\r\n",
+				payload_comb_data.mem_data.free_heap,
+				payload_comb_data.mem_data.min_ever_free_heap,
+				payload_comb_data.mem_data.total_heap,
+				payload_comb_data.sensor_data.core_temperature,
+				payload_comb_data.sensor_data.ntc_onboard_temperature
+				);
+
+		//HAL_UART_Transmit(&huart2, (uint8_t*)recv_data_buff, strlen(recv_data_buff), 100);
+		myprintf("%s", recv_data_buff);
+
+		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }
 
@@ -934,19 +1027,14 @@ void message_dispatcher_task(void const* argument) {
 
 	char recv_buffer[100];
 
-	memset(recv_buffer, 0, sizeof(recv_buffer));
-
 	for(;;){
-		xSemaphoreTake(message_queue_mutex, MESSAGE_QUEUE_MUTEX_WAIT_TIME);
-		{
-			xQueueReceive(message_dispatcher_queue_handle, recv_buffer, 0);
-			myprintf(recv_buffer);
+		if(xQueueReceive(message_dispatcher_queue_handle, recv_buffer, pdMS_TO_TICKS(100)) == pdPASS) {
+			myprintf("%s", recv_buffer);
 		}
-		xSemaphoreGive(message_queue_mutex);
 
+		vTaskDelay(pdMS_TO_TICKS(5));
 	}
 
-	vTaskDelay(pdMS_TO_TICKS(10));
 }
 
 /* USER CODE END 4 */
