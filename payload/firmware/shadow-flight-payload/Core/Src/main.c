@@ -43,6 +43,8 @@ PAYLOAD_sensor_data_t payload_sensor_data;
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+#define LOG_QUEUE_SENDS  (0)   /* whether to log success queue sends */
+
 /* internal board temperature defines */
 #define AVG_SLOPE   (2.5F)
 #define V_AT_25C	(0.76F)
@@ -901,12 +903,14 @@ void get_payload_sensor_data_task(void const* argument) {
 				&sensor_data,
 				pdMS_TO_TICKS(100)
 				);
+		#if LOG_QUEUE_SENDS
+			if(s_status != pdPASS) {
+				stat = "[-] Could not send data to payload_sensor_data_queue_handle\r\n"; // todo make queue name dynamic
+			} else {
+				stat = "[+] Data sent to payload_sensor_data_queue_handle\r\n";
 
-		if(s_status != pdPASS) {
-			stat = "[-] Could not send data to payload_sensor_data_queue_handle\r\n"; // todo make queue name dynamic
-		} else {
-			stat = "[+] Data sent to payload_sensor_data_queue_handle\r\n";
-		}
+			}
+		#endif
 
 
 		snprintf(buff, sizeof(buff), "%s", stat);
@@ -941,11 +945,13 @@ void get_payload_rtos_memory_task(void const* argument) {
 				payload_memory_stats_queue_handle,
 				&mem_stats, pdMS_TO_TICKS(10));
 
-		if(s_status != pdPASS) {
-			stat = "[-]Could not send message to payload_memory_stats_queue_handle\r\n";
-		} else {
-			stat = "[+]message sent to payload_memory_stats_queue_handle\r\n";
-		}
+		#if LOG_QUEUE_SENDS
+			if(s_status != pdPASS) {
+				stat = "[-]Could not send message to payload_memory_stats_queue_handle\r\n";
+			} else {
+				stat = "[+]message sent to payload_memory_stats_queue_handle\r\n";
+			}
+		#endif
 
 		snprintf(buff, sizeof(buff), "%s", stat);
 
@@ -968,26 +974,36 @@ void payload_data_consumer(void const* argument){
 	char buff[100];
 	char recv_data_buff[300];
 
+	TickType_t freq = 2000;
+	TickType_t now = xTaskGetTickCount();
+
+
 	for(;;) {
 
-		myprintf("In payload consumer task");
-
 		/* receive sensor data */
-		if(xQueueReceive(payload_sensor_data_queue_handle, &sens_data, 0) != pdPASS) {
-			stat_b = "Failed to receive from payload_sensor_data_queue_handle\r\n";
-		} else {
-			stat_b = "Received data from payload_sensor_data_queue_handle\r\n";
-		}
+		BaseType_t s = xQueueReceive(payload_sensor_data_queue_handle, &sens_data, 0);
+
+		#if LOG_QUEUE_SENDS
+			if(s != pdPASS) {
+				stat_b = "Failed to receive from payload_sensor_data_queue_handle\r\n";
+			} else {
+				stat_b = "Received data from payload_sensor_data_queue_handle\r\n";
+			}
+		#endif
 
 		snprintf(buff, sizeof(buff), "%s", stat_b);
 		xQueueSend(message_dispatcher_queue_handle, buff, pdMS_TO_TICKS(10));
 
 		/* receive memory data */
-		if(xQueueReceive(payload_memory_stats_queue_handle, &mem_data, 0) != pdPASS) {
-			stat_a = "Failed to receive from memory stats queue\r\n\r\n";
-		} else {
-			stat_a = "Received data from memory stats queue\r\n";
-		}
+		BaseType_t x = xQueueReceive(payload_memory_stats_queue_handle, &mem_data, 0);
+
+		#if LOG_QUEUE_SENDS
+			if(x != pdPASS) {
+				stat_a = "Failed to receive from memory stats queue\r\n\r\n";
+			} else {
+				stat_a = "Received data from memory stats queue\r\n";
+			}
+		#endif
 
 		snprintf(buff, sizeof(buff), "%s", stat_a);
 		xQueueSend(message_dispatcher_queue_handle ,buff, pdMS_TO_TICKS(10));
@@ -1004,7 +1020,7 @@ void payload_data_consumer(void const* argument){
 		/* display data */
 		snprintf(recv_data_buff,
 				sizeof(recv_data_buff),
-				"free heap: %.2f\r\nmin_ever_free_hp: %.2f\r\n,total_heap:%.2f\r\ncore temperature: %.2f\r\nntc_onboard_temperature:%.2f\r\n\r\n",
+				"free heap: %.2f KB\r\nmin_ever_free_hp: %.2f KB\r\nTotal_heap:%.2f KB\r\nCore temperature: %.2f\r\nNTC_onboard_temperature:%.2f\r\n\r\n",
 				payload_comb_data.mem_data.free_heap,
 				payload_comb_data.mem_data.min_ever_free_heap,
 				payload_comb_data.mem_data.total_heap,
@@ -1012,10 +1028,9 @@ void payload_data_consumer(void const* argument){
 				payload_comb_data.sensor_data.ntc_onboard_temperature
 				);
 
-		//HAL_UART_Transmit(&huart2, (uint8_t*)recv_data_buff, strlen(recv_data_buff), 100);
 		myprintf("%s", recv_data_buff);
 
-		vTaskDelay(pdMS_TO_TICKS(10));
+		vTaskDelayUntil(&now, freq);
 	}
 }
 
