@@ -150,7 +150,7 @@ extern "C" {
  * trace display will be affected. In that case, there will be warnings
  * (as User Events) from TzCtrl task, which monitors this.
  */
-#define TRC_CFG_ENTRY_SLOTS 50
+#define TRC_CFG_ENTRY_SLOTS 150
 
 /**
  * @def TRC_CFG_ENTRY_SYMBOL_MAX_LENGTH
@@ -355,6 +355,7 @@ extern "C" {
  * triggered will be in trcAssert.c.
  */
 #define TRC_CFG_USE_TRACE_ASSERT 0
+#define TRC_CFG_INCLUDE_TASK_NAME 1
 
 #ifdef __cplusplus
 }

@@ -100,19 +100,19 @@ static void MX_DCMI_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM3_Init(void);
-void StartDefaultTask(void const * argument);
+void StartDefaultTask(void* argument);
 
 /* USER CODE BEGIN PFP */
 
 /**
  * @brief Task to collect payload statistics
  */
-void get_payload_rtos_memory_task(void const* argument);
+void get_payload_rtos_memory_task(void* argument);
 
 /**
  * @brief get the payload board sensor data
  */
-void get_payload_sensor_data_task(void const* argument);
+void get_payload_sensor_data_task(void* argument);
 
 /**
  * @brief Get the core temperature for IC
@@ -122,12 +122,12 @@ float get_core_temperature(void);
 /**
  * @brief receive the core temperature data
  */
-void payload_data_consumer(void const* argument);
+void payload_data_consumer(void* argument);
 
 /**
  * @brief task to print messages from the tasks
  */
-void message_dispatcher_task(void const* argument);
+void message_dispatcher_task(void* argument);
 
 /**
  * @brief custom print function
@@ -276,6 +276,7 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
 
+
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -386,16 +387,20 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+//  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+//  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
 
-  BaseType_t memstats_create_status = xTaskCreate(get_payload_rtos_memory_task, "get_payload_rtos_memory_task", 500, NULL, 1, &get_payload_rtos_memory_task_handle);
-  BaseType_t payload_sensor_create_status = xTaskCreate(get_payload_sensor_data_task, "get_payload_sensor_data_task", 500, NULL, 1, &get_payload_sensor_data_task_handle);
-  BaseType_t message_dispatcher_create_status = xTaskCreate(message_dispatcher_task, "message_dispatcher_task", 500, NULL, 1, &message_dispatcher_task_handle);
-  BaseType_t payload_consumer_create_status = xTaskCreate(payload_data_consumer, "payload_data_consumer_task", 500, NULL, 1, &payload_data_consumer_task_handle);
+  /* start trace */
+  xTraceEnable(TRC_START);
+
+  BaseType_t default_task = xTaskCreate(StartDefaultTask, "default", 128, NULL, 1, &defaultTaskHandle);
+  BaseType_t memstats_create_status = xTaskCreate(get_payload_rtos_memory_task, "memory", 500, NULL, 1, &get_payload_rtos_memory_task_handle);
+  BaseType_t payload_sensor_create_status = xTaskCreate(get_payload_sensor_data_task, "sensor_data", 500, NULL, 1, &get_payload_sensor_data_task_handle);
+  BaseType_t message_dispatcher_create_status = xTaskCreate(message_dispatcher_task, "dispatcher", 500, NULL, 1, &message_dispatcher_task_handle);
+  BaseType_t payload_consumer_create_status = xTaskCreate(payload_data_consumer, "consumer", 500, NULL, 1, &payload_data_consumer_task_handle);
 
 
   /* check for successful creation */
@@ -422,9 +427,6 @@ int main(void)
   }else {
 	  myprintf("[-] payload_data_consumer_task task creation Failed \r\n");
   }
-
-  /* start trace */
-  xTraceEnable(TRC_START);
 
   /* USER CODE END RTOS_THREADS */
 
@@ -901,7 +903,7 @@ float get_core_temperature(void){
 /**
  * @brief Task to collect pay-load sensor data
  */
-void get_payload_sensor_data_task(void const* argument) {
+void get_payload_sensor_data_task(void* argument) {
 
 	PAYLOAD_sensor_data_t sensor_data = {0};
 	char* stat = "";
@@ -939,7 +941,7 @@ void get_payload_sensor_data_task(void const* argument) {
 /**
  * @brief Task to collect payload memory statistics
  */
-void get_payload_rtos_memory_task(void const* argument) {
+void get_payload_rtos_memory_task(void* argument) {
 
 	PAYLOAD_rtos_memory_stats_type_t mem_stats = {0};
 	char* stat = "";
@@ -978,7 +980,7 @@ void get_payload_rtos_memory_task(void const* argument) {
 /**
  * @brief receive the core temperature data
  */
-void payload_data_consumer(void const* argument){
+void payload_data_consumer(void* argument){
 	PAYLOAD_combined_data_t payload_comb_data;
 	PAYLOAD_rtos_memory_stats_type_t mem_data;
 	PAYLOAD_sensor_data_t sens_data;
@@ -1053,7 +1055,7 @@ void payload_data_consumer(void const* argument){
 /**
  * @brief Print messages from a shared Queue
  */
-void message_dispatcher_task(void const* argument) {
+void message_dispatcher_task(void* argument) {
 
 	char recv_buffer[100];
 
@@ -1076,7 +1078,7 @@ void message_dispatcher_task(void const* argument) {
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
+void StartDefaultTask(void* argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
