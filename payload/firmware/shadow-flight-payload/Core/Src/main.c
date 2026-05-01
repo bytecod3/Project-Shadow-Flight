@@ -308,7 +308,6 @@ int main(void)
   HAL_UART_Transmit(&huart2, (uint8_t*)board_id_msg, strlen(board_id_msg), 100);		/* scheduler has not started yet here */
   HAL_Delay(1000);
 
-
   /* core temperature measurement ADC start settings */
   HAL_TIM_Base_Start(&htim3);						/* start timer 3 */
   //HAL_ADCEx_Calibration_Start(&hadc1);				/* start ADC calibration  */
@@ -393,23 +392,39 @@ int main(void)
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
 
-  osThreadDef(get_payload_statistics_task_name, get_payload_rtos_memory_task, osPriorityNormal, 0, 500);
-  get_payload_rtos_memory_task_handle = osThreadCreate(osThread(get_payload_statistics_task_name), NULL);
+  BaseType_t memstats_create_status = xTaskCreate(get_payload_rtos_memory_task, "get_payload_rtos_memory_task", 500, NULL, 1, &get_payload_rtos_memory_task_handle);
+  BaseType_t payload_sensor_create_status = xTaskCreate(get_payload_sensor_data_task, "get_payload_sensor_data_task", 500, NULL, 1, &get_payload_sensor_data_task_handle);
+  BaseType_t message_dispatcher_create_status = xTaskCreate(message_dispatcher_task, "message_dispatcher_task", 500, NULL, 1, &message_dispatcher_task_handle);
+  BaseType_t payload_consumer_create_status = xTaskCreate(payload_data_consumer, "payload_data_consumer_task", 500, NULL, 1, &payload_data_consumer_task_handle);
 
-  osThreadDef(get_payload_sensor_data_name, get_payload_sensor_data_task, osPriorityNormal, 0, 500);
-  get_payload_sensor_data_task_handle = osThreadCreate(osThread(get_payload_sensor_data_name), NULL);
 
-  osThreadDef(message_dispatcher_task_name, message_dispatcher_task, osPriorityBelowNormal, 0, 500);
-  message_dispatcher_task_handle = osThreadCreate(osThread(message_dispatcher_task_name), NULL);
-
-  osThreadDef(payload_data_consumer_name, payload_data_consumer, osPriorityAboveNormal, 0, 500);
-  payload_data_consumer_task_handle = osThreadCreate(osThread(payload_data_consumer_name), NULL);
-
-  if(payload_data_consumer_task_handle == NULL) {
-	  myprintf("[-] payload_data_consumer task creation failed \r\n");
-  } else {
-	  myprintf("[-] payload_data_consumer task creation OK \r\n");
+  /* check for successful creation */
+  if(memstats_create_status == pdPASS) {
+	  myprintf("[+] get_payload_rtos_memory_task task created OK \r\n");
+  }else {
+	  myprintf("[-] get_payload_rtos_memory_task task creation Failed \r\n");
   }
+
+  if(payload_sensor_create_status == pdPASS) {
+	  myprintf("[+] get_payload_sensor_data_task task created OK \r\n");
+  }else {
+	  myprintf("[-] get_payload_sensor_data_task task creation Failed \r\n");
+  }
+
+  if(message_dispatcher_create_status == pdPASS) {
+	  myprintf("[+] message_dispatcher_task task created OK \r\n");
+  }else {
+	  myprintf("[-] message_dispatcher_task task creation Failed \r\n");
+  }
+
+  if(payload_consumer_create_status == pdPASS) {
+	  myprintf("[+] payload_data_consumer_task task created OK \r\n");
+  }else {
+	  myprintf("[-] payload_data_consumer_task task creation Failed \r\n");
+  }
+
+  /* start trace */
+  xTraceEnable(TRC_START);
 
   /* USER CODE END RTOS_THREADS */
 

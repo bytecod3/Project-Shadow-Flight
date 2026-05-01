@@ -1,0 +1,9 @@
+# Copyright (c) 2025 Percepio AB
+# SPDX-License-Identifier: Apache-2.0
+
+config PERCEPIO_TRC_CFG_STREAM_PORT_TRACE_FILE
+	string "Trace file path"
+	default "./trace.psf"
+	help
+		Path to where the Tracealyzer trace file should be stored (.psf).
+		Max length is 12 characters.

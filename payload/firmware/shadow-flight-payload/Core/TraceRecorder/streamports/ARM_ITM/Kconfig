@@ -1,0 +1,12 @@
+# Copyright (c) 2025 Percepio AB
+# SPDX-License-Identifier: Apache-2.0
+
+config PERCEPIO_TRC_CFG_STREAM_PORT_ITM_PORT
+	int "ITM Port"
+	default 1
+	range 0 31
+	help
+		What ITM port to use for the ITM software events. Make sure the IDE is
+		configured for the same channel.
+		
+		Default: 1 (0 is typically terminal output)

@@ -1,0 +1,54 @@
+/*
+ * Trace Recorder for Tracealyzer v4.11.1
+ * Copyright 2025 Percepio AB
+ * www.percepio.com
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The interface definitions for trace streaming ("stream ports").
+ * This "stream port" sets up the recorder to use TCP/IP as streaming channel.
+ * The example is for Windows sockets (Winsock), for use with Windows ports.
+ */
+
+#ifndef TRC_STREAM_PORT_H
+#define TRC_STREAM_PORT_H
+
+#if (TRC_USE_TRACEALYZER_RECORDER == 1)
+
+#include <stdint.h>
+#include <trcTypes.h>
+#include <trcStreamPortConfig.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct TraceStreamPortBuffer	/* Aligned */
+{
+	TraceUnsignedBaseType_t dummy;
+} TraceStreamPortBuffer_t;
+
+int32_t prvTraceWriteToSocket(void* data, uint32_t size, uint32_t uiChannel, int32_t* ptrBytesWritten);
+int32_t prvTraceReadFromSocket(void* data, uint32_t bufsize, int32_t* ptrBytesRead);
+
+traceResult xTraceStreamPortInitialize(TraceStreamPortBuffer_t* pxBuffer);
+
+#define xTraceStreamPortWriteData(pvData, uiSize, uiChannel, piBytesWritten) (prvTraceWriteToSocket(pvData, uiSize, uiChannel, piBytesWritten) == 0 ? TRC_SUCCESS : TRC_FAIL)
+
+#define xTraceStreamPortReadData(pvData, uiSize, piBytesRead) (prvTraceReadFromSocket(pvData, uiSize, piBytesRead) == 0 ? TRC_SUCCESS : TRC_FAIL)
+
+#define xTraceStreamPortOnEnable(uiStartOption) ((void)(uiStartOption), TRC_SUCCESS)
+
+#define xTraceStreamPortOnDisable() (TRC_SUCCESS)
+
+#define xTraceStreamPortOnTraceBegin() (TRC_SUCCESS)
+
+traceResult xTraceStreamPortOnTraceEnd(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /*(TRC_USE_TRACEALYZER_RECORDER == 1)*/
+
+#endif /* TRC_STREAM_PORT_H */
