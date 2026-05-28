@@ -1,4 +1,9 @@
-#ifndef DAT_TYPES_H
+/**
+ * @brief define data types
+ * @author Edwin M.
+ */
+
+#ifndef DATA_TYPES_H
 #define DATA_TYPES_H
 
 #include <stdint.h>
@@ -6,8 +11,8 @@
 
 #define PAYLOAD_MEMORY_QUEUE_LENGTH 		(15)
 #define PAYLOAD_SENSOR_DATA_QUEUE_LENGTH	(15)
-#define KILOBYTE_SIZE (1024.0F)		/* divisor for converting bytes to Kilobytes  */
-#define MEMORY_CHECK_FREQ (5000)  	/* after how long should we sample the memory stats */
+#define KILOBYTE_SIZE 						(1024.0F)		/* divisor for converting bytes to Kilobytes  */
+#define MEMORY_CHECK_FREQ 					(5000)  		/* after how long should we sample the memory stats */
 
 /* store the memory data in KB */
 typedef struct _payload_stats{

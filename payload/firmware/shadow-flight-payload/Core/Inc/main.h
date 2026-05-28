@@ -65,8 +65,10 @@ void Error_Handler(void);
 #define PAYLOAD_NTC_GPIO_Port GPIOA
 #define D2_LED_Pin GPIO_PIN_1
 #define D2_LED_GPIO_Port GPIOA
-#define MCLK_Pin GPIO_PIN_8
-#define MCLK_GPIO_Port GPIOA
+#define CAM_RESET_Pin GPIO_PIN_5
+#define CAM_RESET_GPIO_Port GPIOC
+#define CAM_MCLK_Pin GPIO_PIN_8
+#define CAM_MCLK_GPIO_Port GPIOA
 #define SD_CARD_CS_Pin GPIO_PIN_15
 #define SD_CARD_CS_GPIO_Port GPIOA
 

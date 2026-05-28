@@ -86,6 +86,7 @@ TaskHandle_t get_payload_rtos_memory_task_handle;
 TaskHandle_t get_payload_sensor_data_task_handle;
 TaskHandle_t message_dispatcher_task_handle;
 TaskHandle_t payload_data_consumer_task_handle;
+TaskHandle_t led_active_task_handle;
 
 /* USER CODE END PV */
 
@@ -100,7 +101,7 @@ static void MX_DCMI_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM3_Init(void);
-void StartDefaultTask(void* argument);
+void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -128,6 +129,11 @@ void payload_data_consumer(void* argument);
  * @brief task to print messages from the tasks
  */
 void message_dispatcher_task(void* argument);
+
+/**
+ * @brief blink onboard LED to signala system active. Can be configured OFF to save power
+ */
+void led_active_task(void* argument);
 
 /**
  * @brief custom print function
@@ -247,6 +253,10 @@ void setup_SD_card(void) {
 
 	  // close file
 	  f_close(&fil);
+}
+
+void save_image_to_SD(void) {
+
 }
 
 /* USER CODE END 0 */
@@ -387,8 +397,8 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-//  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-//  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -401,9 +411,15 @@ int main(void)
   BaseType_t payload_sensor_create_status = xTaskCreate(get_payload_sensor_data_task, "sensor_data", 500, NULL, 1, &get_payload_sensor_data_task_handle);
   BaseType_t message_dispatcher_create_status = xTaskCreate(message_dispatcher_task, "dispatcher", 500, NULL, 1, &message_dispatcher_task_handle);
   BaseType_t payload_consumer_create_status = xTaskCreate(payload_data_consumer, "consumer", 500, NULL, 1, &payload_data_consumer_task_handle);
-
+  BaseType_t led_active_task_create_status = xTaskCreate(led_active_task, "led_active", 128, NULL, 1, &led_active_task_handle);
 
   /* check for successful creation */
+  if(default_task == pdPASS) {
+	 myprintf("[+] default_task task created OK \r\n");
+  }else {
+	 myprintf("[-] default_task task creation Failed \r\n");
+  }
+
   if(memstats_create_status == pdPASS) {
 	  myprintf("[+] get_payload_rtos_memory_task task created OK \r\n");
   }else {
@@ -426,6 +442,12 @@ int main(void)
 	  myprintf("[+] payload_data_consumer_task task created OK \r\n");
   }else {
 	  myprintf("[-] payload_data_consumer_task task creation Failed \r\n");
+  }
+
+  if(led_active_task_create_status == pdPASS) {
+	  myprintf("[+] led_active_task created OK");
+  } else {
+	  myprintf("[-] led_active_task failed to create");
   }
 
   /* USER CODE END RTOS_THREADS */
@@ -624,14 +646,12 @@ static void MX_DCMI_Init(void)
 
   /* USER CODE END DCMI_Init 1 */
   hdcmi.Instance = DCMI;
-  hdcmi.Init.SynchroMode = DCMI_SYNCHRO_EMBEDDED;
+  hdcmi.Init.SynchroMode = DCMI_SYNCHRO_HARDWARE;
   hdcmi.Init.PCKPolarity = DCMI_PCKPOLARITY_FALLING;
+  hdcmi.Init.VSPolarity = DCMI_VSPOLARITY_LOW;
+  hdcmi.Init.HSPolarity = DCMI_HSPOLARITY_LOW;
   hdcmi.Init.CaptureRate = DCMI_CR_ALL_FRAME;
   hdcmi.Init.ExtendedDataMode = DCMI_EXTEND_DATA_8B;
-  hdcmi.Init.SyncroCode.FrameEndCode = 0;
-  hdcmi.Init.SyncroCode.FrameStartCode = 0;
-  hdcmi.Init.SyncroCode.LineStartCode = 0;
-  hdcmi.Init.SyncroCode.LineEndCode = 0;
   hdcmi.Init.JPEGMode = DCMI_JPEG_DISABLE;
   if (HAL_DCMI_Init(&hdcmi) != HAL_OK)
   {
@@ -700,7 +720,7 @@ static void MX_SPI2_Init(void)
   hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi2.Init.NSS = SPI_NSS_SOFT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -822,20 +842,19 @@ static void MX_GPIO_Init(void)
   /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, USER_LED_Pin|ADC_sampling_verification_pin_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, USER_LED_Pin|ADC_sampling_verification_pin_Pin|CAM_RESET_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(SD_CARD_CS_GPIO_Port, SD_CARD_CS_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : USER_LED_Pin ADC_sampling_verification_pin_Pin */
-  GPIO_InitStruct.Pin = USER_LED_Pin|ADC_sampling_verification_pin_Pin;
+  /*Configure GPIO pins : USER_LED_Pin ADC_sampling_verification_pin_Pin CAM_RESET_Pin */
+  GPIO_InitStruct.Pin = USER_LED_Pin|ADC_sampling_verification_pin_Pin|CAM_RESET_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -847,13 +866,21 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(D2_LED_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : MCLK_Pin */
-  GPIO_InitStruct.Pin = MCLK_Pin;
+  /*Configure GPIO pin : PA5 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : CAM_MCLK_Pin */
+  GPIO_InitStruct.Pin = CAM_MCLK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.Alternate = GPIO_AF0_MCO;
-  HAL_GPIO_Init(MCLK_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(CAM_MCLK_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : SD_CARD_CS_Pin */
   GPIO_InitStruct.Pin = SD_CARD_CS_Pin;
@@ -1069,6 +1096,25 @@ void message_dispatcher_task(void* argument) {
 
 }
 
+/**
+ * @brief blink onboard LED to signala system active. Can be configured OFF to save power
+ */
+void led_active_task(void* argument) {
+
+	TickType_t x_last_tick = xTaskGetTickCount();
+	TickType_t period = 1500;
+	uint8_t led_state = 0;
+
+	for(;;) {
+
+		led_state = !led_state;
+		HAL_GPIO_WritePin(USER_LED_GPIO_Port, USER_LED_Pin, led_state);
+
+		vTaskDelayUntil(&x_last_tick, pdMS_TO_TICKS(period));
+
+	}
+}
+
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -1078,7 +1124,7 @@ void message_dispatcher_task(void* argument) {
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void* argument)
+void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
