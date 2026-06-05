@@ -77,6 +77,7 @@ SPI_HandleTypeDef hspi2;
 
 TIM_HandleTypeDef htim3;
 
+UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 osThreadId defaultTaskHandle;
@@ -101,6 +102,7 @@ static void MX_DCMI_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_USART1_UART_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
@@ -145,6 +147,8 @@ void myprintf(const char* fmt, ...);
  */
 void setup_SD_card(void);
 
+#define IMAGE_DUMP_OPEN_RETRY_COUNTER (50)
+
 /* define Mutex handle  */
 SemaphoreHandle_t printf_mutex;
 #define PRINTF_MUTEX_WAIT_TIME   (1000)
@@ -169,90 +173,106 @@ void myprintf(const char* fmt, ...) {
 		va_end(args);
 
 		int len = strlen(buffer);
-		HAL_UART_Transmit(&huart2, (uint8_t*)buffer, len, 200); // TODO define delay in header
+		HAL_UART_Transmit(&huart1, (uint8_t*)buffer, len, 200); // TODO define delay in header
 
 	}
 	xSemaphoreGive(printf_mutex);
 
 }
 
-const TCHAR* image_dump_file = "psf_img_dump.txt";    /* image dump file */
+const char* image_dump_file = "img_dump.txt";    /* image dump file */
 
-void setup_SD_card(void) {
-	// some variables for FatFS
-	  FATFS FatFs;		// fatfs handle
-	  FIL fil;			// file handle
-	  FRESULT fres;		// result after operations
+void setup_sd_card(void) {
 
+	myprintf("Setting image SD card...\r\n");
 
-	  // open the file system
-	  fres = f_mount(&FatFs, "", 1);		// 1= mount now
+	/* some variables for FatFS */
+	FATFS FatFs;		// fat-fs handle
+	FIL fil;			// file handle
+	FRESULT fres;		// result after operations
 
-	  int retry_count = 0;
-	  if(fres != FR_OK) {
-		  myprintf("f_mount error (%i)\r\n", fres);
-		  while(retry_count < 50){
-			fres = f_mount(&FatFs, "", 1);
-			if(fres == FR_OK) break;
+	/* open the file system */
+	fres = f_mount(&FatFs, "", 1);		// 1= mount now
 
-			myprintf("Retrying to mount SD...\r\n");
-			retry_count++;
-		  }
+	int retry_count = 0;
+	if(fres != FR_OK) {
+	  myprintf("f_mount error (%i)\r\n", fres);
+	  while(retry_count < 50){
+		fres = f_mount(&FatFs, "", 1);
+		if(fres == FR_OK) break;
+
+		myprintf("Retrying to mount SD...\r\n");
+		retry_count++;
+	  }
+	}
+
+	/* get some SD card statistics */
+	DWORD free_clusters, free_sectors, total_sectors;
+	FATFS* get_free_fs;
+
+	fres = f_getfree("", &free_clusters, &get_free_fs);
+	if(fres != FR_OK) {
+	  myprintf("f_get free error (%i)\r\n", fres);
+	  //while(1);
+	}
+
+	/* formula from CHANS documentation */
+	total_sectors = (get_free_fs->n_fatent - 2) * get_free_fs->csize;
+	free_sectors = free_clusters * get_free_fs->csize;
+
+	myprintf(
+		  "SD Card stats: \r\n%lu KiB total drive space. \r\n%lu KiB available. \r\n",
+		  total_sectors / 2,
+		  free_sectors / 2
+		  );
+
+	char mem[200] = {0};
+	struct memory_stats mem_stats = get_sd_size(total_sectors / 2, free_sectors / 2);
+	sprintf(mem,
+			"SD card space: Total: %lu MB, Free: %lu MB \r\n",
+			mem_stats.ttl_space_MB,
+			mem_stats.free_space_MB);
+
+	/* try to open image dump file on SD card */
+	fres = f_open(&fil, image_dump_file, FA_READ);
+	int f_open_retry_count = 0;
+
+	if(fres != FR_OK) {
+	  myprintf("f_open error (%i)\r\n", fres);
+
+	  while(f_open_retry_count < IMAGE_DUMP_OPEN_RETRY_COUNTER) {
+		  fres = f_open(&fil, image_dump_file, FA_READ);
+		  if (fres != FR_OK) break;
+
+		  myprintf("Retrying to open image dump file...\r\n");
+		  f_open_retry_count++;
+
 	  }
 
-	  // get some SD card statistics
-	  DWORD free_clusters, free_sectors, total_sectors;
-	  FATFS* get_free_fs;
-
-	  fres = f_getfree("", &free_clusters, &get_free_fs);
+	  /* the file probably does not exist. Create it and retry opening */
+	  fres = f_open(&fil, image_dump_file, FA_WRITE | FA_CREATE_ALWAYS);
 	  if(fres != FR_OK) {
-		  myprintf("f_get free error (%i)\r\n", fres); // TODO log this
-		  //while(1);
-	  }
-
-	  // formula from CHANS documentation
-	  total_sectors = (get_free_fs->n_fatent - 2) * get_free_fs->csize;
-	  free_sectors = free_clusters * get_free_fs->csize;
-
-	  myprintf(
-			  "SD Card stats: \r\n%lu KiB total drive space. \r\n%lu KiB available. \r\n",
-			  total_sectors / 2,
-			  free_sectors / 2
-			  );
-
-	  char mem[200] = {0};
-	  struct memory_stats mem_stats = get_sd_size(total_sectors / 2, free_sectors / 2);
-	  sprintf(mem, "Drive space: Total: %lu MB, Free: %lu MB \r\n", mem_stats.ttl_space_MB, mem_stats.free_space_MB);
-
-
-	  // try to open file on SD card
-	  fres = f_open(&fil, image_dump_file, FA_READ);
-	  int f_open_retry_count = 0;
-	  if(fres != FR_OK) {
-		  myprintf("f_open error (%i)\r\n", fres);
-
-		  while(f_open_retry_count < 50) {
-			fres = f_open(&fil, image_dump_file, FA_READ);
-			  if (fres != FR_OK) break;
-			  myprintf("Retrying to open image dump file...\r\n");
-			  f_open_retry_count++;
-
-		  }
-
-	  }
-
-	  // read 30 bytes from file on SD card
-	  BYTE readBuf[30];
-
-	  TCHAR* rres = f_gets((TCHAR*) readBuf, 30, &fil);
-	  if(rres != 0) {
-		  myprintf("Read string from file, CONTENTS: %s\r\b\n", readBuf);
+		  myprintf("image file created OK.\r\n");
 	  } else {
-		  myprintf("f_gets error (%i)\r\n", fres);
+		  /* write a message to file */
+		  const char* genesis_msg = "Am going to store images\r\n";
+		  f_puts(genesis_msg, &fil);
 	  }
 
-	  // close file
-	  f_close(&fil);
+	}
+
+	// read 30 bytes from file on SD card
+	BYTE readBuf[30];
+
+	TCHAR* res = f_gets((TCHAR*) readBuf, 30, &fil);
+	if(res != 0) {
+	  myprintf("Read string from image dump file, contents: %s\r\b\n", readBuf);
+	} else {
+	  myprintf("f_gets error (%i)\r\n", fres);
+	}
+
+	/* close file */
+	f_close(&fil);
 }
 
 void save_image_to_SD(void) {
@@ -300,6 +320,7 @@ int main(void)
   MX_FATFS_Init();
   MX_ADC1_Init();
   MX_TIM3_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
   char board_id_msg[200];
@@ -316,7 +337,7 @@ int main(void)
 		  dev,
 		  version);
 
-  HAL_UART_Transmit(&huart2, (uint8_t*)board_id_msg, strlen(board_id_msg), 100);		/* scheduler has not started yet here */
+  HAL_UART_Transmit(&huart1, (uint8_t*)board_id_msg, strlen(board_id_msg), 100);		/* scheduler has not started yet here */
   HAL_Delay(1000);
 
   /* core temperature measurement ADC start settings */
@@ -330,20 +351,20 @@ int main(void)
 
   printf_mutex = xSemaphoreCreateMutex();
   if(printf_mutex != NULL) {
-	  HAL_UART_Transmit(&huart2,
+	  HAL_UART_Transmit(&huart1,
 			  (uint8_t*)"[+] Message Queue mutex created ok\r\n",
 			  strlen("[+] Message Queue mutex created ok\r\n"),
 			  100
 			  );
   } else {
-	  HAL_UART_Transmit(&huart2,
+	  HAL_UART_Transmit(&huart1,
 		  (uint8_t*)"[-] Could not create message queue mutex\r\n",
 		  strlen("[-] Could not create message queue mutex\r\n"),
 		  100
 		  );
   }
 
-  setup_SD_card();
+  setup_sd_card();
 
   /* USER CODE END RTOS_MUTEX */
 
@@ -777,6 +798,39 @@ static void MX_TIM3_Init(void)
   /* USER CODE BEGIN TIM3_Init 2 */
 
   /* USER CODE END TIM3_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
 
 }
 
