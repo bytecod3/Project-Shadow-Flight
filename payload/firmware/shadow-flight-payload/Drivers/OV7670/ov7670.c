@@ -5,4 +5,5 @@
  * @author: edwin
  */
 
+#include <ov7670.h>
 
