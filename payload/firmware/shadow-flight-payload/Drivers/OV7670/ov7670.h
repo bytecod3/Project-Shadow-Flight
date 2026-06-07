@@ -12,6 +12,9 @@
 
 #define OV7670_SLAVE_ADDRESS (0x42)  /* 42 for write */
 
+/* settings and camera commands */
+#define RESET_COMMAND (0x80)
+
 void ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c);
 
 void ov7670_config(uint32_t mode);

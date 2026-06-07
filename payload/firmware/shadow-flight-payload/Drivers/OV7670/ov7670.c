@@ -53,16 +53,16 @@ HAL_StatusTypeDef ov7670_i2c_read(uint8_t reg_addr, uint8_t* data) {
 	HAL_StatusTypeDef s;
 
 	do {
-		s = HAL_I2C_Mem_Read(
-				sp_hi2c,
-				OV7670_SLAVE_ADDRESS,
-				reg_addr,
-				I2C_MEMADD_SIZE_8BIT,
-				data,
-				1,
-				1000
-
-		);
+//		s = HAL_I2C_Mem_Read(
+//				sp_hi2c,
+//				OV7670_SLAVE_ADDRESS,
+//				reg_addr,
+//				I2C_MEMADD_SIZE_8BIT,
+//				data,
+//				1,
+//				1000
+//
+//		);
 
 		s = HAL_I2C_Master_Transmit(
 				sp_hi2c,
@@ -98,6 +98,8 @@ void ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_hdma_dcmi, I
 	HAL_GPIO_WritePin(CAM_RESET_GPIO_Port, CAM_RESET_Pin, GPIO_PIN_SET);
 	HAL_Delay(100);
 
+	/* reset all registers to default values */
+	ov7670_i2c_write(COM7_REG, RESET_COMMAND);
 
 
 }
