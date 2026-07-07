@@ -8,7 +8,8 @@
 #ifndef OV7670_OV7670_H_
 #define OV7670_OV7670_H_
 
-#include <ov7670_regs.h>
+#include "ov7670_regs.h"
+#include "utils.h"
 
 #define OV7670_SLAVE_ADDRESS (0x42)  /* 42 for write */
 #define OV7670_CAP_CONTINUOUS 	(0)

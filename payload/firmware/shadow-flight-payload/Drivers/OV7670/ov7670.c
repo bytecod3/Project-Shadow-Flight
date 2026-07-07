@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <main.h>
-#include <ov7670.h>
+#include "ov7670.h"
 #include "stm32f4xx_hal.h"
 
 #define QVGA_WIDTH 			(320)
@@ -33,7 +33,7 @@ HAL_StatusTypeDef ov7670_i2c_write(uint8_t reg_addr, uint8_t data) {
 	do {
 		s = HAL_I2C_Mem_Write(
 				sp_hi2c,
-				OV7670_SLAVE_W_ADDRESS,
+				OV7670_SLAVE_ADDRESS,
 				reg_addr,
 				I2C_MEMADD_SIZE_8BIT,
 				&data,
@@ -85,7 +85,7 @@ HAL_StatusTypeDef ov7670_i2c_read(uint8_t reg_addr, uint8_t* data) {
 }
 
 /* function definitions */
-void ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c) {
+PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c) {
 	sp_hdcmi = p_hdcmi;
 	sp_hdma_dcmi = p_hdma_dcmi;
 	sp_hi2c = p_hi2c;
@@ -106,6 +106,8 @@ void ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_hdma_dcmi, I
 	uint8_t buffer[4];
 	ov7670_i2c_read(VER_REG, buffer);
 	printf("[OV7670] device ID = %02X\r\n", buffer[0]);
+
+	return PAYLOAD_STATUS_OK;
 }
 
 void ov7670_config(uint32_t mode) {
@@ -120,20 +122,20 @@ void ov7670_config(uint32_t mode) {
 void ov7670_start_capture(uint32_t cap_mode, uint32_t dest_address) {
 	ov7670_stop_capture();
 
-	if(cap_mode == OV7670_CAP_CONTINOUS) {
+	if(cap_mode == OV7670_CAP_CONTINUOUS) {
 		/* continuous capture mode automatically invokes DCMI, but DMA needs to be started manually */
 		s_dest_address_continous_mode = dest_address;
-		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_CONTINOUS, dest_address, QVGA_WIDTH * QVGA_HEIGHT / 2);
+		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_CONTINUOUS, dest_address, QVGA_WIDTH * QVGA_HEIGHT / 2);
 
 	} else if(cap_mode == OV7670_CAP_SINGLE_FRAME) {
 		s_dest_address_continous_mode = 0;
-		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAP, dest_address, QVGA_WIDTH * QVGA_HEIGHT / 2);
+		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, dest_address, QVGA_WIDTH * QVGA_HEIGHT / 2);
 	}
 }
 
 
 void ov7670_stop_capture() {
-	HAL_DCMI_Stop(sp_dcmi);
+	HAL_DCMI_Stop(sp_hdcmi);
 }
 
 
