@@ -11,6 +11,15 @@
 #include <ov7670_regs.h>
 
 #define OV7670_SLAVE_ADDRESS (0x42)  /* 42 for write */
+#define OV7670_CAP_CONTINUOUS 	(0)
+#define OV7670_CAP_SINGLE_FRAME (1)
+
+typedef enum{
+	OV7670_STATUS_ERR = 0,
+	OV7670_STATUS_OK = 1
+
+} OV7670_STATUS;
+
 
 /* settings and camera commands */
 #define RESET_COMMAND (0x80)
