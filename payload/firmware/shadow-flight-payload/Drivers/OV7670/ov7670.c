@@ -110,16 +110,18 @@ PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_
 	return PAYLOAD_STATUS_OK;
 }
 
-void ov7670_config(uint32_t mode) {
+PAYLOAD_STATUS_T ov7670_config(uint32_t mode) {
 	ov7670_stop_capture();
 	ov7670_i2c_write(0x12, 0x80);
 	HAL_Delay(30);
 
 	// todo: initialize register default values
 
+	return PAYLOAD_STATUS_OK;
+
 }
 
-void ov7670_start_capture(uint32_t cap_mode, uint32_t dest_address) {
+PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, uint32_t dest_address) {
 	ov7670_stop_capture();
 
 	if(cap_mode == OV7670_CAP_CONTINUOUS) {
@@ -131,11 +133,14 @@ void ov7670_start_capture(uint32_t cap_mode, uint32_t dest_address) {
 		s_dest_address_continous_mode = 0;
 		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, dest_address, QVGA_WIDTH * QVGA_HEIGHT / 2);
 	}
+
+	return PAYLOAD_STATUS_OK;
+
 }
 
-
-void ov7670_stop_capture() {
+PAYLOAD_STATUS_T ov7670_stop_capture() {
 	HAL_DCMI_Stop(sp_hdcmi);
+	return PAYLOAD_STATUS_OK;
 }
 
 
