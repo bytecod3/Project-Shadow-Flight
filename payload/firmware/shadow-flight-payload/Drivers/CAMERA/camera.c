@@ -16,7 +16,7 @@ extern I2C_HandleTypeDef hi2c2;
  * @return 1 if initialization OK
  */
 PAYLOAD_STATUS_T camera_init() {
-	return ov7670_init(&hdcmi, &hdma, &hi2c2);
+	return ov7670_init(&hdma_dcmi, &hdcmi, &hi2c2);
 }
 
 /**

@@ -8,6 +8,7 @@
 #ifndef OV7670_OV7670_H_
 #define OV7670_OV7670_H_
 
+#include "stm32f4xx_hal.h"
 #include "ov7670_regs.h"
 #include "utils.h"
 
@@ -25,13 +26,13 @@ typedef enum{
 /* settings and camera commands */
 #define RESET_COMMAND (0x80)
 
-void ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c);
+PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c);
 
-void ov7670_config(uint32_t mode);
+PAYLOAD_STATUS_T ov7670_config(uint32_t mode);
 
-void ov7670_start_capture(uint32_t cap_mode, uint32_t dest_address);
+PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, uint32_t dest_address);
 
-void ov7670_stop_capture();
+PAYLOAD_STATUS_T ov7670_stop_capture();
 
 void ov7670_register_callback(void (*cb_hsync)(uint32_t h), void(*cb_vsync)(uint32_t v));
 

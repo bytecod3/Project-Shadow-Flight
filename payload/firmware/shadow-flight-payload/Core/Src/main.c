@@ -29,6 +29,7 @@
 #include "task.h"
 #include "utils.h"
 #include "data_types.h"
+#include "state_machine.h"
 
 /* USER CODE END Includes */
 
@@ -88,6 +89,7 @@ TaskHandle_t get_payload_sensor_data_task_handle;
 TaskHandle_t message_dispatcher_task_handle;
 TaskHandle_t payload_data_consumer_task_handle;
 TaskHandle_t led_active_task_handle;
+TaskHandle_t capture_control_task_handle;
 
 /* USER CODE END PV */
 
@@ -133,9 +135,14 @@ void payload_data_consumer(void* argument);
 void message_dispatcher_task(void* argument);
 
 /**
- * @brief blink onboard LED to signala system active. Can be configured OFF to save power
+ * @brief blink on-board LED to signal system active. Can be configured OFF to save power
  */
 void led_active_task(void* argument);
+
+/**
+ * @brief capture control task
+ */
+void capture_control_task(void* argument);
 
 /**
  * @brief custom print function
@@ -379,7 +386,7 @@ int main(void)
   /* USER CODE BEGIN RTOS_QUEUES */
   payload_memory_stats_queue_handle = xQueueCreate(PAYLOAD_MEMORY_QUEUE_LENGTH, sizeof(PAYLOAD_rtos_memory_stats_type_t));
   payload_sensor_data_queue_handle = xQueueCreate(PAYLOAD_SENSOR_DATA_QUEUE_LENGTH, sizeof(PAYLOAD_sensor_data_t));
-  message_dispatcher_queue_handle = xQueueCreate(10, sizeof(char) * 100); // hold 100 characters
+  message_dispatcher_queue_handle = xQueueCreate(10, sizeof(char) * 100);
   combined_payload_data_queue_handle = xQueueCreate(10, sizeof(PAYLOAD_combined_data_t));
 
   /* check for successful queue creation */
@@ -433,6 +440,8 @@ int main(void)
   BaseType_t message_dispatcher_create_status = xTaskCreate(message_dispatcher_task, "dispatcher", 500, NULL, 1, &message_dispatcher_task_handle);
   BaseType_t payload_consumer_create_status = xTaskCreate(payload_data_consumer, "consumer", 500, NULL, 1, &payload_data_consumer_task_handle);
   BaseType_t led_active_task_create_status = xTaskCreate(led_active_task, "led_active", 128, NULL, 1, &led_active_task_handle);
+  BaseType_t capture_control_task_create_status = xTaskCreate(capture_control_task, "capture_control", 128, NULL, 1, &capture_control_task_handle);
+
 
   /* check for successful creation */
   if(default_task == pdPASS) {
@@ -469,6 +478,12 @@ int main(void)
 	  myprintf("[+] led_active_task created OK");
   } else {
 	  myprintf("[-] led_active_task failed to create");
+  }
+
+  if(capture_control_task_create_status == pdPASS) {
+	  myprintf("[+] capture_control_task created OK");
+  } else {
+	  myprintf("[+] capture_control_task failed to create");
   }
 
   /* USER CODE END RTOS_THREADS */
@@ -1166,6 +1181,17 @@ void led_active_task(void* argument) {
 
 		vTaskDelayUntil(&x_last_tick, pdMS_TO_TICKS(period));
 
+	}
+}
+
+
+/**
+ * @brief initiate camera capture control operations
+ */
+void capture_control_task(void* argument) {
+
+	for(;;) {
+		vTaskDelay(pdMS_TO_TICKS(2));
 	}
 }
 
