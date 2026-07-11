@@ -142,7 +142,8 @@ void led_active_task(void* argument);
 /**
  * @brief capture control task
  */
-void capture_control_task(void* argument);
+extern void capture_control_task(void* argument);
+
 
 /**
  * @brief custom print function
@@ -170,22 +171,7 @@ QueueHandle_t combined_payload_data_queue_handle;
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void myprintf(const char* fmt, ...) {
-	xSemaphoreTake(printf_mutex, portMAX_DELAY);
-	{
-		static char buffer[350];
-		va_list args;
-		va_start(args, fmt);
-		vsnprintf(buffer, sizeof(buffer), fmt, args);
-		va_end(args);
 
-		int len = strlen(buffer);
-		HAL_UART_Transmit(&huart1, (uint8_t*)buffer, len, 200); // TODO define delay in header
-
-	}
-	xSemaphoreGive(printf_mutex);
-
-}
 
 const char* image_dump_file = "img_dump.txt";    /* image dump file */
 
@@ -371,7 +357,7 @@ int main(void)
 		  );
   }
 
-  setup_sd_card();
+  //setup_sd_card();
 
   /* USER CODE END RTOS_MUTEX */
 
@@ -1181,17 +1167,6 @@ void led_active_task(void* argument) {
 
 		vTaskDelayUntil(&x_last_tick, pdMS_TO_TICKS(period));
 
-	}
-}
-
-
-/**
- * @brief initiate camera capture control operations
- */
-void capture_control_task(void* argument) {
-
-	for(;;) {
-		vTaskDelay(pdMS_TO_TICKS(2));
 	}
 }
 

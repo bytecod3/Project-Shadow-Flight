@@ -1,5 +1,5 @@
 /**
-* Helper functions and enums to use for payload file operations
+* Helper functions and enums to use for payload operations
 *
 * @author Edwin M.
 *
@@ -8,6 +8,16 @@
 #ifndef UTILS_H
 #define UTILS_H
 #include <stdint.h>
+#include <string.h>
+#include <stm32f4xx_hal.h>
+#include "cmsis_os.h"
+#include <stdarg.h>
+
+/**
+ * These are defined in main.c
+ */
+extern UART_HandleTypeDef huart1;
+extern SemaphoreHandle_t printf_mutex;
 
 /* return types for various functions */
 typedef enum {
@@ -26,4 +36,11 @@ struct memory_stats{
 
 struct memory_stats get_sd_size(unsigned long ttl_space, unsigned long free_space);
 
+/**
+ * @brief redirect PrintF
+ */
+void myprintf(const char* fmt, ...);
+
+
 #endif
+
