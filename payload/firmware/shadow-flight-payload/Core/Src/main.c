@@ -167,8 +167,6 @@ QueueHandle_t combined_payload_data_queue_handle;
 /* USER CODE BEGIN 0 */
 
 
-
-
 void save_image_to_SD(void) {
 
 }
