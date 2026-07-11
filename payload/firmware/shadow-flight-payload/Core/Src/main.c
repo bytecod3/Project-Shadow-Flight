@@ -150,12 +150,6 @@ extern void capture_control_task(void* argument);
  */
 void myprintf(const char* fmt, ...);
 
-/*
- * @brief Function to initialize SD card
- */
-void setup_SD_card(void);
-
-#define IMAGE_DUMP_OPEN_RETRY_COUNTER (50)
 
 /* define Mutex handle  */
 SemaphoreHandle_t printf_mutex;
@@ -173,100 +167,7 @@ QueueHandle_t combined_payload_data_queue_handle;
 /* USER CODE BEGIN 0 */
 
 
-const char* image_dump_file = "img_dump.txt";    /* image dump file */
 
-void setup_sd_card(void) {
-
-	myprintf("Setting image SD card...\r\n");
-
-	/* some variables for FatFS */
-	FATFS FatFs;		// fat-fs handle
-	FIL fil;			// file handle
-	FRESULT fres;		// result after operations
-
-	/* open the file system */
-	fres = f_mount(&FatFs, "", 1);		// 1= mount now
-
-	int retry_count = 0;
-	if(fres != FR_OK) {
-	  myprintf("f_mount error (%i)\r\n", fres);
-	  while(retry_count < 50){
-		fres = f_mount(&FatFs, "", 1);
-		if(fres == FR_OK) break;
-
-		myprintf("Retrying to mount SD...\r\n");
-		retry_count++;
-	  }
-	}
-
-	/* get some SD card statistics */
-	DWORD free_clusters, free_sectors, total_sectors;
-	FATFS* get_free_fs;
-
-	fres = f_getfree("", &free_clusters, &get_free_fs);
-	if(fres != FR_OK) {
-	  myprintf("f_get free error (%i)\r\n", fres);
-	  //while(1);
-	}
-
-	/* formula from CHANS documentation */
-	total_sectors = (get_free_fs->n_fatent - 2) * get_free_fs->csize;
-	free_sectors = free_clusters * get_free_fs->csize;
-
-	myprintf(
-		  "SD Card stats: \r\n%lu KiB total drive space. \r\n%lu KiB available. \r\n",
-		  total_sectors / 2,
-		  free_sectors / 2
-		  );
-
-	char mem[200] = {0};
-	struct memory_stats mem_stats = get_sd_size(total_sectors / 2, free_sectors / 2);
-	sprintf(mem,
-			"SD card space: Total: %lu MB, Free: %lu MB \r\n",
-			mem_stats.ttl_space_MB,
-			mem_stats.free_space_MB);
-
-	/* try to open image dump file on SD card */
-	fres = f_open(&fil, image_dump_file, FA_READ);
-	int f_open_retry_count = 0;
-
-	if(fres != FR_OK) {
-	  myprintf("f_open error (%i)\r\n", fres);
-
-	  while(f_open_retry_count < IMAGE_DUMP_OPEN_RETRY_COUNTER) {
-		  fres = f_open(&fil, image_dump_file, FA_READ);
-		  if (fres != FR_OK) break;
-
-		  myprintf("Retrying to open image dump file...\r\n");
-		  f_open_retry_count++;
-
-	  }
-
-	  /* the file probably does not exist. Create it and retry opening */
-	  fres = f_open(&fil, image_dump_file, FA_WRITE | FA_CREATE_ALWAYS);
-	  if(fres != FR_OK) {
-		  myprintf("image file created OK.\r\n");
-	  } else {
-		  /* write a message to file */
-		  const char* genesis_msg = "Am going to store images\r\n";
-		  f_puts(genesis_msg, &fil);
-	  }
-
-	}
-
-	// read 30 bytes from file on SD card
-	BYTE readBuf[30];
-
-	TCHAR* res = f_gets((TCHAR*) readBuf, 30, &fil);
-	if(res != 0) {
-	  myprintf("Read string from image dump file, contents: %s\r\b\n", readBuf);
-	} else {
-	  myprintf("f_gets error (%i)\r\n", fres);
-	}
-
-	/* close file */
-	f_close(&fil);
-}
 
 void save_image_to_SD(void) {
 
@@ -298,7 +199,6 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
 
   /* USER CODE END SysInit */
 
@@ -357,7 +257,7 @@ int main(void)
 		  );
   }
 
-  //setup_sd_card();
+  setup_sd_card();
 
   /* USER CODE END RTOS_MUTEX */
 

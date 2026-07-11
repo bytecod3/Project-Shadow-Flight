@@ -19,10 +19,13 @@
 extern UART_HandleTypeDef huart1;
 extern SemaphoreHandle_t printf_mutex;
 
-/* return types for various functions */
+/**
+ * custom return types
+ */
 typedef enum {
 	PAYLOAD_STATUS_ERR 						= 0,
 	PAYLOAD_STATUS_OK 						= 1,
+	PAYLOD_STATUS_STORAGE_OK				= 2,
 	PAYLOAD_STATUS_FILE_ERR 				= 3,
 	PAYLOAD_STATUS_TIMEOUT 					= 4,
 	PAYLOAD_STATUS_MEMORY_FAILURE 			= 5
