@@ -109,7 +109,7 @@ void command_engine_receive_command_task(void const* args) {
 		if(xQueueReceive(raw_command_queue, &received_cmd, pdMS_TO_TICKS(MAX_RAW_CMD_RECEIVE_WAIT)) == pdTRUE) {
 
 			/* parse command */
-			sprintf(cmd_str, "%s\r\n", received_cmd.command);
+			snprintf(cmd_str, sizeof(cmd_str), "%s\r\n", received_cmd.command);
 			HAL_UART_Transmit(&huart6, (uint8_t*)cmd_str, strlen(cmd_str), 100);
 
 		}
