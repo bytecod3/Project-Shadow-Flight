@@ -8,6 +8,7 @@
 
 #include "state_machine.h"
 #include "utils.h"
+#include "storage.h"
 
 extern payload_state_t payload_state;
 
@@ -22,7 +23,8 @@ void capture_control_task(void* argument){
 	const char* s = payload_state_to_name(payload_state);
 	myprintf("%s\r\n", s);
 
-	// perform preStart system checks
+	/* =========== subsystem checks =============== */
+	init_sd_card();
 
 	// transition to next state
 

@@ -23,18 +23,26 @@
 /**
  *@brief get the minimum of 2 uint32_t numbers
  */
-static inline get_min(uint32_t a, uint32_t b);
+static inline int get_min(uint32_t a, uint32_t b) {
+	if (a < b) return a;
+	return b;
+}
 
 /* image dump file */
-const char* image_dump_file;
+extern const char* image_dump_file;
 
 /* sentinel guard file for system check */
-const char* sentinel_file;
+extern const char* sentinel_file;
 
 /**
  * @brief Initialise SD card
  * @return OK if successful
  */
-PAYLOAD_STATUS_T init_sd_card(const char* img_file, const char* sentinel_file);
+PAYLOAD_STATUS_T init_sd_card();
+
+/**
+ * @brief Return the name of the SD card mount error as a string for easy debugging
+ */
+const char* sd_mount_status_to_name(FRESULT f);
 
 #endif /* STORAGE_STORAGE_H_ */

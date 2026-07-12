@@ -167,9 +167,6 @@ QueueHandle_t combined_payload_data_queue_handle;
 /* USER CODE BEGIN 0 */
 
 
-void save_image_to_SD(void) {
-
-}
 
 /* USER CODE END 0 */
 
@@ -255,8 +252,6 @@ int main(void)
 		  );
   }
 
-  setup_sd_card();
-
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
@@ -324,7 +319,7 @@ int main(void)
   BaseType_t message_dispatcher_create_status = xTaskCreate(message_dispatcher_task, "dispatcher", 500, NULL, 1, &message_dispatcher_task_handle);
   BaseType_t payload_consumer_create_status = xTaskCreate(payload_data_consumer, "consumer", 500, NULL, 1, &payload_data_consumer_task_handle);
   BaseType_t led_active_task_create_status = xTaskCreate(led_active_task, "led_active", 128, NULL, 1, &led_active_task_handle);
-  BaseType_t capture_control_task_create_status = xTaskCreate(capture_control_task, "capture_control", 128, NULL, 1, &capture_control_task_handle);
+  BaseType_t capture_control_task_create_status = xTaskCreate(capture_control_task, "capture_control", 500, NULL, 1, &capture_control_task_handle);
 
 
   /* check for successful creation */
@@ -359,15 +354,15 @@ int main(void)
   }
 
   if(led_active_task_create_status == pdPASS) {
-	  myprintf("[+] led_active_task created OK");
+	  myprintf("[+] led_active_task created OK\r\n");
   } else {
-	  myprintf("[-] led_active_task failed to create");
+	  myprintf("[-] led_active_task failed to create\r\n");
   }
 
   if(capture_control_task_create_status == pdPASS) {
-	  myprintf("[+] capture_control_task created OK");
+	  myprintf("[+] capture_control_task created OK\r\n");
   } else {
-	  myprintf("[+] capture_control_task failed to create");
+	  myprintf("[+] capture_control_task failed to create\r\n");
   }
 
   /* USER CODE END RTOS_THREADS */
