@@ -31,6 +31,9 @@ typedef enum {
 	PAYLOAD_STATUS_MEMORY_FAILURE 			= 5
 } PAYLOAD_STATUS_T;
 
+/* translate payload status to name */
+const char* payload_status_to_name(PAYLOAD_STATUS_T);
+
 /* SD card file stats in MB */
 struct memory_stats{
 	uint64_t ttl_space_MB;

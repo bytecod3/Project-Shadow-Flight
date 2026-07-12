@@ -34,6 +34,8 @@ extern const char* image_dump_file;
 /* sentinel guard file for system check */
 extern const char* sentinel_file;
 
+extern const char* guard_str;
+
 /**
  * @brief Initialise SD card
  * @return OK if successful

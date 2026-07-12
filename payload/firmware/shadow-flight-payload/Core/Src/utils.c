@@ -41,3 +41,23 @@ void myprintf(const char* fmt, ...) {
 
 }
 
+/* translate payload status to name */
+const char* payload_status_to_name(PAYLOAD_STATUS_T t) {
+	switch (t) {
+		case PAYLOAD_STATUS_ERR:
+			return "PAYLOAD_STATUS_ERR\r\n";
+		case PAYLOAD_STATUS_OK:
+			return "PAYLOAD_STATUS_OK\r\n";
+		case PAYLOD_STATUS_STORAGE_OK:
+			return "PAYLOD_STATUS_STORAGE_OK\r\n";
+		case PAYLOAD_STATUS_FILE_ERR:
+			return "PAYLOAD_STATUS_FILE_ERR\r\n";
+		case PAYLOAD_STATUS_TIMEOUT:
+			return "PAYLOAD_STATUS_TIMEOUT\r\n";
+		case PAYLOAD_STATUS_MEMORY_FAILURE:
+			return "PAYLOAD_STATUS_MEMORY_FAILURE\r\n";
+		default:
+			return "Invalid PAYLOAD status\r\n";
+	}
+}
+

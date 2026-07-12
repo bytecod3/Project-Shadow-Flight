@@ -24,7 +24,8 @@ void capture_control_task(void* argument){
 	myprintf("%s\r\n", s);
 
 	/* =========== subsystem checks =============== */
-	init_sd_card();
+	PAYLOAD_STATUS_T t = init_sd_card();
+	myprintf("PAYLOAD_STATUS: %s\r\n", payload_status_to_name(t));
 
 	// transition to next state
 
