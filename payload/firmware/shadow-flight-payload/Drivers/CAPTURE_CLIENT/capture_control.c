@@ -47,7 +47,7 @@ void capture_control_task(void* argument){
 	myprintf("SNAPSHOT capture start\r\n");
 	capture_control_start_capture();
 
-	uint32_t tm = HAL_GetTick();
+	uint32_t tm = HAL_GetTick(); // todo append time to fname
 	const char* fname = "img000.txt";
 
 	FIL fil;

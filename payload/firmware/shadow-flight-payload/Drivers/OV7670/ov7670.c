@@ -75,7 +75,7 @@ HAL_StatusTypeDef ov7670_i2c_read(uint8_t reg_addr, uint8_t* data) {
 		s |= HAL_I2C_Master_Receive(
 				sp_hi2c,
 				OV7670_SLAVE_ADDRESS,
-				reg_addr,
+				data,
 				I2C_MEMADD_SIZE_8BIT,
 				100);
 
@@ -86,6 +86,7 @@ HAL_StatusTypeDef ov7670_i2c_read(uint8_t reg_addr, uint8_t* data) {
 
 /* function definitions */
 PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c) {
+	myprintf("Initializing camera...\r\n");
 	sp_hdcmi = p_hdcmi;
 	sp_hdma_dcmi = p_hdma_dcmi;
 	sp_hi2c = p_hi2c;
@@ -103,9 +104,16 @@ PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_
 	HAL_Delay(30);
 
 	/* read the device ID */
-	uint8_t buffer[4];
-	ov7670_i2c_read(VER_REG, buffer);
-	printf("[OV7670] device ID = %02X\r\n", buffer[0]);
+	uint8_t buffer[1];
+	ov7670_i2c_read(PID_REG, buffer);
+
+	myprintf("Verifying camera: Product ID buffer: ");
+	myprintf("0x%02X\r\n", buffer[0]);
+//	for( int i = 0; i < 4; i++) {
+//		myprintf("0x%02X\r\n", buffer[i]);
+//	}
+
+	myprintf("\r\n");
 
 	return PAYLOAD_STATUS_OK;
 }
@@ -132,6 +140,11 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, uint32_t dest_address) 
 	} else if(cap_mode == OV7670_CAP_SINGLE_FRAME) {
 		s_dest_address_continous_mode = 0;
 		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
+	}
+
+	// inspect the frame buffer
+	for (int i = 0; i < (QQVGA_WIDTH * QQVGA_HEIGHT); i++) {
+
 	}
 
 	return PAYLOAD_STATUS_OK;
