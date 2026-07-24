@@ -11,8 +11,6 @@
 #include "ov7670.h"
 #include "stm32f4xx_hal.h"
 
-#define QVGA_WIDTH 			(320)
-#define QVGA_HEIGHT 		(240)
 
 static DCMI_HandleTypeDef* sp_hdcmi;
 static DMA_HandleTypeDef* sp_hdma_dcmi;
@@ -23,6 +21,8 @@ static void(*s_cb_hsync)(uint32_t h);
 static void(*s_cb_vsync)(uint32_t h);
 static uint32_t s_current_h;
 static uint32_t s_current_v;
+
+uint16_t frame_buffer[QQVGA_WIDTH * QQVGA_HEIGHT] = {};
 
 /**
  * @brief write 8 bit data to camera module
@@ -127,11 +127,11 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, uint32_t dest_address) 
 	if(cap_mode == OV7670_CAP_CONTINUOUS) {
 		/* continuous capture mode automatically invokes DCMI, but DMA needs to be started manually */
 		s_dest_address_continous_mode = dest_address;
-		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_CONTINUOUS, dest_address, QVGA_WIDTH * QVGA_HEIGHT / 2);
+		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_CONTINUOUS, dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
 
 	} else if(cap_mode == OV7670_CAP_SINGLE_FRAME) {
 		s_dest_address_continous_mode = 0;
-		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, dest_address, QVGA_WIDTH * QVGA_HEIGHT / 2);
+		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
 	}
 
 	return PAYLOAD_STATUS_OK;

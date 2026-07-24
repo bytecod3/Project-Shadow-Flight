@@ -12,6 +12,7 @@
 
 #include "stm32f4xx_hal.h"
 #include "utils.h"
+#include "stdio.h"
 #include "fatfs.h"
 
 #define SD_CARD_MAX_RETRY_TIME 					(10000)			/* max time for exponential back-off retry, see usage */

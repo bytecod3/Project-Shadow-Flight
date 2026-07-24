@@ -12,9 +12,14 @@
 #include "ov7670_regs.h"
 #include "utils.h"
 
-#define OV7670_SLAVE_ADDRESS (0x42)  /* 42 for write */
-#define OV7670_CAP_CONTINUOUS 	(0)
-#define OV7670_CAP_SINGLE_FRAME (1)
+#define OV7670_SLAVE_ADDRESS 			(0x42)  /* 42 for write */
+#define OV7670_CAP_CONTINUOUS 			(0)
+#define OV7670_CAP_SINGLE_FRAME 		(1)
+
+#define QQVGA_WIDTH 					(160) // QQVGA
+#define QQVGA_HEIGHT 					(120)
+
+extern uint16_t frame_buffer[QQVGA_WIDTH * QQVGA_HEIGHT]; // for RGB565
 
 typedef enum{
 	OV7670_STATUS_ERR = 0,

@@ -11,6 +11,10 @@
 #include "utils.h"
 #include "ov7670.h"
 
+extern DCMI_HandleTypeDef hdcmi;
+extern DMA_HandleTypeDef hdma_dcmi;
+extern I2C_HandleTypeDef hi2c2;
+
 #define CAMERA_MODE_QVGA_RGB565 0
 #define CAMERA_MODE_QVGA_YUV 1
 

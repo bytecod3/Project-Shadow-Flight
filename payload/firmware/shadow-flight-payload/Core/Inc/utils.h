@@ -7,6 +7,8 @@
 
 #ifndef UTILS_H
 #define UTILS_H
+
+#include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 #include <stm32f4xx_hal.h>

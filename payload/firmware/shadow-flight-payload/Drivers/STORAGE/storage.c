@@ -72,7 +72,6 @@ PAYLOAD_STATUS_T init_sd_card(){
 	}
 
 
-
 	/* get some SD card statistics */
 	DWORD free_clusters, free_sectors, total_sectors;
 	FATFS* get_free_fs;
