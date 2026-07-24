@@ -27,7 +27,6 @@ typedef enum{
 
 } OV7670_STATUS;
 
-
 /* settings and camera commands */
 #define RESET_COMMAND (0x80)
 
@@ -35,7 +34,7 @@ PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_
 
 PAYLOAD_STATUS_T ov7670_config(uint32_t mode);
 
-PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, uint32_t dest_address);
+PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address);
 
 PAYLOAD_STATUS_T ov7670_stop_capture();
 

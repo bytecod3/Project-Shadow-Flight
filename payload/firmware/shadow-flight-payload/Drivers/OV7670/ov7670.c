@@ -126,25 +126,45 @@ PAYLOAD_STATUS_T ov7670_config(uint32_t mode) {
 	// todo: initialize register default values
 
 	return PAYLOAD_STATUS_OK;
-
 }
 
-PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, uint32_t dest_address) {
+volatile int frame_ready = 0;
+
+/**
+ * Wait for DCMI DMA complete callback
+ */
+void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef* hdcmi) {
+	frame_ready = 1;
+}
+
+PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 	ov7670_stop_capture();
+	HAL_StatusTypeDef status = 0;
+	uint8_t inspect_buffer = 0;
 
 	if(cap_mode == OV7670_CAP_CONTINUOUS) {
 		/* continuous capture mode automatically invokes DCMI, but DMA needs to be started manually */
-		s_dest_address_continous_mode = dest_address;
-		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_CONTINUOUS, dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
+		//s_dest_address_continous_mode = dest_address;
+		status = HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_CONTINUOUS, (uint32_t) dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
+		myprintf("OV7670_CAP_CONTINUOUS - DMA call status: 0x%02X\r\n", status);
 
 	} else if(cap_mode == OV7670_CAP_SINGLE_FRAME) {
-		s_dest_address_continous_mode = 0;
-		HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
+		//s_dest_address_continous_mode = 0;
+		status = HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, (uint32_t) dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
+		myprintf("OV7670_CAP_SINGLE_FRAME - DMA call status: 0x%02X\r\n", status);
+
 	}
 
-	// inspect the frame buffer
-	for (int i = 0; i < (QQVGA_WIDTH * QQVGA_HEIGHT); i++) {
+	while(!frame_ready);
 
+	// inspect the frame buffer
+	if(inspect_buffer) {
+		myprintf("Inspecting captured frame buffer \r\n\r\n");
+		uint16_t* frame = (uint16_t*) dest_address;
+
+		for (int i = 0; i < (QQVGA_WIDTH * QQVGA_HEIGHT); i++) {
+			myprintf("0x%04X\r\n", frame[i]);
+		}
 	}
 
 	return PAYLOAD_STATUS_OK;

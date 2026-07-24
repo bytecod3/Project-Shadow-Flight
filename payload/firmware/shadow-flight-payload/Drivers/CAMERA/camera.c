@@ -56,7 +56,7 @@ PAYLOAD_STATUS_T camera_start_cap(uint32_t cap_mode, void* dest_handle) {
 		ov7670_cap_mode = CAMERA_CAP_SINGLE_FRAME;
 		break;
 	default:
-		printf("Capture mode %ld is not supported\r\n", cap_mode);
+		printf("Capture mode %d is not supported\r\n", cap_mode);
 		return PAYLOAD_STATUS_ERR;
 	}
 
