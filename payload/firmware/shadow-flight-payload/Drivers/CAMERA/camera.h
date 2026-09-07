@@ -27,5 +27,4 @@ PAYLOAD_STATUS_T camera_start_cap(uint32_t cap_mode, void* dest_handle);
 PAYLOAD_STATUS_T camera_stop_cap();
 PAYLOAD_STATUS_T camera_register_callback(void(*cbHSYnc)(uint32_t h), void (*cbVSync)(uint32_t v));
 
-
 #endif /* CAMERA_CAMERA_H_ */

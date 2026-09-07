@@ -155,17 +155,17 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 
 	}
 
-	while(!frame_ready);
-
-	// inspect the frame buffer
-	if(inspect_buffer) {
-		myprintf("Inspecting captured frame buffer \r\n\r\n");
-		uint16_t* frame = (uint16_t*) dest_address;
-
-		for (int i = 0; i < (QQVGA_WIDTH * QQVGA_HEIGHT); i++) {
-			myprintf("0x%04X\r\n", frame[i]);
-		}
-	}
+//	while(!frame_ready);
+//
+//	// inspect the frame buffer
+//	if(inspect_buffer) {
+//		myprintf("Inspecting captured frame buffer \r\n\r\n");
+//		uint16_t* frame = (uint16_t*) dest_address;
+//
+//		for (int i = 0; i < (QQVGA_WIDTH * QQVGA_HEIGHT); i++) {
+//			myprintf("0x%04X\r\n", frame[i]);
+//		}
+//	}
 
 	return PAYLOAD_STATUS_OK;
 

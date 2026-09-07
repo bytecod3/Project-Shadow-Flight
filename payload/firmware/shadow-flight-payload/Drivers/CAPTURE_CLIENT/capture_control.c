@@ -44,31 +44,46 @@ void capture_control_task(void* argument){
 	PAYLOAD_STATUS_T camera_init_s = camera_init();
 	myprintf("PAYLOAD_STATUS: %s\r\n", payload_status_to_name(camera_init_s));
 
-	myprintf("SNAPSHOT capture start\r\n");
-	capture_control_start_capture();
 
-	uint32_t tm = HAL_GetTick(); // todo append time to fname
-	const char* fname = "img000.txt";
-
+	// file handles
+	const char* fname = "IMG.txt";
+	char img_fname_tstamped[13]; // todo: verify max allowed length
 	FIL fil;
 	FRESULT fres;
 
-	fres =  f_open(&fil, fname, FA_WRITE);
-	if(fres == FR_OK) {
-		myprintf("copying buffer to memory\r\n");
-		fputs(frame_buffer, &fil);
-
-		myprintf("Image written\r\n");
-	} else {
-		myprintf("img capture: %s\r\n",  sd_mount_status_to_name(fres));
-	}
-
-	capture_control_stop_capture();
+	// image timestamping
+	uint32_t tm = 0;
 
 	for(;;) {
 
+		/////////////////// START CAPTURE
+		myprintf("SNAPSHOT capture start\r\n");
+//		capture_control_start_capture();
+
+//		tm = HAL_GetTick(); // todo append time to fname
+//		myprintf("TICK STAMP: %lu\r\n", tm);
+
+		// create a filename dynamically
+//		sprintf(img_fname_tstamped, "IMG_%lu.txt", tm);
+
+//		fres =  f_open(&fil, img_fname_tstamped, FA_CREATE_NEW);
+//		if(fres == FR_OK) {
+//			myprintf("copying buffer to memory\r\n");
+//			fputs(frame_buffer, &fil);
+//
+//			myprintf("Image written\r\n");
+//		} else {
+//			myprintf("img capture: %s\r\n",  sd_mount_status_to_name(fres));
+//		}
+
+		// todo: close the file
+
+//		capture_control_stop_capture();
+
+		/// STOP CAPTURE
+
 		// run state machine logic here
-		vTaskDelay(pdMS_TO_TICKS(1500));
+		vTaskDelay(pdMS_TO_TICKS(10));
 
 	}
 

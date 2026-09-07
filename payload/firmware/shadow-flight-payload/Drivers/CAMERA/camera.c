@@ -46,18 +46,19 @@ PAYLOAD_STATUS_T camera_config(uint32_t mode) {
  * @param dest_handle where to route the frame data to
  */
 PAYLOAD_STATUS_T camera_start_cap(uint32_t cap_mode, void* dest_handle) {
+
 	uint32_t ov7670_cap_mode;
 
 	switch(cap_mode){
-	case CAMERA_CAP_CONTINOUS:
-		ov7670_cap_mode = CAMERA_CAP_CONTINOUS;
-		break;
-	case CAMERA_CAP_SINGLE_FRAME:
-		ov7670_cap_mode = CAMERA_CAP_SINGLE_FRAME;
-		break;
-	default:
-		printf("Capture mode %d is not supported\r\n", cap_mode);
-		return PAYLOAD_STATUS_ERR;
+		case CAMERA_CAP_CONTINOUS:
+			ov7670_cap_mode = CAMERA_CAP_CONTINOUS;
+			break;
+		case CAMERA_CAP_SINGLE_FRAME:
+			ov7670_cap_mode = CAMERA_CAP_SINGLE_FRAME;
+			break;
+		default:
+			printf("Capture mode %d is not supported\r\n", cap_mode);
+			return PAYLOAD_STATUS_ERR;
 	}
 
 	return ov7670_start_capture(ov7670_cap_mode, dest_handle);

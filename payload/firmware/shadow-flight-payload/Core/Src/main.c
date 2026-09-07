@@ -266,7 +266,7 @@ int main(void)
   /* USER CODE BEGIN RTOS_QUEUES */
   payload_memory_stats_queue_handle = xQueueCreate(PAYLOAD_MEMORY_QUEUE_LENGTH, sizeof(PAYLOAD_rtos_memory_stats_type_t));
   payload_sensor_data_queue_handle = xQueueCreate(PAYLOAD_SENSOR_DATA_QUEUE_LENGTH, sizeof(PAYLOAD_sensor_data_t));
-  message_dispatcher_queue_handle = xQueueCreate(10, sizeof(char) * 100);
+  message_dispatcher_queue_handle = xQueueCreate(10, sizeof(char) * 100); // todo: optimize this -> use char pointer
   combined_payload_data_queue_handle = xQueueCreate(10, sizeof(PAYLOAD_combined_data_t));
 
   /* check for successful queue creation */
@@ -315,12 +315,12 @@ int main(void)
   xTraceEnable(TRC_START);
 
   BaseType_t default_task = xTaskCreate(StartDefaultTask, "default", 128, NULL, 1, &defaultTaskHandle);
-  BaseType_t memstats_create_status = xTaskCreate(get_payload_rtos_memory_task, "memory", 500, NULL, 1, &get_payload_rtos_memory_task_handle);
-  BaseType_t payload_sensor_create_status = xTaskCreate(get_payload_sensor_data_task, "sensor_data", 500, NULL, 1, &get_payload_sensor_data_task_handle);
-  BaseType_t message_dispatcher_create_status = xTaskCreate(message_dispatcher_task, "dispatcher", 500, NULL, 1, &message_dispatcher_task_handle);
+  BaseType_t memstats_create_status = xTaskCreate(get_payload_rtos_memory_task, "memory", 600, NULL, 1, &get_payload_rtos_memory_task_handle);
+  BaseType_t payload_sensor_create_status = xTaskCreate(get_payload_sensor_data_task, "sensor_data", 300, NULL, 1, &get_payload_sensor_data_task_handle);
+//  BaseType_t message_dispatcher_create_status = xTaskCreate(message_dispatcher_task, "dispatcher", 128, NULL, 1, &message_dispatcher_task_handle);
   BaseType_t payload_consumer_create_status = xTaskCreate(payload_data_consumer, "consumer", 500, NULL, 1, &payload_data_consumer_task_handle);
-  BaseType_t led_active_task_create_status = xTaskCreate(led_active_task, "led_active", 128, NULL, 1, &led_active_task_handle);
-  BaseType_t capture_control_task_create_status = xTaskCreate(capture_control_task, "capture_control", 500, NULL, 1, &capture_control_task_handle);
+//  BaseType_t led_active_task_create_status = xTaskCreate(led_active_task, "led_active", 256, NULL, 1, &led_active_task_handle);
+  BaseType_t capture_control_task_create_status = xTaskCreate(capture_control_task, "capture_control", 700, NULL, 1, &capture_control_task_handle);
 
 
   /* check for successful creation */
@@ -342,11 +342,11 @@ int main(void)
 	  myprintf("[-] get_payload_sensor_data_task task creation Failed \r\n");
   }
 
-  if(message_dispatcher_create_status == pdPASS) {
-	  myprintf("[+] message_dispatcher_task task created OK \r\n");
-  }else {
-	  myprintf("[-] message_dispatcher_task task creation Failed \r\n");
-  }
+//  if(message_dispatcher_create_status == pdPASS) {
+//	  myprintf("[+] message_dispatcher_task task created OK \r\n");
+//  }else {
+//	  myprintf("[-] message_dispatcher_task task creation Failed \r\n");
+//  }
 
   if(payload_consumer_create_status == pdPASS) {
 	  myprintf("[+] payload_data_consumer_task task created OK \r\n");
@@ -354,12 +354,12 @@ int main(void)
 	  myprintf("[-] payload_data_consumer_task task creation Failed \r\n");
   }
 
-  if(led_active_task_create_status == pdPASS) {
-	  myprintf("[+] led_active_task created OK\r\n");
-  } else {
-	  myprintf("[-] led_active_task failed to create\r\n");
-  }
-
+//  if(led_active_task_create_status == pdPASS) {
+//	  myprintf("[+] led_active_task created OK\r\n");
+//  } else {
+//	  myprintf("[-] led_active_task failed to create\r\n");
+//  }
+//
   if(capture_control_task_create_status == pdPASS) {
 	  myprintf("[+] capture_control_task created OK\r\n");
   } else {
