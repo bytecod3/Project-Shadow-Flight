@@ -12,6 +12,8 @@
 #include "ov7670_regs.h"
 #include "utils.h"
 
+extern DCMI_HandleTypeDef hdcmi;
+
 #define OV7670_SLAVE_ADDRESS 			(0x42)  /* 42 for write */
 #define OV7670_CAP_CONTINUOUS 			(0)
 #define OV7670_CAP_SINGLE_FRAME 		(1)
@@ -30,8 +32,7 @@ typedef enum{
 /* settings and camera commands */
 #define RESET_COMMAND (0x80)
 
-PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c);
-
+PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DMA_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c);
 PAYLOAD_STATUS_T ov7670_config(uint32_t mode);
 
 PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address);

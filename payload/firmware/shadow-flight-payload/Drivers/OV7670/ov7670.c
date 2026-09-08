@@ -85,7 +85,7 @@ HAL_StatusTypeDef ov7670_i2c_read(uint8_t reg_addr, uint8_t* data) {
 }
 
 /* function definitions */
-PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DCMI_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c) {
+PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DMA_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c) {
 	myprintf("Initializing camera...\r\n");
 	sp_hdcmi = p_hdcmi;
 	sp_hdma_dcmi = p_hdma_dcmi;
@@ -130,12 +130,6 @@ PAYLOAD_STATUS_T ov7670_config(uint32_t mode) {
 
 volatile int frame_ready = 0;
 
-/**
- * Wait for DCMI DMA complete callback
- */
-void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef* hdcmi) {
-	frame_ready = 1;
-}
 
 PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 	ov7670_stop_capture();
@@ -155,8 +149,10 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 
 	}
 
-//	while(!frame_ready);
-//
+	while(!frame_ready){
+		myprintf("Capturing...\r\n");
+	}
+
 //	// inspect the frame buffer
 //	if(inspect_buffer) {
 //		myprintf("Inspecting captured frame buffer \r\n\r\n");
@@ -172,10 +168,21 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 }
 
 PAYLOAD_STATUS_T ov7670_stop_capture() {
-	HAL_DCMI_Stop(sp_hdcmi);
+	myprintf("Before HAL_DCMI_Stop\r\n");
+
+//	HAL_StatusTypeDef  s = HAL_DCMI_Stop(sp_hdcmi);
+
+//	myprintf("After HAL_DCMI_Stop status=%d\r\n", s);
+
 	return PAYLOAD_STATUS_OK;
 }
 
 
+/**
+ * Wait for DCMI DMA complete callback
+ */
+void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef* hdcmi) {
+	frame_ready = 1;
+}
 
 

@@ -58,13 +58,14 @@ void capture_control_task(void* argument){
 
 		/////////////////// START CAPTURE
 		myprintf("SNAPSHOT capture start\r\n");
-//		capture_control_start_capture();
+		// inspect dcmi
+		myprintf("DCMI state before start capture: %d\r\n", HAL_DCMI_GetState(&hdcmi));
+		capture_control_start_capture();
 
-//		tm = HAL_GetTick(); // todo append time to fname
-//		myprintf("TICK STAMP: %lu\r\n", tm);
+		tm = HAL_GetTick(); // todo append time to fname
 
 		// create a filename dynamically
-//		sprintf(img_fname_tstamped, "IMG_%lu.txt", tm);
+		sprintf(img_fname_tstamped, "IMG_%lu.txt", tm);
 
 //		fres =  f_open(&fil, img_fname_tstamped, FA_CREATE_NEW);
 //		if(fres == FR_OK) {
@@ -78,9 +79,12 @@ void capture_control_task(void* argument){
 
 		// todo: close the file
 
-//		capture_control_stop_capture();
+		capture_control_stop_capture();
 
-		/// STOP CAPTURE
+		// inspect dcmi
+		myprintf("DCMI state after stop: %d\r\n", HAL_DCMI_GetState(&hdcmi));
+
+		// STOP CAPTURE
 
 		// run state machine logic here
 		vTaskDelay(pdMS_TO_TICKS(10));
