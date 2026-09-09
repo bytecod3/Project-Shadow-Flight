@@ -139,12 +139,21 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 	if(cap_mode == OV7670_CAP_CONTINUOUS) {
 		/* continuous capture mode automatically invokes DCMI, but DMA needs to be started manually */
 		//s_dest_address_continous_mode = dest_address;
+		myprintf("OV767O: Capturing in OV7670_CAP_CONTINUOUS mode");
 		status = HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_CONTINUOUS, (uint32_t) dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
 		myprintf("OV7670_CAP_CONTINUOUS - DMA call status: 0x%02X\r\n", status);
 
 	} else if(cap_mode == OV7670_CAP_SINGLE_FRAME) {
 		//s_dest_address_continous_mode = 0;
+		myprintf("OV767O: Capturing in OV7670_CAP_SINGLE_FRAME mode");
+
+		// check the handles to be non-zero
+		myprintf("DCMI handle = %p\r\n", sp_hdcmi);
+		myprintf("DMA handle = %p\r\n", sp_hdma_dcmi);
+
 		status = HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, (uint32_t) dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
+
+
 		myprintf("OV7670_CAP_SINGLE_FRAME - DMA call status: 0x%02X\r\n", status);
 
 	}
@@ -164,15 +173,14 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 //	}
 
 	return PAYLOAD_STATUS_OK;
-
 }
 
 PAYLOAD_STATUS_T ov7670_stop_capture() {
 	myprintf("Before HAL_DCMI_Stop\r\n");
 
-//	HAL_StatusTypeDef  s = HAL_DCMI_Stop(sp_hdcmi);
+	HAL_StatusTypeDef  s = HAL_DCMI_Stop(sp_hdcmi);
 
-//	myprintf("After HAL_DCMI_Stop status=%d\r\n", s);
+	myprintf("After HAL_DCMI_Stop status=%d\r\n", s);
 
 	return PAYLOAD_STATUS_OK;
 }

@@ -14,7 +14,8 @@
 extern payload_state_t payload_state;
 
 void capture_control_start_capture() {
-	camera_stop_cap();
+	myprintf("\r\nCAPTURE_CONTROL: calling camera, starting capture...\r\n");
+//	camera_stop_cap();
 
 	PAYLOAD_STATUS_T a = camera_start_cap(CAMERA_CAP_SINGLE_FRAME, frame_buffer );
 	myprintf("capture_control_start_capture: %s\r\n", payload_status_to_name(a) );
@@ -57,7 +58,7 @@ void capture_control_task(void* argument){
 	for(;;) {
 
 		/////////////////// START CAPTURE
-		myprintf("SNAPSHOT capture start\r\n");
+		// myprintf("SNAPSHOT capture start\r\n");
 		// inspect dcmi
 		myprintf("DCMI state before start capture: %d\r\n", HAL_DCMI_GetState(&hdcmi));
 		capture_control_start_capture();

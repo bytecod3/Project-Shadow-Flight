@@ -94,6 +94,7 @@ void HardFault_Handler(void)
   while (1)
   {
     /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+	  myprintf("HARDFAULT: Crashed like a B**tch\r\n");
     /* USER CODE END W1_HardFault_IRQn 0 */
   }
 }

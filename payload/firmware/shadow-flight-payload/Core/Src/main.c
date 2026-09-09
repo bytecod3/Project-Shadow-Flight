@@ -320,7 +320,7 @@ int main(void)
 //  BaseType_t message_dispatcher_create_status = xTaskCreate(message_dispatcher_task, "dispatcher", 128, NULL, 1, &message_dispatcher_task_handle);
   BaseType_t payload_consumer_create_status = xTaskCreate(payload_data_consumer, "consumer", 500, NULL, 1, &payload_data_consumer_task_handle);
 //  BaseType_t led_active_task_create_status = xTaskCreate(led_active_task, "led_active", 256, NULL, 1, &led_active_task_handle);
-  BaseType_t capture_control_task_create_status = xTaskCreate(capture_control_task, "capture_control", 700, NULL, 1, &capture_control_task_handle);
+  BaseType_t capture_control_task_create_status = xTaskCreate(capture_control_task, "capture_control", 900, NULL, 1, &capture_control_task_handle);
 
 
   /* check for successful creation */
