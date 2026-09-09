@@ -150,6 +150,7 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 		// check the handles to be non-zero
 		myprintf("DCMI handle = %p\r\n", sp_hdcmi);
 		myprintf("DMA handle = %p\r\n", sp_hdma_dcmi);
+		myprintf("DMA instance = % p\r\n", sp_hdcmi->DMA_Handle->Instance);
 
 		status = HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, (uint32_t) dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
 
