@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <main.h>
 #include "ov7670.h"
+#include "ov7670_reg_config.h"
 #include "stm32f4xx_hal.h"
 
 
@@ -86,7 +87,7 @@ HAL_StatusTypeDef ov7670_i2c_read(uint8_t reg_addr, uint8_t* data) {
 
 /* function definitions */
 PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DMA_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c) {
-	myprintf("Initializing camera...\r\n");
+	myprintf("OV7670: Initializing camera...\r\n");
 	sp_hdcmi = p_hdcmi;
 	sp_hdma_dcmi = p_hdma_dcmi;
 	sp_hi2c = p_hi2c;
@@ -99,7 +100,7 @@ PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DMA_HandleTypeDef* p_h
 	HAL_GPIO_WritePin(CAM_RESET_GPIO_Port, CAM_RESET_Pin, GPIO_PIN_SET);
 	HAL_Delay(100);
 
-	/* reset all registers to default values */
+	/* reset */
 	ov7670_i2c_write(COM7_REG, RESET_COMMAND);
 	HAL_Delay(30);
 
@@ -107,13 +108,8 @@ PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DMA_HandleTypeDef* p_h
 	uint8_t buffer[1];
 	ov7670_i2c_read(PID_REG, buffer);
 
-	myprintf("Verifying camera: Product ID buffer: ");
+	myprintf("OV7670: Verifying camera: Product ID buffer: ");
 	myprintf("0x%02X\r\n", buffer[0]);
-//	for( int i = 0; i < 4; i++) {
-//		myprintf("0x%02X\r\n", buffer[i]);
-//	}
-
-	myprintf("\r\n");
 
 	return PAYLOAD_STATUS_OK;
 }
@@ -123,7 +119,11 @@ PAYLOAD_STATUS_T ov7670_config(uint32_t mode) {
 	ov7670_i2c_write(0x12, 0x80);
 	HAL_Delay(30);
 
-	// todo: initialize register default values
+	/* initialize register values */
+	for(int i = 0; OV7670_REGS[i][0] != REG_BATT; i++ ) {
+		ov7670_i2c_write(OV7670_REGS[i][0], OV7670_REGS[i][1]);
+		HAL_Delay(1);
+	}
 
 	return PAYLOAD_STATUS_OK;
 }
@@ -158,9 +158,9 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 
 	}
 
-	while(!frame_ready){
-		myprintf("Capturing...\r\n");
-	}
+//	while(!frame_ready){
+//		myprintf("Capturing...\r\n");
+//	}
 
 //	// inspect the frame buffer
 //	if(inspect_buffer) {
@@ -185,12 +185,39 @@ PAYLOAD_STATUS_T ov7670_stop_capture() {
 	return PAYLOAD_STATUS_OK;
 }
 
+void ov7670_register_callback(
+		void(*hsync_cb)(uint32_t h),
+		void(*vsync_cb)(uint32_t h)
+) {
+	s_cb_hsync = hsync_cb;
+	s_cb_vsync = vsync_cb;
+
+}
 
 /**
  * Wait for DCMI DMA complete callback
  */
 void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef* hdcmi) {
-	frame_ready = 1;
+	myprintf("OV7670: Single frame captured\r\n");
+//	frame_ready = 1;
+	if (s_cb_vsync) {
+		s_cb_vsync(s_current_v);
+	}
+
+	if(s_dest_address_continous_mode != 0) {
+		HAL_DMA_Start_IT(
+				hdcmi->DMA_Handle,
+				(uint32_t)&hdcmi->Instance->DR,
+				s_dest_address_continous_mode,
+				QQVGA_WIDTH * QQVGA_HEIGHT/2
+		);
+	}
+
+	s_current_v++;
+	s_current_h = 0;
+
+
+
 }
 
 

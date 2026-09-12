@@ -20,6 +20,7 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "fatfs.h"
+#include "libjpeg.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -210,6 +211,7 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM3_Init();
   MX_USART1_UART_Init();
+  MX_LIBJPEG_Init();
   /* USER CODE BEGIN 2 */
 
   char board_id_msg[200];

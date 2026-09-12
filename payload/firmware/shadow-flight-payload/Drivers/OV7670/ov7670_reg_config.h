@@ -12,7 +12,7 @@
 
 #define REG_BATT 0xFF
 
-const uint8_t OV7670_REG[][2] =  {
+const uint8_t OV7670_REGS[][2] =  {
 		/* color mode */
 		{COM7_REG, 		0x14}, // select QVGA, RGB
 		{RGB444_REG, 	0x00}, // disable RGB444
@@ -97,7 +97,7 @@ const uint8_t OV7670_REG[][2] =  {
 		#endif
 
 		/* frames per second */
-		{CLKRC_REG, 0x00}, // prescaler 1/1
+		{CLKRC_REG, 0x00}, // pre-scaler 1/1
 
 		/* others */
 		{MVFP_REG, 0x31}, // mirror flip
