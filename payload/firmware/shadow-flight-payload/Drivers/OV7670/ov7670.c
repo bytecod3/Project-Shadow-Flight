@@ -154,7 +154,6 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 
 		status = HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, (uint32_t) dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
 
-
 		myprintf("OV7670_CAP_SINGLE_FRAME - DMA call status: 0x%02X\r\n", status);
 
 	}

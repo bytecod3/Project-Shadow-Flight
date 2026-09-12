@@ -25,17 +25,19 @@
 #define COM4_REG				(0x0D) /* common control 4 */
 #define COM5_REG				(0x0E) /* common control 5*/
 #define COM6_REG 				(0x0F) /* common control 6 */
-#define AECH_REG				(0x10) /* EXposure value */
+#define AECH_REG				(0x10) /* Exposure value */
 #define CLKRC_REG				(0x11) /* clock selection and pre-scale */
 #define COM7_REG				(0x12) /* common control 7 */
 #define COM8_REG				(0x13) /* common control 8 */
 #define COM9_REG				(0x14) /* common control 9 */
-#define COM10_REG				(0X15) /* common control 10  */
-#define HSTART_REG  			(0x16) /* output format */
-#define HSTOP_REG				(0x17) /* output format */
-#define VSTRT_REG  				(0x18) /* output format */
-#define VSTOP_REG  				(0x19) /* output format */
-#define PSHFT_REG  				(0x1A) /* data format - pixel delay select */
+#define COM10_REG				(0x15) /* common control 10  */
+
+#define HSTART_REG  			(0x17) /* output format */
+#define HSTOP_REG				(0x18) /* output format */
+
+#define VSTRT_REG  				(0x19) /* output format */
+#define VSTOP_REG  				(0x1A) /* output format */
+#define PSHFT_REG  				(0x1B) /* data format - pixel delay select */
 #define MIDH_REG				(0x1C) /* manufacturer ID byte HIGH*/
 #define MIDL_REG 				(0x1D) /* manufacturer ID byte LOW */
 #define MVFP_REG 				(0x1E) /* mirror/flip enable  */
@@ -59,7 +61,7 @@
 #define ADC_REG   				(0x35) /* ADC control */
 #define ACOM_REG 				(0x36) /* ADC and analog common mode control  */
 #define OFON_REG 				(0x39) /* ADC offset control  */
-#define TSLB_REG				(0x3A) /* LIne buffer test option  */
+#define TSLB_REG				(0x3A) /* Line buffer test option  */
 #define COM11_REG				(0x3B) /* common control 11 */
 #define COM12_REG   			(0x3C) /* common control 12 */
 #define COM13_REG   			(0x3D) /* common control 13 */
