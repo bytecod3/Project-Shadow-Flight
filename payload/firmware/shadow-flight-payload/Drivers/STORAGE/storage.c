@@ -20,6 +20,8 @@ const char* sentinel_file = "sentinel.txt";
 const char* guard_str = "0x5E5E5E";
 
 
+FATFS FatFs;
+
 /**
  * @brief Initialise SD card
  * @return OK if successful
@@ -33,8 +35,7 @@ PAYLOAD_STATUS_T init_sd_card(){
 
 	myprintf("Initializing payload SD card...\r\n");
 
-	/* some variables for FatFS */
-	FATFS FatFs;		// fat-fs handle
+	/* local variables for FatFS */
 	FIL fil;			// file handle
 	FRESULT fres;		// result after operations
 
@@ -70,7 +71,6 @@ PAYLOAD_STATUS_T init_sd_card(){
 	} else {
 		myprintf("f_mount status (%s)", sd_mount_status_to_name(fres));
 	}
-
 
 	/* get some SD card statistics */
 	DWORD free_clusters, free_sectors, total_sectors;

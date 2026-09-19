@@ -21,6 +21,8 @@
 #define SENTINEL_FILE_OPEN_RETRY_COUNTER 		(50)
 #define SENTINEL_GUARD_MSG_LENGTH				(30)
 
+extern FATFS FatFs;													/* fat-fs handle */
+
 /**
  *@brief get the minimum of 2 uint32_t numbers
  */
