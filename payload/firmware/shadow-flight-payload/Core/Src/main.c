@@ -316,14 +316,15 @@ int main(void)
   /* start trace */
   xTraceEnable(TRC_START);
 
+  myprintf("FREE HEAP before creating tasks: %u\r\n", xPortGetFreeHeapSize());
+
   BaseType_t default_task = xTaskCreate(StartDefaultTask, "default", 128, NULL, 1, &defaultTaskHandle);
-  BaseType_t memstats_create_status = xTaskCreate(get_payload_rtos_memory_task, "memory", 600, NULL, 1, &get_payload_rtos_memory_task_handle);
+  BaseType_t memstats_create_status = xTaskCreate(get_payload_rtos_memory_task, "memory", 300, NULL, 1, &get_payload_rtos_memory_task_handle);
   BaseType_t payload_sensor_create_status = xTaskCreate(get_payload_sensor_data_task, "sensor_data", 300, NULL, 1, &get_payload_sensor_data_task_handle);
 //  BaseType_t message_dispatcher_create_status = xTaskCreate(message_dispatcher_task, "dispatcher", 128, NULL, 1, &message_dispatcher_task_handle);
-  BaseType_t payload_consumer_create_status = xTaskCreate(payload_data_consumer, "consumer", 500, NULL, 1, &payload_data_consumer_task_handle);
+  BaseType_t payload_consumer_create_status = xTaskCreate(payload_data_consumer, "consumer", 300, NULL, 1, &payload_data_consumer_task_handle);
 //  BaseType_t led_active_task_create_status = xTaskCreate(led_active_task, "led_active", 256, NULL, 1, &led_active_task_handle);
   BaseType_t capture_control_task_create_status = xTaskCreate(capture_control_task, "capture_control", 1000, NULL, 1, &capture_control_task_handle);
-
 
   /* check for successful creation */
   if(default_task == pdPASS) {
@@ -369,6 +370,7 @@ int main(void)
   }
 
   /* USER CODE END RTOS_THREADS */
+  //myprintf("FREE HEAP before scheduler: %u\r\n", xPortGetFreeHeapSize());
 
   /* Start scheduler */
   osKernelStart();

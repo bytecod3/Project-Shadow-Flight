@@ -114,34 +114,6 @@ PAYLOAD_STATUS_T init_sd_card(){
 		}
 	}
 
-//	/* try to open image dump file on SD card */
-////	fres = f_open(&fil, image_dump_file, FA_READ);
-////	int f_open_retry_count = 0;
-////
-////	if(fres != FR_OK) {
-////	  myprintf("f_open error (%i)\r\n", fres);
-////
-////	  while(f_open_retry_count < IMAGE_DUMP_OPEN_RETRY_COUNTER) {
-////		  fres = f_open(&fil, image_dump_file, FA_READ);
-////		  if (fres != FR_OK) break;
-////
-////		  myprintf("Retrying to open image dump file...\r\n");
-////		  f_open_retry_count++;
-////
-////	  }
-////
-////	  /* the file probably does not exist. Create it and retry opening */
-////	  fres = f_open(&fil, image_dump_file, FA_WRITE | FA_CREATE_ALWAYS);
-////	  if(fres != FR_OK) {
-////		  myprintf("image file created OK.\r\n");
-////	  } else {
-////		  /* write a message to file */
-////		  const char* genesis_msg = "Am going to store images\r\n";
-////		  f_puts(genesis_msg, &fil);
-////	  }
-////
-////	}
-
 	/* checking sentinel guard message */
 	BYTE read_buf[SENTINEL_GUARD_MSG_LENGTH];
 
@@ -152,6 +124,15 @@ PAYLOAD_STATUS_T init_sd_card(){
 	  if ( strncmp((const char*)read_buf, guard_str, strlen(guard_str) - 1) == 0) {
 		  myprintf("Payload storage system OK\r\n");
 		  status = PAYLOAD_STATUS_OK;
+
+		  /* initialize storage directories */
+		  fres = f_mkdir("IMAGES");
+		  if(fres == FR_OK ) {
+			  myprintf("Created IMAGES directory\r\n");
+		  } else if(fres == FR_EXIST) {
+			  myprintf("IMAGES directory already exists\r\n");
+		  }
+
 	  } else {
 		  status = PAYLOAD_STATUS_ERR;
 	  }
@@ -160,6 +141,7 @@ PAYLOAD_STATUS_T init_sd_card(){
 	  myprintf("f_gets error (%i)\r\n", fres);
 	  status = PAYLOAD_STATUS_FILE_ERR;
 	}
+
 
 	/* close file */
 	f_close(&fil);

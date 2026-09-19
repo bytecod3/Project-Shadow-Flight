@@ -89,6 +89,9 @@ static int capture_control_encodeJPEG_frame() {
 	s_jsamprow[0] = sp_line_buffer_rgb888;
 	sp_cinfo->err = jpeg_std_error(sp_jerr);
 	sp_cinfo->err->output_message = capture_control_libjpeg_output_message;
+
+	myprintf("LIBJPEG free heap: %u\r\n", xPortGetFreeHeapSize());
+
 	jpeg_create_compress(sp_cinfo);
 	jpeg_stdio_dest(sp_cinfo, &sp_fil);
 
@@ -143,35 +146,32 @@ static int capture_control_encodeJPEG_frame() {
 static int capture_control_single_snapshot() {
 	int r = 1;
 
-	//static int f_count = 0; // todo: remove temporary file naming
+	static int f_count = 0; // todo: remove temporary file naming
 
 	myprintf("CAPTURE_CONTROL: Single capture start\r\n");
 
-//	char filename[15];
-	const char* fname = "IMG_000.txt";
-//	//snprintf(filename, sizeof(filename), "IMG_%03u.jpg", f_count++);
-	//myprintf("Generated filename: %s\r\n", filename);
-//
+	// todo: check if images directory exists
+
+	char filename[32];
+	snprintf(filename, sizeof(filename), "IMAGES/IMG_%03u.jpg", f_count++);
+	myprintf("Generated filename: %s\r\n", filename);
+
 	// open file for writing
-	fres =  f_open(&sp_fil, fname, FA_WRITE | FA_CREATE_ALWAYS);
+	fres =  f_open(&sp_fil, filename, FA_WRITE | FA_CREATE_ALWAYS);
 	myprintf("FRES returned %d\r\n", fres);
 
 	// confirm file created
 	if(fres == FR_OK) {
 		UINT wc;
-
-//		f_write(&sp_fil, "IMG\r\n", strlen("IMG"), &wc);
-		f_close(&sp_fil);
-
 		myprintf("Image file created\r\n");
 
 	} else {
-		myprintf("Img file opening failed: %s\r\n",  sd_mount_status_to_name(fres));
+		myprintf("Image file opening failed: %s\r\n",  sd_mount_status_to_name(fres));
 		return 0;
 	}
 
 	// encode to JPEG
-	//capture_control_encodeJPEG_frame();
+	capture_control_encodeJPEG_frame();
 
 	// write to file no
 
