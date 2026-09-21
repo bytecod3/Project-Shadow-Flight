@@ -23,7 +23,7 @@ static void(*s_cb_vsync)(uint32_t h);
 static uint32_t s_current_h;
 static uint32_t s_current_v;
 
-uint16_t frame_buffer[QQVGA_WIDTH * QQVGA_HEIGHT] = {};
+uint32_t frame_buffer[QQVGA_WIDTH * QQVGA_HEIGHT] = {};
 
 /**
  * @brief write 8 bit data to camera module
@@ -87,7 +87,7 @@ HAL_StatusTypeDef ov7670_i2c_read(uint8_t reg_addr, uint8_t* data) {
 
 /* function definitions */
 PAYLOAD_STATUS_T ov7670_init(DCMI_HandleTypeDef* p_hdcmi, DMA_HandleTypeDef* p_hdma_dcmi, I2C_HandleTypeDef* p_hi2c) {
-	myprintf("OV7670: Initializing camera...\r\n");
+	myprintf("OV7670: Initialising camera...\r\n");
 	sp_hdcmi = p_hdcmi;
 	sp_hdma_dcmi = p_hdma_dcmi;
 	sp_hi2c = p_hi2c;
@@ -139,20 +139,24 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 	if(cap_mode == OV7670_CAP_CONTINUOUS) {
 		/* continuous capture mode automatically invokes DCMI, but DMA needs to be started manually */
 		//s_dest_address_continous_mode = dest_address;
-		myprintf("OV767O: Capturing in OV7670_CAP_CONTINUOUS mode");
+		myprintf("OV767O: Capturing in OV7670_CAP_CONTINUOUS mode\r\n");
 		status = HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_CONTINUOUS, (uint32_t) dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
 		myprintf("OV7670_CAP_CONTINUOUS - DMA call status: 0x%02X\r\n", status);
 
 	} else if(cap_mode == OV7670_CAP_SINGLE_FRAME) {
 		//s_dest_address_continous_mode = 0;
-		myprintf("OV767O: Capturing in OV7670_CAP_SINGLE_FRAME mode");
+		myprintf("OV767O: Capturing in OV7670_CAP_SINGLE_FRAME mode\r\n");
 
 		// check the handles to be non-zero
 		myprintf("DCMI handle = %p\r\n", sp_hdcmi);
 		myprintf("DMA handle = %p\r\n", sp_hdma_dcmi);
 		myprintf("DMA instance = % p\r\n", sp_hdcmi->DMA_Handle->Instance);
 
-		status = HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, (uint32_t) dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2);
+		if (HAL_DCMI_Start_DMA(sp_hdcmi, DCMI_MODE_SNAPSHOT, (uint32_t) dest_address, QQVGA_WIDTH * QQVGA_HEIGHT / 2) == HAL_OK) {
+			myprintf("OK\r\n");
+		} else {
+			myprintf("Failed to start\r\n");
+		}
 
 		myprintf("OV7670_CAP_SINGLE_FRAME - DMA call status: 0x%02X\r\n", status);
 
@@ -162,25 +166,23 @@ PAYLOAD_STATUS_T ov7670_start_capture(uint32_t cap_mode, void* dest_address) {
 //		myprintf("Capturing...\r\n");
 //	}
 
-//	// inspect the frame buffer
-//	if(inspect_buffer) {
-//		myprintf("Inspecting captured frame buffer \r\n\r\n");
-//		uint16_t* frame = (uint16_t*) dest_address;
-//
-//		for (int i = 0; i < (QQVGA_WIDTH * QQVGA_HEIGHT); i++) {
-//			myprintf("0x%04X\r\n", frame[i]);
-//		}
-//	}
+	// inspect the frame buffer
+	if(inspect_buffer) {
+		myprintf("Inspecting captured frame buffer \r\n\r\n");
+		uint16_t* frame = (uint16_t*) dest_address;
+
+		for (int i = 0; i < (QQVGA_WIDTH * QQVGA_HEIGHT); i++) {
+			myprintf("0x%04X\r\n", frame[i]);
+		}
+	}
+
 
 	return PAYLOAD_STATUS_OK;
 }
 
 PAYLOAD_STATUS_T ov7670_stop_capture() {
-	myprintf("Before HAL_DCMI_Stop\r\n");
 
 	HAL_StatusTypeDef  s = HAL_DCMI_Stop(sp_hdcmi);
-
-	myprintf("After HAL_DCMI_Stop status=%d\r\n", s);
 
 	return PAYLOAD_STATUS_OK;
 }
@@ -195,9 +197,11 @@ void ov7670_register_callback(
 }
 
 /**
- * Wait for DCMI DMA complete callback
+ *@brief Called on DCMI transfer complete
  */
 void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef* hdcmi) {
+	HAL_DCMI_Stop(hdcmi);
+
 	myprintf("OV7670: Single frame captured\r\n");
 //	frame_ready = 1;
 	if (s_cb_vsync) {
@@ -216,8 +220,13 @@ void HAL_DCMI_FrameEventCallback(DCMI_HandleTypeDef* hdcmi) {
 	s_current_v++;
 	s_current_h = 0;
 
+}
 
-
+/**
+ * @brief DCMI error callback. Useful for debugging sync and DMA errors
+ */
+void HAL_DCMI_ErrorCallback(DCMI_HandleTypeDef* hdcmi) {
+	myprintf("DCMI DMA transfer error with code: %ld\r\n", HAL_DCMI_GetError(hdcmi));
 }
 
 

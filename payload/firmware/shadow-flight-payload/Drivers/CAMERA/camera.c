@@ -61,8 +61,6 @@ PAYLOAD_STATUS_T camera_start_cap(uint32_t cap_mode, void* dest_handle) {
 			return PAYLOAD_STATUS_ERR;
 	}
 
-	myprintf("CAMERA: here\r\n");
-
 	return ov7670_start_capture(ov7670_cap_mode, dest_handle);
 
 }
@@ -71,9 +69,9 @@ PAYLOAD_STATUS_T camera_start_cap(uint32_t cap_mode, void* dest_handle) {
  * @brief Stop frame capture
  */
 PAYLOAD_STATUS_T camera_stop_cap() {
-//	PAYLOAD_STATUS_T s = ov7670_stop_capture();
+	PAYLOAD_STATUS_T s = ov7670_stop_capture();
 	myprintf("CAMERA STOP PAYLOAD STATUS: %d\r\n", 334);
-	//return s;
+	return s;
 }
 
 /**

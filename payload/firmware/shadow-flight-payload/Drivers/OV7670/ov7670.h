@@ -21,7 +21,7 @@ extern DCMI_HandleTypeDef hdcmi;
 #define QQVGA_WIDTH 					(160) // QQVGA
 #define QQVGA_HEIGHT 					(120)
 
-extern uint16_t frame_buffer[QQVGA_WIDTH * QQVGA_HEIGHT]; // for RGB565
+extern uint32_t frame_buffer[QQVGA_WIDTH * QQVGA_HEIGHT]; // for RGB565
 
 typedef enum{
 	OV7670_STATUS_ERR = 0,

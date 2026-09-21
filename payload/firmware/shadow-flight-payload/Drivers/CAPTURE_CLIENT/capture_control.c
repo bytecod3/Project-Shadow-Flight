@@ -139,7 +139,6 @@ static int capture_control_encodeJPEG_frame() {
 
 	return status;
 
-
 }
 
 /// single snap capture function
@@ -170,14 +169,17 @@ static int capture_control_single_snapshot() {
 		return 0;
 	}
 
+	// start camera
+	camera_start_cap(CAMERA_CAP_SINGLE_FRAME, frame_buffer);
+
 	// encode to JPEG
 	capture_control_encodeJPEG_frame();
 
-	// write to file no
-
-
 	// todo: track encode time
 	myprintf("CAPTURE_CONTROL: Single capture end\r\n");
+
+	// stop camera
+	camera_stop_cap();
 
 	// close file after writing
 	f_close(&sp_fil);
@@ -201,15 +203,15 @@ void capture_control_task(void* argument){
 	myprintf("PAYLOAD_STATUS: %s\r\n", payload_status_to_name(t));
 
 	// todo: transition to next state
-	PAYLOAD_STATUS_T camera_init_s = camera_init();
+	myprintf("Initiliazing camera...\r\n");
+	PAYLOAD_STATUS_T camera_init_s = camera_init();								/* initialize camera  */
 	myprintf("PAYLOAD_STATUS: %s\r\n", payload_status_to_name(camera_init_s));
-
-	// register callback
-	camera_register_callback(0, capture_control_cb_vsync);
+	camera_config(CAMERA_MODE_QVGA_RGB565);   															/* configure camera */
+	camera_register_callback(0, capture_control_cb_vsync);						/* register callback */
 
 
 	// file handles
-//	const char* fname = "IMG.txt";
+	// const char* fname = "IMG.txt";
 	char img_fname_tstamped[13]; // todo: verify max allowed length
 	FIL fil;
 	FRESULT fres;
