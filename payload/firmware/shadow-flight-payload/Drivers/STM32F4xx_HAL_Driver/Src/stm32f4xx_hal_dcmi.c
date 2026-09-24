@@ -123,6 +123,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include "utils.h"
 
 /** @addtogroup STM32F4xx_HAL_Driver
   * @{
@@ -383,7 +384,10 @@ HAL_StatusTypeDef HAL_DCMI_Start_DMA(DCMI_HandleTypeDef* hdcmi, uint32_t DCMI_Mo
   if(Length <= 0xFFFFU)
   {
     /* Enable the DMA Stream */
+
+	myprintf("B4 IT\r\n\r\n");
     status = HAL_DMA_Start_IT(hdcmi->DMA_Handle, (uint32_t)&hdcmi->Instance->DR, (uint32_t)pData, Length);
+    myprintf("AFTER IT\r\n\r\n");
   }
   else /* DCMI_DOUBLE_BUFFER Mode */
   {

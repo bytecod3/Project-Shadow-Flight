@@ -95,6 +95,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include "utils.h"
+#include "stdio.h"
 
 /** @addtogroup STM32F4xx_HAL_Driver
   * @{
@@ -454,6 +456,7 @@ HAL_StatusTypeDef HAL_DMA_Start_IT(DMA_HandleTypeDef *hdma, uint32_t SrcAddress,
 
   /* calculate DMA base and stream number */
   DMA_Base_Registers *regs = (DMA_Base_Registers *)hdma->StreamBaseAddress;
+  HAL_UART_Transmit(&huart1, (uint8_t*)"A\t", strlen("A\t"), 500);
   
   /* Check the parameters */
   assert_param(IS_DMA_BUFFER_SIZE(DataLength));
@@ -463,6 +466,7 @@ HAL_StatusTypeDef HAL_DMA_Start_IT(DMA_HandleTypeDef *hdma, uint32_t SrcAddress,
   
   if(HAL_DMA_STATE_READY == hdma->State)
   {
+	  HAL_UART_Transmit(&huart1, (uint8_t*)"B\t", strlen("B\t"), 500);
     /* Change DMA peripheral state */
     hdma->State = HAL_DMA_STATE_BUSY;
     
@@ -472,6 +476,8 @@ HAL_StatusTypeDef HAL_DMA_Start_IT(DMA_HandleTypeDef *hdma, uint32_t SrcAddress,
     /* Configure the source, destination address and the data length */
     DMA_SetConfig(hdma, SrcAddress, DstAddress, DataLength);
     
+    HAL_UART_Transmit(&huart1, (uint8_t*)"C\t", strlen("C\t"), 500);
+
     /* Clear all interrupt flags at correct offset within the register */
     regs->IFCR = 0x3FU << hdma->StreamIndex;
     
@@ -480,6 +486,7 @@ HAL_StatusTypeDef HAL_DMA_Start_IT(DMA_HandleTypeDef *hdma, uint32_t SrcAddress,
     
     if(hdma->XferHalfCpltCallback != NULL)
     {
+    	HAL_UART_Transmit(&huart1, (uint8_t*)"D\t", strlen("D\t"), 500);
       hdma->Instance->CR  |= DMA_IT_HT;
     }
     
@@ -488,6 +495,7 @@ HAL_StatusTypeDef HAL_DMA_Start_IT(DMA_HandleTypeDef *hdma, uint32_t SrcAddress,
   }
   else
   {
+	  HAL_UART_Transmit(&huart1, (uint8_t*)"E\t", strlen("E\t"), 500);
     /* Process unlocked */
     __HAL_UNLOCK(hdma);	  
     
@@ -495,6 +503,10 @@ HAL_StatusTypeDef HAL_DMA_Start_IT(DMA_HandleTypeDef *hdma, uint32_t SrcAddress,
     status = HAL_BUSY;
   }
   
+  char m[20];
+  snprintf(m, sizeof(m), "ST: %d\r\n", status);
+  HAL_UART_Transmit(&huart1, (uint8_t*)m, strlen(m), 500);
+
   return status;
 }
 
